@@ -1,0 +1,7 @@
+<div class="acordion-titulo" (click)="showContainer()">
+    <i *ngIf="ocultarContenido === true" class="mdi fs-16 text-primary" [ngClass]="{'mdi-chevron-right':!show,'mdi-chevron-down':show}"></i>
+    {{title}}
+</div>
+<div class="acordion-content animated--fade-in fade" [ngClass]="{'show': show}">
+    <ng-content></ng-content>
+</div>

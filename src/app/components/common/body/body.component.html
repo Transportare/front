@@ -1,9 +1,13 @@
 <div id="body">
+    <div class="row page-titles mb-3 mx-0" *ngIf="titulo">
+        <h4 class="text-themecolor">{{ titulo }}</h4>
+    </div>
     <div id="contenedor-body" *ngIf="body">
         <div class="px-4" *ngIf="header">
             <ng-content select="[header]"></ng-content>
         </div>
         <ng-content select="[body]"></ng-content>
+        <ng-content select="[footer]"></ng-content>
     </div>
     <div class="card" *ngIf="bodyCard">
         <div class="card-body">

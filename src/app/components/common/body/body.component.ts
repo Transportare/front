@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class BodyComponent implements OnInit {
     @Input() header: boolean;
     @Input() body: boolean;
+    @Input() titulo: string;
     @Input() bodyCard: boolean;
 
     constructor() {
