@@ -64,11 +64,55 @@ export class SidebarComponent implements OnInit {
                             },
                         ],
                     },
+                ],
+            },
+            {
+                titulo: 'Modulo de Operaciones',
+                icon: '',
+                items: [
                     {
-                        titulo: 'Tables',
-                        icon: 'mdi mdi-wrench',
-                        url: '/dashboard',
-                        submenu: [],
+                        titulo: 'Despachos',
+                        icon: 'mdi mdi-gauge',
+                        url: null,
+                        submenu: [
+                            // {
+                            //     titulo: 'Clientes',
+                            //     icon: 'mdi mdi-gauge',
+                            //     url: '',
+                            // },
+                            // {
+                            //     titulo: 'Contactos',
+                            //     icon: 'mdi mdi-gauge',
+                            //     url: '',
+                            // },
+                            // {
+                            //     titulo: 'Servicios',
+                            //     icon: 'mdi mdi-gauge',
+                            //     url: '',
+                            // },
+                        ],
+                    },
+                    {
+                        titulo: 'Consultas',
+                        icon: 'mdi mdi-gauge',
+                        url: null,
+                        submenu: [
+                            // {
+                            //     titulo: 'Clientes',
+                            //     icon: 'mdi mdi-gauge',
+                            //     url: '',
+                            // },
+                            // {
+                            //     titulo: 'Contactos',
+                            //     icon: 'mdi mdi-gauge',
+                            //     url: '',
+                            // },
+                            // {
+                            //     titulo: 'Servicios',
+                            //     icon: 'mdi mdi-gauge',
+                            //     url: '',
+                            // },
+                        ],
                     },
                 ],
             },
