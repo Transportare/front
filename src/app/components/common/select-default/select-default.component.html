@@ -1,0 +1,21 @@
+<div class="select-default" [ngClass]="{ search: search }">
+    <i class="mdi mdi-magnify icon-left"></i>
+    <!-- <div #inputSelectDiv class="input-select div-select text-ellipsis" [ngClass]="{ 'select-default-error': error }">
+        {{ selected.text }}
+    </div>    -->
+    <div #inputSelectDiv class="input-select div-select text-ellipsis">
+        {{ selected.text }}
+    </div>
+    <input #inputSelect class="input-select input-search" type="text" [readonly]="!search" [placeholder]="placeholder" />
+    <i class="mdi mdi-play icon-right" (click)="closeSelect()"></i>
+    <div class="list-option">
+        <div *ngFor="let row of dataFinal; let index = index" class="option-content">
+            <a class="container" (click)="selectOption(row)" [ngClass]="{ activo: selected.id == row.id }">{{ row.text }} </a>
+        </div>
+        <div *ngIf="dataFinal.length == 0" class="option-content">
+            <label class="container">
+                <span>Sin resultados</span>
+            </label>
+        </div>
+    </div>
+</div>

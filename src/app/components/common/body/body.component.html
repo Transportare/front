@@ -1,0 +1,13 @@
+<div id="body">
+    <div id="contenedor-body" *ngIf="body">
+        <div class="px-4" *ngIf="header">
+            <ng-content select="[header]"></ng-content>
+        </div>
+        <ng-content select="[body]"></ng-content>
+    </div>
+    <div class="card" *ngIf="bodyCard">
+        <div class="card-body">
+            <ng-content select="[body-card]"></ng-content>
+        </div>
+    </div>
+</div>
