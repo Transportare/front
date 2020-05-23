@@ -8,6 +8,10 @@ const routes: Routes = [
         path: '',
         component: ClientesComponent,
     },
+    {
+        path: ':id/nuevo',
+        loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
+    },
 ];
 
 @NgModule({
