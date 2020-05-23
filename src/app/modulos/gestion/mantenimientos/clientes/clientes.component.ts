@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 declare var $: any;
 
 @Component({
@@ -10,7 +12,7 @@ export class ClientesComponent implements OnInit, AfterViewInit, OnDestroy {
     data: any[];
     selectItem: any;
 
-    constructor() {
+    constructor(private router: Router) {
         this.selectItem = {};
     }
 
@@ -62,6 +64,7 @@ export class ClientesComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         $('[data-toggle="tooltip"]').tooltip();
     }
+
     ngOnDestroy(): void {
         $('[data-toggle="tooltip"]').tooltip('dispose');
         // if (this.msj$) {
@@ -70,6 +73,17 @@ export class ClientesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     nuevoProveedor() {
-        console.log(this.selectItem);
+        const route = RUTAS_GESTION_MANTENIMIENTOS;
+        this.router.navigate([`${route.clientes.init}/${route.clientes.nuevo}`]);
+    }
+
+    detalle() {
+        const route = RUTAS_GESTION_MANTENIMIENTOS;
+        this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.detalle}`]);
+    }
+
+    editar() {
+        const route = RUTAS_GESTION_MANTENIMIENTOS;
+        this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.editar}`]);
     }
 }

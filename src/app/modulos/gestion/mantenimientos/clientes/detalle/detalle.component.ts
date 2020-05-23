@@ -4,34 +4,15 @@ import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 declare var $: any;
 
 @Component({
-    selector: 'app-formulario',
-    templateUrl: './formulario.component.html',
+    selector: 'app-detalle',
+    templateUrl: './detalle.component.html',
 })
-export class FormularioComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DetalleComponent implements OnInit, AfterViewInit, OnDestroy {
     data: any[];
 
     constructor(private router: Router) {}
 
-    ngOnInit() {
-        this.data = [
-            {
-                id: 0,
-                text: 'Numero 1',
-            },
-            {
-                id: 1,
-                text: 'Carlos',
-            },
-            {
-                id: 2,
-                text: 'Mirella',
-            },
-            {
-                id: 3,
-                text: 'Josie',
-            },
-        ];
-    }
+    ngOnInit() {}
 
     ngAfterViewInit(): void {
         $('[data-toggle="tooltip"]').tooltip();
