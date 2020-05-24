@@ -12,33 +12,11 @@ export class FormularioComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(private router: Router) {}
 
-    ngOnInit() {
-        this.data = [
-            {
-                id: 0,
-                text: 'Numero 1',
-            },
-            {
-                id: 1,
-                text: 'Carlos',
-            },
-            {
-                id: 2,
-                text: 'Mirella',
-            },
-            {
-                id: 3,
-                text: 'Josie',
-            },
-        ];
-    }
+    ngOnInit() {}
 
-    ngAfterViewInit(): void {
-        $('[data-toggle="tooltip"]').tooltip();
-    }
+    ngAfterViewInit(): void {}
 
     ngOnDestroy(): void {
-        $('[data-toggle="tooltip"]').tooltip('dispose');
         // if (this.msj$) {
         //     this.msj$.unsubscribe();
         // }

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 declare var $: any;
@@ -8,7 +8,7 @@ declare var $: any;
     templateUrl: './clientes.component.html',
     styleUrls: ['./clientes.component.scss'],
 })
-export class ClientesComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ClientesComponent implements OnInit, OnDestroy {
     data: any[];
     selectItem: any;
 
@@ -61,12 +61,7 @@ export class ClientesComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
     }
 
-    ngAfterViewInit(): void {
-        $('[data-toggle="tooltip"]').tooltip();
-    }
-
     ngOnDestroy(): void {
-        $('[data-toggle="tooltip"]').tooltip('dispose');
         // if (this.msj$) {
         //     this.msj$.unsubscribe();
         // }

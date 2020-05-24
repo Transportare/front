@@ -5,7 +5,8 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <!-- <div class="sidebar-brand-text mx-3">Transportare <sup>2</sup></div> -->
+        <div class="sidebar-brand-text mx-3">Transportare</div>
     </a>
 
     <!-- Divider -->
@@ -48,20 +49,11 @@
                 <i [class]="subitem.icon"></i>
                 <span>{{ subitem.titulo }}</span>
             </a>
-            <div
-                [id]="'collapse' + subitem.titulo"
-                class="collapse"
-                data-parent="#accordionSidebar"
-                *ngIf="subitem.submenu.length > 0"
-            >
+            <div [id]="'collapse' + subitem.titulo" class="collapse" data-parent="#accordionSidebar" *ngIf="subitem.submenu.length > 0">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a
-                        *ngFor="let items of subitem.submenu"
-                        class="collapse-item"
-                        [routerLink]="[items.url]"
-                        routerLinkActive="active"
-                        >{{ items.titulo }}</a
-                    >
+                    <a *ngFor="let items of subitem.submenu" class="collapse-item" [routerLink]="[items.url]" routerLinkActive="active">{{
+                        items.titulo
+                    }}</a>
                 </div>
             </div>
         </li>
@@ -128,10 +120,7 @@
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-flex align-items-center justify-content-center">
-        <button
-            class="rounded-circle border-0 d-flex align-items-center justify-content-center"
-            id="sidebarToggle"
-        ></button>
+        <button class="rounded-circle border-0 d-flex align-items-center justify-content-center" id="sidebarToggle"></button>
     </div>
 </ul>
 <!-- End of Sidebar -->
