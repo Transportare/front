@@ -1,18 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 import { SidebarService } from '@services/sidebar/sidebar.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit, AfterViewChecked {
+    @ViewChild('menuTransportare', { static: true }) menuTransportare: ElementRef;
     menu: any;
-    constructor(private sidebarService: SidebarService) {
+    ruta: string;
+    constructor(private sidebarService: SidebarService, private router: Router) {
         this.initData();
+        this.ruta = '';
+        this.router.events.subscribe((response: NavigationEnd) => {
+            if (response.url) {
+                const arrayRuta = response.url.split('/');
+                this.ruta = arrayRuta[2];
+                // console.log(arrayRuta);
+            }
+        });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        // const sidebar = document.querySelector('#accordionSidebar');
+        // sidebar.querySelectorAll('li').forEach((li) => console.log(li));
+    }
+
+    ngAfterViewInit(): void {
+        // const lista = this.menuTransportare.nativeElement.querySelectorAll('li.nav-item');
+        // lista.forEach((li) => {
+        //     if (li.classList.contains('active')) {
+        //         if (li.children[1]) {
+        //             li.children[1].classList.add('show');
+        //         }
+        //     }
+        // // });
+        // const sidebar = document.querySelector('#accordionSidebar');
+        // sidebar.querySelectorAll('.nav-item').forEach((li) => console.log(li.classList.value));
+        // this.menuTransportare.nativeElement.querySelectorAll('.nav-item').forEach((li) => {
+        //     console.log(li.classList);
+        //     if (li.classList.contains('active')) {
+        //         // if (li.children[1]) {
+        //         //     li.children[1].classList.add('show');
+        //         // }
+        //         console.log(li);
+        //     }
+        // });
+    }
+
+    ngAfterViewChecked(): void {
+        // this.menuTransportare.nativeElement.querySelectorAll('.nav-item').forEach((li) => {
+        //     if (li.classList.contains('active')) {
+        //         if (li.children[1]) {
+        //             li.children[1].classList.add('show');
+        //         }
+        //         // console.log(li);
+        //     }
+        // });
+    }
 
     initData() {
         this.menu = [
@@ -74,45 +121,13 @@ export class SidebarComponent implements OnInit {
                         titulo: 'Despachos',
                         icon: 'mdi mdi-gauge',
                         url: null,
-                        submenu: [
-                            // {
-                            //     titulo: 'Clientes',
-                            //     icon: 'mdi mdi-gauge',
-                            //     url: '',
-                            // },
-                            // {
-                            //     titulo: 'Contactos',
-                            //     icon: 'mdi mdi-gauge',
-                            //     url: '',
-                            // },
-                            // {
-                            //     titulo: 'Servicios',
-                            //     icon: 'mdi mdi-gauge',
-                            //     url: '',
-                            // },
-                        ],
+                        submenu: [],
                     },
                     {
                         titulo: 'Consultas',
                         icon: 'mdi mdi-gauge',
                         url: null,
-                        submenu: [
-                            // {
-                            //     titulo: 'Clientes',
-                            //     icon: 'mdi mdi-gauge',
-                            //     url: '',
-                            // },
-                            // {
-                            //     titulo: 'Contactos',
-                            //     icon: 'mdi mdi-gauge',
-                            //     url: '',
-                            // },
-                            // {
-                            //     titulo: 'Servicios',
-                            //     icon: 'mdi mdi-gauge',
-                            //     url: '',
-                            // },
-                        ],
+                        submenu: [],
                     },
                 ],
             },
