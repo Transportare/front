@@ -7,7 +7,7 @@ declare var $: any;
 })
 export class TooltipDirective implements OnDestroy {
     @Input()
-    public appTooltip: string;
+    public DirectiveTooltip: string;
 
     constructor(private elementRef: ElementRef) {}
 
