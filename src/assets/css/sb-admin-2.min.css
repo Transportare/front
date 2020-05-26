@@ -2262,8 +2262,8 @@ fieldset:disabled a.btn {
 .btn-primary:not(:disabled):not(.disabled):active,
 .show > .btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #2653d4;
-    border-color: #244ec9;
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
 }
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .btn-primary:not(:disabled):not(.disabled):active:focus,
@@ -9341,6 +9341,7 @@ a:focus {
 .sidebar {
     width: 6.5rem;
     min-height: 100vh;
+    height: 100%;
 }
 .sidebar .nav-item {
     position: relative;
@@ -9446,7 +9447,7 @@ a:focus {
     margin-left: 0.25rem;
 }
 .sidebar .sidebar-brand {
-    height: 4.375rem;
+    /* height: 4.375rem; */
     text-decoration: none;
     font-size: 1rem;
     font-weight: 800;
@@ -9534,6 +9535,11 @@ a:focus {
     .sidebar .sidebar-brand .sidebar-brand-icon i {
         font-size: 2rem;
     }
+
+    .sidebar .sidebar-brand .sidebar-brand-icon {
+        display: none;
+    }
+
     .sidebar .sidebar-brand .sidebar-brand-text {
         display: inline;
     }
@@ -9590,6 +9596,11 @@ a:focus {
     .sidebar.toggled .sidebar-brand .sidebar-brand-icon i {
         font-size: 2rem;
     }
+
+    .sidebar.toggled .sidebar-brand .sidebar-brand-icon {
+        display: block;
+    }
+
     .sidebar.toggled .sidebar-brand .sidebar-brand-text {
         display: none;
     }
