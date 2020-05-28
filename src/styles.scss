@@ -8,3 +8,20 @@ tr.highlighted td {
     cursor: pointer;
     font-weight: 600;
 }
+
+.form-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-bottom: 1.5em;
+}
+
+.form-group label {
+    margin-bottom: 1em;
+}
+
+@media screen and (min-width: 991px) {
+    .form-group {
+        grid-template-columns: 100px 1fr;
+        margin-bottom: 2em !important;
+    }
+}
