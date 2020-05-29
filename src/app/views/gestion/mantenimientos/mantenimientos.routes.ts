@@ -10,22 +10,15 @@ export const routes: Routes = [
     // },
     {
         path: 'clientes',
-        loadChildren: () =>
-            import('./clientes/clientes.module').then((m) => m.ClientesModule),
+        loadChildren: () => import('./clientes/clientes.module').then((m) => m.ClientesModule),
     },
     {
-        path: 'contactos',
-        loadChildren: () =>
-            import('./contactos/contactos.module').then(
-                (m) => m.ContactosModule
-            ),
+        path: 'personal',
+        loadChildren: () => import('./personal/personal.module').then((m) => m.PersonalModule),
     },
     {
         path: 'servicios',
-        loadChildren: () =>
-            import('./servicios/servicios.module').then(
-                (m) => m.ServiciosModule
-            ),
+        loadChildren: () => import('./servicios/servicios.module').then((m) => m.ServiciosModule),
     },
     {
         path: '',

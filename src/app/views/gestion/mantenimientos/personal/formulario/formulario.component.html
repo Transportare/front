@@ -1,0 +1,72 @@
+<app-body [header]="false" [titulo]="'Nuevo Servicio'">
+    <div body>
+        <div class="p-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="sucursal">Sucursal</label>
+                        <select id="sucursal" class="form-control">
+                            <option selected>Seleccione</option>
+                            <option>Sucursal 1</option>
+                            <option>Sucursal 2</option>
+                            <option>Sucursal 3</option>
+                            <option>Sucursal 4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <select id="cliente" class="form-control">
+                            <option selected>Seleccione</option>
+                            <option>Cliente 1</option>
+                            <option>Cliente 2</option>
+                            <option>Cliente 3</option>
+                            <option>Cliente 4</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tipo">Tipo De Servicio</label>
+                        <select id="tipo" class="form-control">
+                            <option selected>Seleccione</option>
+                            <option>Tipo 1</option>
+                            <option>Tipo 2</option>
+                            <option>Tipo 3</option>
+                            <option>Tipo 4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tiempo">Tiempo</label>
+                        <input type="text" class="form-control" id="tiempo" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="observacion">Observación</label>
+                        <input type="text" class="form-control" id="observacion" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div footer>
+        <div class="p-3 text-right">
+            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
+        </div>
+    </div>
+</app-body>

@@ -8,16 +8,16 @@ export const RUTAS_GESTION_MANTENIMIENTOS = {
         editar: 'editar',
         detalle: 'detalle',
     },
-    // contactos: {
-    //     init: `${item}/otrosconceptos`,
-    //     nuevo: 'nuevo',
-    //     editar: 'editar',
-    //     detalle: 'detalle'
-    // },
-    // servicios: {
-    //     init: `${item}/proveedores`,
-    //     detalle: 'detalle',
-    //     editar: 'editar',
-    //     nuevo: 'nuevo'
-    // }
+    personal: {
+        init: `${item}/personal`,
+        nuevo: 'nuevo',
+        editar: 'editar',
+        detalle: 'detalle',
+    },
+    servicios: {
+        init: `${item}/servicios`,
+        detalle: 'detalle',
+        editar: 'editar',
+        nuevo: 'nuevo',
+    },
 };

@@ -88,9 +88,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, AfterViewChecked
                                 url: '/gestion/mantenimientos/clientes',
                             },
                             {
-                                titulo: 'Contactos',
+                                titulo: 'Personal',
                                 icon: 'mdi mdi-gauge',
-                                url: '/gestion/mantenimientos/contactos',
+                                url: '/gestion/mantenimientos/personal',
                             },
                             {
                                 titulo: 'Servicios',

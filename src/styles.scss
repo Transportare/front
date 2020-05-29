@@ -23,5 +23,10 @@ tr.highlighted td {
     .form-group {
         grid-template-columns: 100px 1fr;
         margin-bottom: 2em !important;
+        align-items: center;
+    }
+
+    .form-group label {
+        margin-bottom: 0em;
     }
 }

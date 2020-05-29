@@ -21,7 +21,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
             {
                 id: 1,
                 razon_social: 'Enotria S.A.',
-                direccionj: 'Av. Nicolas Ayllon 2890',
+                direccion: 'Av. Nicolas Ayllon 2890',
                 oficina: 'OFICINA PRINCIPAL',
                 distrito: 'CALLAO',
                 ruc: '20519014280',
@@ -31,7 +31,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
             {
                 id: 2,
                 razon_social: 'Enotria S.A.',
-                direccionj: 'Av. Nicolas Ayllon 2890',
+                direccion: 'Av. Nicolas Ayllon 2890',
                 oficina: 'OFICINA PRINCIPAL',
                 distrito: 'CALLAO',
                 ruc: '20519014280',
@@ -41,7 +41,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
             {
                 id: 3,
                 razon_social: 'Enotria S.A.',
-                direccionj: 'Av. Nicolas Ayllon 2890',
+                direccion: 'Av. Nicolas Ayllon 2890',
                 oficina: 'OFICINA PRINCIPAL',
                 distrito: 'CALLAO',
                 ruc: '20519014280',
@@ -51,7 +51,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
             {
                 id: 4,
                 razon_social: 'Enotria S.A.',
-                direccionj: 'Av. Nicolas Ayllon 2890',
+                direccion: 'Av. Nicolas Ayllon 2890',
                 oficina: 'OFICINA PRINCIPAL',
                 distrito: 'CALLAO',
                 ruc: '20519014280',

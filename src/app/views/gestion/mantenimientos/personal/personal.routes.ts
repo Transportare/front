@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ServiciosComponent } from './servicios.component';
+import { PersonalComponent } from './personal.component';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 
 const route = RUTAS_GESTION_MANTENIMIENTOS;
@@ -7,7 +7,7 @@ const route = RUTAS_GESTION_MANTENIMIENTOS;
 export const routes: Routes = [
     {
         path: '',
-        component: ServiciosComponent,
+        component: PersonalComponent,
     },
     {
         path: route.servicios.nuevo,
