@@ -78,7 +78,13 @@ export class ServiciosComponent implements OnInit {
         this.router.navigate([`${RUTAS_GESTION_MANTENIMIENTOS.servicios.init}/${RUTAS_GESTION_MANTENIMIENTOS.servicios.nuevo}`]);
     }
 
-    detalle() {}
+    detalle() {
+        const route = RUTAS_GESTION_MANTENIMIENTOS;
+        this.router.navigate([`${route.servicios.init}/${this.selectItem.id}/${route.servicios.detalle}`]);
+    }
 
-    editar() {}
+    editar() {
+        const route = RUTAS_GESTION_MANTENIMIENTOS;
+        this.router.navigate([`${route.servicios.init}/${this.selectItem.id}/${route.servicios.editar}`]);
+    }
 }

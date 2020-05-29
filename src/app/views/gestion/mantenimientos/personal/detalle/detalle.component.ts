@@ -21,6 +21,6 @@ export class DetalleComponent implements OnInit, OnDestroy {
     }
 
     atras() {
-        this.router.navigate([`${RUTAS_GESTION_MANTENIMIENTOS.clientes.init}`]);
+        this.router.navigate([`${RUTAS_GESTION_MANTENIMIENTOS.personal.init}`]);
     }
 }

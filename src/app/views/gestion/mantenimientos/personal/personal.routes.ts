@@ -10,7 +10,15 @@ export const routes: Routes = [
         component: PersonalComponent,
     },
     {
-        path: route.servicios.nuevo,
+        path: route.personal.nuevo,
         loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
+    },
+    {
+        path: `:id/${route.personal.editar}`,
+        loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
+    },
+    {
+        path: `:id/${route.personal.detalle}`,
+        loadChildren: () => import('./detalle/detalle.module').then((m) => m.DetalleModule),
     },
 ];

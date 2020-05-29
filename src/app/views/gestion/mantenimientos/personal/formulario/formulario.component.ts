@@ -21,6 +21,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     atras() {
-        this.router.navigate([`${RUTAS_GESTION_MANTENIMIENTOS.servicios.init}`]);
+        this.router.navigate([`${RUTAS_GESTION_MANTENIMIENTOS.personal.init}`]);
     }
 }

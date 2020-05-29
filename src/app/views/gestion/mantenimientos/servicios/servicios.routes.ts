@@ -13,4 +13,12 @@ export const routes: Routes = [
         path: route.servicios.nuevo,
         loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
     },
+    {
+        path: `:id/${route.servicios.editar}`,
+        loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
+    },
+    {
+        path: `:id/${route.servicios.detalle}`,
+        loadChildren: () => import('./detalle/detalle.module').then((m) => m.DetalleModule),
+    },
 ];

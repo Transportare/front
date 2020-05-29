@@ -107,7 +107,13 @@ export class PersonalComponent implements OnInit {
         this.router.navigate([`${RUTAS_GESTION_MANTENIMIENTOS.personal.init}/${RUTAS_GESTION_MANTENIMIENTOS.personal.nuevo}`]);
     }
 
-    detalle() {}
+    detalle() {
+        const route = RUTAS_GESTION_MANTENIMIENTOS;
+        this.router.navigate([`${route.personal.init}/${this.selectItem.id}/${route.personal.detalle}`]);
+    }
 
-    editar() {}
+    editar() {
+        const route = RUTAS_GESTION_MANTENIMIENTOS;
+        this.router.navigate([`${route.personal.init}/${this.selectItem.id}/${route.personal.editar}`]);
+    }
 }
