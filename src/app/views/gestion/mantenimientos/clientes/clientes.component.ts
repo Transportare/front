@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 declare var $: any;
@@ -9,6 +9,7 @@ declare var $: any;
     styleUrls: ['./clientes.component.scss'],
 })
 export class ClientesComponent implements OnInit, OnDestroy {
+    @ViewChild('detalleCliente', { static: false }) detalleCliente: ElementRef;
     data: any[];
     selectItem: any;
 
@@ -73,8 +74,13 @@ export class ClientesComponent implements OnInit, OnDestroy {
     }
 
     detalle() {
-        const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.detalle}`]);
+        // const route = RUTAS_GESTION_MANTENIMIENTOS;
+        // this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.detalle}`]);
+        $(this.detalleCliente.nativeElement).modal('show');
+    }
+
+    cerrarModal() {
+        $(this.detalleCliente.nativeElement).modal('hide');
     }
 
     editar() {

@@ -16,9 +16,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, AfterViewChecked
     constructor(private sidebarService: SidebarService, private router: Router) {
         this.initData();
         this.ruta = '';
-        console.log('antes');
+        // console.log('antes');
         this.suscriber = this.router.events.subscribe((response: NavigationEnd) => {
-            console.log('en el suscribe');
+            // console.log('en el suscribe');
 
             if (response.url) {
                 const arrayRuta = response.url.split('/');

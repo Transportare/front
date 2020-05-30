@@ -1,104 +1,59 @@
-<app-body [header]="false" [titulo]="'Detalle Cliente'">
+<app-body [header]="false" [titulo]="'Detalle Servicio'">
     <div body>
-        <!-- <div class="p-3">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="nombres">Nombres</label>
-                        <input type="text" class="form-control" id="nombres" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="ruc">RUC</label>
-                        <input type="text" class="form-control" id="ruc" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="direccion">Dirección</label>
-                        <input type="text" class="form-control" id="direccion" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="telefono">Telefono</label>
-                        <input type="text" class="form-control" id="telefono" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="correo">Correo</label>
-                        <input type="text" class="form-control" id="correo" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="contacto">Contacto</label>
-                        <input type="text" class="form-control" id="contacto" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="ubigeo">Ubigeo</label>
-                        <select id="ubigeo" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Ubigeo 1</option>
-                            <option>Ubigeo 2</option>
-                            <option>Ubigeo 3</option>
-                            <option>Ubigeo 4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="rubro">Rubro</label>
-                        <input type="text" class="form-control" id="rubro" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tipoPago">Tipo de Pago</label>
-                        <select id="tipoPago" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Pago 1</option>
-                            <option>Pago 2</option>
-                            <option>Pago 3</option>
-                            <option>Pago 4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="observacion">Observación</label>
-                        <textarea id="observacion" rows="4" class="form-control"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <accordion>
-            <acordion-container [title]="'Detalle 1'" [show]="true">
-                <div class="px-3">Hola</div>
+            <acordion-container [title]="'Datos'" [show]="true">
+                <div class="px-4">
+                    <div class="row mb-4 pb-3 border-bottom-1">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Sucursal</label>
+                                <b>Sucursal 1</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Cliente</label>
+                                <b>Cliente 1</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Tipo De Servicio</label>
+                                <b>Normal</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Nombre</label>
+                                <b>BBVA</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4 pb-3 border-bottom-1">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Tiempo</label>
+                                <b>04 Días</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Observación</label>
+                                <b>AVL</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Estado</label>
+                                <b>Habilitado</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </acordion-container>
-            <acordion-container [title]="'Detalle 2'" [show]="false">
+            <!-- <acordion-container [title]="'Detalle 2'" [show]="false">
                 <div class="px-3">Hola</div>
-            </acordion-container>
+            </acordion-container> -->
         </accordion>
     </div>
     <div footer>
