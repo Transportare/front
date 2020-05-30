@@ -13,6 +13,7 @@ export class BodyComponent implements OnInit {
 
     constructor() {
         this.body = true;
+        this.header = false;
         this.bodyCard = false;
     }
 
