@@ -5177,9 +5177,9 @@ a.close.disabled {
 .modal.show .modal-dialog {
     transform: none;
 }
-.modal.modal-static .modal-dialog {
+/* .modal.modal-static .modal-dialog {
     transform: scale(1.02);
-}
+} */
 .modal-dialog-scrollable {
     display: flex;
     max-height: calc(100% - 1rem);
@@ -5251,6 +5251,7 @@ a.close.disabled {
     border-bottom: 1px solid #e3e6f0;
     border-top-left-radius: calc(0.3rem - 1px);
     border-top-right-radius: calc(0.3rem - 1px);
+    background-color: #f8f9fc;
 }
 .modal-header .close {
     padding: 1rem 1rem;

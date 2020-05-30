@@ -57,3 +57,55 @@
         </table>
     </div>
 </app-body>
+
+<div class="modal fade" #detalleCliente tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">
+                    Detalle Cliente
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Razón Social</label>
+                        <div class="form-control">Enotria S.A.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Dirección</label>
+                        <div class="form-control">Av. Nicolas Ayllon 2890</div>
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Oficina</label>
+                        <div class="form-control">OFICINA PRINCIPAL</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Distrito</label>
+                        <div class="form-control">CALLAO</div>
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>RUC</label>
+                        <div class="form-control">20519014280</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Tipo</label>
+                        <div class="form-control">Transferencia</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

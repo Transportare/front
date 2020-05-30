@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ServiciosComponent } from './servicios.component';
+import { PersonalComponent } from './personal.component';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 
 const route = RUTAS_GESTION_MANTENIMIENTOS;
@@ -7,18 +7,18 @@ const route = RUTAS_GESTION_MANTENIMIENTOS;
 export const routes: Routes = [
     {
         path: '',
-        component: ServiciosComponent,
+        component: PersonalComponent,
     },
     {
-        path: route.servicios.nuevo,
+        path: route.personal.nuevo,
         loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
     },
     {
-        path: `:id/${route.servicios.editar}`,
+        path: `:id/${route.personal.editar}`,
         loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
     },
     {
-        path: `:id/${route.servicios.detalle}`,
+        path: `:id/${route.personal.detalle}`,
         loadChildren: () => import('./detalle/detalle.module').then((m) => m.DetalleModule),
     },
 ];

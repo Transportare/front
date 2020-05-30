@@ -16,9 +16,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, AfterViewChecked
     constructor(private sidebarService: SidebarService, private router: Router) {
         this.initData();
         this.ruta = '';
-        console.log('antes');
+        // console.log('antes');
         this.suscriber = this.router.events.subscribe((response: NavigationEnd) => {
-            console.log('en el suscribe');
+            // console.log('en el suscribe');
 
             if (response.url) {
                 const arrayRuta = response.url.split('/');
@@ -88,9 +88,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, AfterViewChecked
                                 url: '/gestion/mantenimientos/clientes',
                             },
                             {
-                                titulo: 'Contactos',
+                                titulo: 'Personal',
                                 icon: 'mdi mdi-gauge',
-                                url: '/gestion/mantenimientos/contactos',
+                                url: '/gestion/mantenimientos/personal',
                             },
                             {
                                 titulo: 'Servicios',

@@ -1,0 +1,93 @@
+<app-body [header]="false" [titulo]="'Detalle Personal'">
+    <div body>
+        <accordion>
+            <acordion-container [title]="'Datos'" [show]="true">
+                <div class="px-4">
+                    <div class="row mb-4 pb-3 border-bottom-1">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Nombres</label>
+                                <b>Miguel Angel</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Apellidos</label>
+                                <b>Morales Larriega</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Ubigeo</label>
+                                <b>Surco</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Código</label>
+                                <b>224as1d2</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4 pb-3 border-bottom-1">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">DNI</label>
+                                <b>72491744</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Fecha de Nacimiento</label>
+                                <b>20/05/98</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Dirección</label>
+                                <b>Calle Las Cerezas 235 - Surco</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Masculino</label>
+                                <b>Masculino</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4 pb-3 border-bottom-1">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Estado Civil</label>
+                                <b>Soltero</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Teléfono</label>
+                                <b>895724554</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Fecha de Ingreso</label>
+                                <b>20/05/98</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column align-items-center">
+                                <label class="mb-0">Estado</label>
+                                <b>Habilitado</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </acordion-container>
+        </accordion>
+    </div>
+    <div footer>
+        <div class="p-3 text-right">
+            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+        </div>
+    </div>
+</app-body>
