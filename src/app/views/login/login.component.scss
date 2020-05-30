@@ -32,6 +32,15 @@
                 margin: 15px 0;
                 font-weight: bold;
             }
+
+            .form-group {
+                grid-template-columns: 1fr;
+                margin-bottom: 1rem !important;
+
+                label {
+                    margin-bottom: 1em !important;
+                }
+            }
         }
 
         img {
