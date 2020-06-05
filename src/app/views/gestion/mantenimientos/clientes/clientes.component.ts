@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { ClienteService } from '@services/modulos/gestion/mantenimientos/clientes/clientes.service';
 declare var $: any;
 
 @Component({
@@ -13,11 +14,13 @@ export class ClientesComponent implements OnInit, OnDestroy {
     data: any[];
     selectItem: any;
 
-    constructor(private router: Router) {
+    constructor(private clienteService: ClienteService, private router: Router) {
         this.selectItem = {};
     }
 
     ngOnInit() {
+        this.clienteService.getClientes().subscribe((response) => console.log(response));
+
         this.data = [
             {
                 id: 1,

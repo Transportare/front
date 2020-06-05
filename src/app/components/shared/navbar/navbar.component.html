@@ -226,7 +226,7 @@
                     Ajustes
                 </a>
                 <div class="dropdown-divider"></div> -->
-                <a class="dropdown-item" [routerLink]="['/login']" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item pointer" (click)="logOut()" data-toggle="modal" data-target="#logoutModal">
                     <i class="mdi mdi-logout mr-2 text-gray-400"></i>
                     Salir
                 </a>

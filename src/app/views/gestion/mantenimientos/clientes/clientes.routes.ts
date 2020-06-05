@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ClientesComponent } from './clientes.component';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { AuthGuard } from '../../../../guards/auth.guard';
 const route = RUTAS_GESTION_MANTENIMIENTOS;
 
 export const routes: Routes = [

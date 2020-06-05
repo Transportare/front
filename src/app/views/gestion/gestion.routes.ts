@@ -8,10 +8,7 @@ export const routes: Routes = [
         children: [
             {
                 path: 'mantenimientos',
-                loadChildren: () =>
-                    import('./mantenimientos/mantenimientos.module').then(
-                        (m) => m.MantenimientosModule
-                    ),
+                loadChildren: () => import('./mantenimientos/mantenimientos.module').then((m) => m.MantenimientosModule),
             },
             {
                 path: '',

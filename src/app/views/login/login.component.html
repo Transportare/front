@@ -14,9 +14,9 @@
                 <label for="pass">Contraseña</label>
                 <input type="password" id="pass" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': passwordValid }" />
             </div>
-            <div *ngIf="!validate() && error" class="w-100 d-block text-danger mb-4">
+            <!-- <div *ngIf="!validate() && error" class="w-100 d-block text-danger mb-4">
                 <span>Usuario o contraseña incorrecta</span>
-            </div>
+            </div> -->
             <button type="submit" [disabled]="formLogin.invalid" class="btn btn-primary w-100 d-block" (click)="ingresar()">Ingresar</button>
         </form>
     </div>

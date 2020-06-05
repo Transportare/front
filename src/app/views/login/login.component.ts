@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginService } from '@services/login/login.service';
 
 @Component({
     selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent implements OnInit {
     formLogin: FormGroup;
     error: boolean;
 
-    constructor(private fb: FormBuilder, private route: Router) {}
+    constructor(private fb: FormBuilder, private route: Router, private loginService: LoginService) {}
 
     ngOnInit(): void {
         this.error = false;
@@ -33,13 +34,13 @@ export class LoginComponent implements OnInit {
         return this.formLogin.get('password').invalid && this.formLogin.get('password').touched;
     }
 
-    validate(): boolean {
-        if (this.formLogin.value.username === 'demo' && this.formLogin.value.password === 'demo') {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // validate(): boolean {
+    //     if (this.formLogin.value.username === 'demo' && this.formLogin.value.password === 'demo') {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     ingresar() {
         // if (this.formLogin.invalid) {
@@ -47,12 +48,33 @@ export class LoginComponent implements OnInit {
         //         control.markAsTouched();
         //     });
         // }
-
-        if (this.validate()) {
-            this.error = false;
-            this.route.navigate(['/dashboard']);
-        } else {
-            this.error = true;
+        if (this.formLogin.invalid) {
+            return;
         }
+
+        const data = {
+            usuario: this.formLogin.value.username,
+            password: this.formLogin.value.password,
+        };
+
+        this.loginService.logIng(data).subscribe(
+            (response) => {
+                console.log(response);
+                this.loginService.saveDataUser(response);
+                this.route.navigate(['/dashboard']);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+
+        console.log(data);
+
+        // if (this.validate()) {
+        //     this.error = false;
+        //     this.route.navigate(['/dashboard']);
+        // } else {
+        //     this.error = true;
+        // }
     }
 }
