@@ -10,11 +10,11 @@ export class SelectDefaultComponent implements OnInit, AfterViewInit {
     @ViewChild('inputSelect', { static: true }) inputSelect: ElementRef;
     @ViewChild('inputSelectDiv', { static: true }) inputSelectDiv: ElementRef;
     @Input() data: any[];
+    @Input() selected: Item;
     @Input() search: boolean;
     @Input() placeholder: string;
     @Output() selectChange = new EventEmitter<Item>();
     dataFinal: Item[];
-    selected: Item;
     showOption: boolean;
     readonly: boolean;
     constructor() {

@@ -3,14 +3,17 @@
 }
 
 .select-default.activo .input-select {
-    border-radius: 17px 17px 0 0;
-    border-bottom: 1px solid #e5e5e5;
+    // border-radius: 17px 17px 0 0;
+    // border-bottom: 1px solid #e5e5e5;
 
-    padding-right: 25px;
+    // padding-right: 25px;
+    // border-bottom: 1px solid #d1d3e2;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 
 .select-default {
-    height: 36.2px;
+    // height: 36.2px;
     position: relative;
     width: 100%;
 }
@@ -24,13 +27,19 @@
     padding-left: 27px;
 }
 
+.text-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .select-default .input-select {
-    border-radius: 50px;
-    background-color: #fff7f7;
-    border: 1px solid #fdccc9;
-    width: 100%;
-    height: 100%;
-    padding: 6px 30px 6px 15px;
+    // border-radius: 50px;
+    // background-color: #fff7f7;
+    // border: 1px solid #fdccc9;
+    // width: 100%;
+    // height: 100%;
+    // padding: 6px 30px 6px 15px;
 }
 
 .select-default .list-option {
@@ -43,12 +52,19 @@
     display: none;
     position: absolute;
     top: 100%;
-    background-color: #fff7f7;
-    border: 1px solid #fdccc9;
-    border-radius: 0 0 17px 17px;
+    background-color: #ffffff;
+    border: 1px solid #d1d3e2;
+    border-radius: 0 0 0.35rem 0.35rem;
     margin: 0;
     list-style: none;
     z-index: 2;
+    // color: #6e707e;
+    // background-color: #fff;
+    // border-color: #bac8f3;
+    // outline: 0;
+    // box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: 0px 2px 0 0.2rem rgba(78, 115, 223, 0.25);
 }
 
 .select-default.activo .list-option {
@@ -78,15 +94,21 @@
     display: none;
     position: absolute;
     left: 10px;
-    top: 5px;
+    top: 8px;
 }
 
 .select-default .icon-right {
     position: absolute;
     right: 10px;
-    top: 5px;
+    top: 8px;
+    transform: rotate(90deg);
 }
 
 .input-select.input-search:focus {
     outline: none;
+}
+
+.select-default .list-option .option-content .container.activo,
+.select-default .list-option .option-content .container:hover {
+    background-color: #ececec;
 }

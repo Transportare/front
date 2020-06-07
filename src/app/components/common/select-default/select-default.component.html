@@ -3,10 +3,10 @@
     <!-- <div #inputSelectDiv class="input-select div-select text-ellipsis" [ngClass]="{ 'select-default-error': error }">
         {{ selected.text }}
     </div>    -->
-    <div #inputSelectDiv class="input-select div-select text-ellipsis">
+    <div #inputSelectDiv class="form-control input-select div-select text-ellipsis">
         {{ selected.text }}
     </div>
-    <input #inputSelect class="input-select input-search" type="text" [readonly]="!search" [placeholder]="placeholder" />
+    <input #inputSelect class="form-control input-select input-search" type="text" [readonly]="!search" [placeholder]="placeholder" />
     <i class="mdi mdi-play icon-right" (click)="closeSelect()"></i>
     <div class="list-option">
         <div *ngFor="let row of dataFinal; let index = index" class="option-content">
