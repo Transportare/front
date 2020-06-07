@@ -76,25 +76,30 @@ export class SidebarComponent implements OnInit, AfterViewInit, AfterViewChecked
             {
                 titulo: 'Modulo de gestión',
                 icon: '',
+                ruta: 'gestion',
                 items: [
                     {
                         titulo: 'Mantenimientos',
                         icon: 'mdi mdi-gauge',
+                        ruta: 'mantenimientos',
                         url: null,
                         submenu: [
                             {
                                 titulo: 'Clientes',
                                 icon: 'mdi mdi-gauge',
+                                ruta: 'clientes',
                                 url: '/gestion/mantenimientos/clientes',
                             },
                             {
                                 titulo: 'Personal',
                                 icon: 'mdi mdi-gauge',
+                                ruta: 'personal',
                                 url: '/gestion/mantenimientos/personal',
                             },
                             {
                                 titulo: 'Servicios',
                                 icon: 'mdi mdi-gauge',
+                                ruta: 'servicios',
                                 url: '/gestion/mantenimientos/servicios',
                             },
                         ],
