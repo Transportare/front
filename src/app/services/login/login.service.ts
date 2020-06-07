@@ -11,8 +11,6 @@ export class LoginService {
     idIntervalo: any;
     dataUser: any = {};
 
-    private storageSub = new Subject<boolean>();
-
     constructor(private http: HttpClient, private router: Router) {}
 
     logIng(data) {
@@ -37,47 +35,9 @@ export class LoginService {
         }
     }
 
-    // isLogin(): Observable<boolean> {
-    //     return new Observable((observer) => {
-    //         this.dataUser = this.getdataUser();
-
-    //         if (this.dataUser != null && this.dataUser.token) {
-    //             observer.next(true);
-    //         } else {
-    //             observer.next(false);
-    //         }
-    //         observer.complete();
-    //     });
-    // }
-
-    // isLogin(): Observable<boolean> {
-    //     return new Observable((observer) => {
-    //         this.dataUser = this.getdataUser();
-
-    //         this.idIntervalo = setInterval(() => {
-    //             this.dataUser = this.getdataUser();
-    //             if (this.dataUser != null && this.dataUser.token) {
-    //                 observer.next(true);
-    //             } else {
-    //                 observer.next(false);
-    //             }
-    //         }, 1000);
-    //     });
-    // }
-
-    // watchStorage(): Observable<any> {
-    //     return this.storageSub.asObservable();
-    // }
-
     saveDataUser(data) {
         localStorage.setItem('data_user', JSON.stringify(data));
-        // this.storageSub.next(true);
     }
-
-    // clearDataUser() {
-    //     localStorage.removeItem('data_user');
-    //     this.storageSub.next(false);
-    // }
 
     getdataUser() {
         return JSON.parse(localStorage.getItem('data_user'));
