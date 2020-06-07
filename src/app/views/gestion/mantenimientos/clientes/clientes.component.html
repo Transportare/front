@@ -3,7 +3,7 @@
         <div class="py-3 text-right">
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.id"
+                [disabled]="!selectItem.IdCliente"
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
@@ -14,7 +14,7 @@
             </button>
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.id"
+                [disabled]="!selectItem.IdCliente"
                 data-placement="top"
                 data-toggle="tooltip"
                 [DirectiveTooltip]
@@ -29,37 +29,58 @@
         </div>
     </div>
     <div body>
-        <table class="table table-striped table-hover box-shadow">
-            <thead>
-                <tr>
-                    <th>N°</th>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Sucursal</th>
-                    <th>Distrito</th>
-                    <th>RUC</th>
-                    <th>Pago</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of data; let index = index" (click)="selectItem = item" [ngClass]="{ highlighted: selectItem.id === item.id }">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.razon_social }}</td>
-                    <td>{{ item.direccion }}</td>
-                    <td>{{ item.oficina }}</td>
-                    <td>{{ item.distrito }}</td>
-                    <td>{{ item.ruc }}</td>
-                    <td>{{ item.tipo }}</td>
-                    <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover box-shadow">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th style="min-width: 160px;">Nombre</th>
+                        <th>Contacto</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th style="min-width: 200px;">Dirección</th>
+                        <th>Sucursal</th>
+                        <th>Distrito</th>
+                        <th>Rubro</th>
+                        <th>RUC</th>
+                        <th>Pago</th>
+                        <th style="min-width: 160px;">Fecha de Asignación</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let item of data; let index = index"
+                        (click)="selectItem = item"
+                        [ngClass]="{ highlighted: selectItem.IdCliente === item.IdCliente }"
+                    >
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.Nombre }}</td>
+                        <td>{{ item.Contacto }}</td>
+                        <td>{{ item.Correo || '-' }}</td>
+                        <td>{{ item.Telefono || '-' }}</td>
+                        <td>{{ item.Direccion }}</td>
+                        <td>{{ item.Sucursal }}</td>
+                        <td>{{ item.Ubigeo }}</td>
+                        <td>{{ item.Rubro || '-' }}</td>
+                        <td>{{ item.RUC }}</td>
+                        <td>{{ item.TipoPago }}</td>
+                        <td>{{ item.FecAsignacion | date: 'dd-MM-yyyy' }}</td>
+                        <td>{{ item.Flag_Activo ? 'Activo' : 'Inactivo' }}</td>
+                    </tr>
+                    <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                        <td colspan="14">
+                            No hay información disponible
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </app-body>
 
 <div class="modal fade" #detalleCliente tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center">
                 <h5 class="modal-title">
@@ -69,32 +90,62 @@
             <div class="modal-body">
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
-                        <label>Razón Social</label>
-                        <div class="form-control">Enotria S.A.</div>
+                        <label>Nombre</label>
+                        <input class="form-control" [value]="selectItem.Nombre || '-'" />
                     </div>
                     <div class="col-md-6">
-                        <label>Dirección</label>
-                        <div class="form-control">Av. Nicolas Ayllon 2890</div>
+                        <label>Contacto</label>
+                        <input class="form-control" [value]="selectItem.Contacto || '-'" />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
-                        <label>Oficina</label>
-                        <div class="form-control">OFICINA PRINCIPAL</div>
+                        <label>Correo</label>
+                        <input class="form-control" [value]="selectItem.Correo || '-'" />
                     </div>
                     <div class="col-md-6">
-                        <label>Distrito</label>
-                        <div class="form-control">CALLAO</div>
+                        <label>Teléfono</label>
+                        <input class="form-control" [value]="selectItem.Telefono || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Dirección</label>
+                        <input class="form-control" [value]="selectItem.Direccion || '-'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Sucursal</label>
+                        <input class="form-control" [value]="selectItem.Sucursal || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Ubigeo</label>
+                        <input class="form-control" [value]="selectItem.Ubigeo || '-'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Rubro</label>
+                        <input class="form-control" [value]="selectItem.Rubro || '-'" />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>RUC</label>
-                        <div class="form-control">20519014280</div>
+                        <input class="form-control" [value]="selectItem.RUC || '-'" />
                     </div>
                     <div class="col-md-6">
-                        <label>Tipo</label>
-                        <div class="form-control">Transferencia</div>
+                        <label>Tipo de Pago</label>
+                        <input class="form-control" [value]="selectItem.TipoPago || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Fecha de Asignación</label>
+                        <input class="form-control" [value]="selectItem.FecAsignacion | date: 'dd-MM-yyyy'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Estado</label>
+                        <input class="form-control" [value]="selectItem.Flag_Activo ? 'Activo' : 'Inactivo'" />
                     </div>
                 </div>
             </div>

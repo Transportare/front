@@ -5,14 +5,10 @@ import { API_URL } from 'config/api.route';
 @Injectable({
     providedIn: 'root',
 })
-export class ClienteService {
+export class PersonalService {
     constructor(private http: HttpClient) {}
 
-    getClientes() {
-        return this.http.get(`${API_URL}clientes`);
-    }
-
-    getUnCliente(id: number) {
-        return this.http.get(`${API_URL}clientes/${id}`);
+    getPersonales() {
+        return this.http.get(`${API_URL}personales`);
     }
 }

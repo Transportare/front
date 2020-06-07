@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { PersonalService } from '@services/modulos/gestion/mantenimientos/personal/personal.service';
 
 @Component({
     selector: 'app-personal',
@@ -10,11 +11,12 @@ export class PersonalComponent implements OnInit {
     selectItem: any;
     data: any[];
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private personalService: PersonalService) {
         this.selectItem = {};
     }
 
     ngOnInit() {
+        this.personalService.getPersonales().subscribe((response) => console.log(response));
         this.listar();
     }
 

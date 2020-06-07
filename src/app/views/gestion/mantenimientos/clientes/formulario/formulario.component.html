@@ -1,102 +1,137 @@
 <app-body [header]="false" [titulo]="'Nuevo Cliente'">
     <div body>
-        <div class="p-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="nombres">Nombres</label>
-                        <input type="text" class="form-control" id="nombres" />
+        <form (ngSubmit)="crearCliente()" [formGroup]="formularioCliente">
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" formControlName="nombre" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ruc">RUC</label>
+                            <input type="text" class="form-control" id="ruc" formControlName="ruc" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="direccion">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" formControlName="direccion" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" formControlName="telefono" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="ruc">RUC</label>
-                        <input type="text" class="form-control" id="ruc" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="correo">Correo</label>
+                            <input type="text" class="form-control" id="correo" formControlName="correo" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contacto">Contacto</label>
+                            <input type="text" class="form-control" id="contacto" formControlName="contacto" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="direccion">Dirección</label>
-                        <input type="text" class="form-control" id="direccion" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="departamento">Departamento</label>
+                            <select id="departamento" class="form-control">
+                                <option selected>Seleccione Departamento</option>
+                                <option>Departamento 1</option>
+                                <option>Departamento 2</option>
+                                <option>Departamento 3</option>
+                                <option>Departamento 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="provincia">Provincia</label>
+                            <select id="provincia" class="form-control">
+                                <option selected>Seleccione Provincia</option>
+                                <option>Provincia 1</option>
+                                <option>Provincia 2</option>
+                                <option>Provincia 3</option>
+                                <option>Provincia 4</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="telefono">Telefono</label>
-                        <input type="text" class="form-control" id="telefono" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="distrito">Distrito</label>
+                            <select id="distrito" class="form-control">
+                                <option selected>Seleccione Distrito</option>
+                                <option>Distrito 1</option>
+                                <option>Distrito 2</option>
+                                <option>Distrito 3</option>
+                                <option>Distrito 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="rubro">Rubro</label>
+                            <input type="text" class="form-control" id="rubro" formControlName="rubro" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="correo">Correo</label>
-                        <input type="text" class="form-control" id="correo" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- <div class="form-group">
+                            <label for="tipoPago">Tipo de Pago</label>
+                            <select id="tipoPago" class="form-control">
+                                <option selected>Seleccione</option>
+                                <option>Pago 1</option>
+                                <option>Pago 2</option>
+                                <option>Pago 3</option>
+                                <option>Pago 4</option>
+                            </select>
+                        </div> -->
+                        <div class="form-group">
+                            <label for="tipoPago">Tipo de Pago</label>
+                            <select-default
+                                *ngIf="tipoPagos"
+                                [data]="tipoPagos"
+                                [selected]="selectedPago"
+                                (selectChange)="changeTipoPago($event)"
+                            ></select-default>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="contacto">Contacto</label>
-                        <input type="text" class="form-control" id="contacto" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="ubigeo">Ubigeo</label>
-                        <select id="ubigeo" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Ubigeo 1</option>
-                            <option>Ubigeo 2</option>
-                            <option>Ubigeo 3</option>
-                            <option>Ubigeo 4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="rubro">Rubro</label>
-                        <input type="text" class="form-control" id="rubro" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tipoPago">Tipo de Pago</label>
-                        <select id="tipoPago" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Pago 1</option>
-                            <option>Pago 2</option>
-                            <option>Pago 3</option>
-                            <option>Pago 4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                     <div class="form-group">
                         <label for="observacion">Observación</label>
                         <textarea id="observacion" rows="4" class="form-control"></textarea>
                     </div>
+                </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="observacion">Observación</label>
+                            <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div footer>
-        <div class="p-3 text-right">
-            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
-        </div>
+            <div class="p-3 text-right">
+                <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+                <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
+            </div>
+        </form>
     </div>
 </app-body>

@@ -19,51 +19,20 @@ export class ClientesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.clienteService.getClientes().subscribe((response) => console.log(response));
-
-        this.data = [
-            {
-                id: 1,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-            {
-                id: 2,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-            {
-                id: 3,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-            {
-                id: 4,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-        ];
+        this.data = [];
+        this.listar();
     }
+
+    listar() {
+        this.clienteService.getClientes().subscribe((response: any) => {
+            console.log(response);
+            this.data = response.data;
+        });
+    }
+
+    // obtenerCliente() {
+    //     console.log(this.selectItem);
+    // }
 
     ngOnDestroy(): void {
         // if (this.msj$) {
@@ -80,6 +49,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
         // const route = RUTAS_GESTION_MANTENIMIENTOS;
         // this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.detalle}`]);
         $(this.detalleCliente.nativeElement).modal('show');
+        // this.obtenerCliente();
     }
 
     cerrarModal() {
@@ -88,6 +58,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
 
     editar() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.editar}`]);
+        this.router.navigate([`${route.clientes.init}/${this.selectItem.IdCliente}/${route.clientes.editar}`]);
     }
 }
