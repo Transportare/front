@@ -3422,7 +3422,8 @@ input[type='submit'].btn-block {
     height: calc(1rem - 4px);
     background-color: #b7b9cc;
     border-radius: 0.5rem;
-    transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
     .custom-switch .custom-control-label::after {
@@ -9365,7 +9366,7 @@ a:focus {
 .sidebar .nav-item .collapse {
     position: absolute;
     left: calc(6.5rem + 1.5rem / 2);
-    z-index: 1;
+    z-index: 2;
     top: 2px;
 }
 .sidebar .nav-item .collapse .collapse-inner {
