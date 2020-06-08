@@ -1,6 +1,6 @@
-<app-body [header]="false" [titulo]="'Nuevo Cliente'">
+<app-body [header]="false" [titulo]="nuevo ? 'Nuevo Cliente' : 'Editar Cliente'">
     <div body>
-        <form (ngSubmit)="crearCliente()" [formGroup]="formularioCliente">
+        <form (ngSubmit)="guardarCliente()" [formGroup]="formularioCliente" *ngIf="!loading">
             <div class="p-4">
                 <div class="row">
                     <div class="col-md-6">
@@ -48,25 +48,23 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="departamento">Departamento</label>
-                            <select id="departamento" class="form-control">
-                                <option selected>Seleccione Departamento</option>
-                                <option>Departamento 1</option>
-                                <option>Departamento 2</option>
-                                <option>Departamento 3</option>
-                                <option>Departamento 4</option>
-                            </select>
+                            <select-default
+                                *ngIf="departamentos"
+                                [data]="departamentos"
+                                [selected]="selectedDepartamento"
+                                (selectChange)="changeDepartamento($event)"
+                            ></select-default>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="provincia">Provincia</label>
-                            <select id="provincia" class="form-control">
-                                <option selected>Seleccione Provincia</option>
-                                <option>Provincia 1</option>
-                                <option>Provincia 2</option>
-                                <option>Provincia 3</option>
-                                <option>Provincia 4</option>
-                            </select>
+                            <select-default
+                                *ngIf="provincias"
+                                [data]="provincias"
+                                [selected]="selectedProvincia"
+                                (selectChange)="changeProvincia($event)"
+                            ></select-default>
                         </div>
                     </div>
                 </div>
@@ -74,13 +72,12 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="distrito">Distrito</label>
-                            <select id="distrito" class="form-control">
-                                <option selected>Seleccione Distrito</option>
-                                <option>Distrito 1</option>
-                                <option>Distrito 2</option>
-                                <option>Distrito 3</option>
-                                <option>Distrito 4</option>
-                            </select>
+                            <select-default
+                                *ngIf="distritos"
+                                [data]="distritos"
+                                [selected]="selectedDistrito"
+                                (selectChange)="changeDistrito($event)"
+                            ></select-default>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -92,16 +89,6 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <!-- <div class="form-group">
-                            <label for="tipoPago">Tipo de Pago</label>
-                            <select id="tipoPago" class="form-control">
-                                <option selected>Seleccione</option>
-                                <option>Pago 1</option>
-                                <option>Pago 2</option>
-                                <option>Pago 3</option>
-                                <option>Pago 4</option>
-                            </select>
-                        </div> -->
                         <div class="form-group">
                             <label for="tipoPago">Tipo de Pago</label>
                             <select-default
@@ -112,12 +99,6 @@
                             ></select-default>
                         </div>
                     </div>
-                    <!-- <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="observacion">Observación</label>
-                        <textarea id="observacion" rows="4" class="form-control"></textarea>
-                    </div>
-                </div> -->
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -130,7 +111,7 @@
             </div>
             <div class="p-3 text-right">
                 <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-                <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
+                <button class="btn btn-primary" type="submit" [disabled]="formularioCliente.invalid"><span>Guardar</span></button>
             </div>
         </form>
     </div>

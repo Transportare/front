@@ -6,9 +6,10 @@ import { SelectDefaultModule } from '@common/select-default/select-default.modul
 import { BodyModule } from '@common/body/body.module';
 import { RouterModule } from '@angular/router';
 import { DirectivesModule } from '@directives/directives.module';
+import { LoaderModule } from '@common/loader/loader.module';
 
 @NgModule({
     declarations: [ClientesComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), SelectDefaultModule, BodyModule, DirectivesModule],
+    imports: [CommonModule, RouterModule.forChild(routes), SelectDefaultModule, BodyModule, DirectivesModule, LoaderModule],
 })
 export class ClientesModule {}

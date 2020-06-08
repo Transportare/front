@@ -3,7 +3,7 @@
         <div class="py-3 text-right">
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.id"
+                [disabled]="!selectItem.IdPersonal"
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
@@ -14,7 +14,7 @@
             </button>
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.id"
+                [disabled]="!selectItem.IdPersonal"
                 data-placement="top"
                 data-toggle="tooltip"
                 [DirectiveTooltip]
@@ -28,7 +28,8 @@
             </button>
         </div>
     </div>
-    <div body>
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
         <div class="table-responsive">
             <table class="table table-striped table-hover box-shadow">
                 <thead>
@@ -53,22 +54,27 @@
                     <tr
                         *ngFor="let item of data; let index = index"
                         (click)="selectItem = item"
-                        [ngClass]="{ highlighted: selectItem.id === item.id }"
+                        [ngClass]="{ highlighted: selectItem.IdPersonal === item.IdPersonal }"
                     >
                         <td>{{ index + 1 }}</td>
                         <td>{{ item.ubigeo }}</td>
                         <td>{{ item.codigo }}</td>
-                        <td>{{ item.nombres }}</td>
-                        <td>{{ item.apellidos }}</td>
-                        <td>{{ item.dni }}</td>
+                        <td>{{ item.Nombres }}</td>
+                        <td>{{ item.Apellidos }}</td>
+                        <td>{{ item.DNI }}</td>
                         <td>{{ item.fecha_nacimiento }}</td>
-                        <td>{{ item.direccion }}</td>
+                        <td>{{ item.Direccion }}</td>
                         <td>{{ item.genero }}</td>
                         <td>{{ item.estado_civil }}</td>
-                        <td>{{ item.telefono }}</td>
+                        <td>{{ item.Telefono }}</td>
                         <td>{{ item.fecha_ingreso }}</td>
                         <td>{{ item.tipo }}</td>
                         <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+                    </tr>
+                    <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                        <td colspan="14">
+                            No hay información disponible
+                        </td>
                     </tr>
                 </tbody>
             </table>

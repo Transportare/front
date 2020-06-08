@@ -10,99 +10,26 @@ import { PersonalService } from '@services/modulos/gestion/mantenimientos/person
 export class PersonalComponent implements OnInit {
     selectItem: any;
     data: any[];
+    loading: boolean;
 
     constructor(private router: Router, private personalService: PersonalService) {
         this.selectItem = {};
+        this.loading = false;
+        this.data = [];
     }
 
     ngOnInit() {
-        this.personalService.getPersonales().subscribe((response) => console.log(response));
         this.listar();
     }
 
     listar() {
-        this.data = [
-            {
-                id: 1,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-            {
-                id: 2,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-            {
-                id: 3,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-            {
-                id: 4,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-            {
-                id: 5,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-        ];
+        this.loading = true;
+
+        this.personalService.getPersonales().subscribe((response: any) => {
+            console.log(response);
+            this.data = response.data;
+            this.loading = false;
+        });
     }
 
     nuevo() {

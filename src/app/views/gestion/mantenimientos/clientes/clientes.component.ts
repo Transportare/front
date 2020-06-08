@@ -13,20 +13,24 @@ export class ClientesComponent implements OnInit, OnDestroy {
     @ViewChild('detalleCliente', { static: false }) detalleCliente: ElementRef;
     data: any[];
     selectItem: any;
+    loading: boolean;
 
     constructor(private clienteService: ClienteService, private router: Router) {
         this.selectItem = {};
     }
 
     ngOnInit() {
+        this.loading = false;
         this.data = [];
         this.listar();
     }
 
     listar() {
+        this.loading = true;
         this.clienteService.getClientes().subscribe((response: any) => {
             console.log(response);
             this.data = response.data;
+            this.loading = false;
         });
     }
 
