@@ -7,6 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Interceptors
 import { TokenInterceptor } from '@services/interceptors/token.interceptor';
+import { SucursalInterceptor } from '@services/interceptors/sucursal.interceptor';
 
 @NgModule({
     declarations: [AppComponent],
@@ -15,6 +16,11 @@ import { TokenInterceptor } from '@services/interceptors/token.interceptor';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: SucursalInterceptor,
             multi: true,
         },
     ],
