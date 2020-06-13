@@ -20,4 +20,8 @@ export class ClienteService {
     postClientes(data) {
         return this.http.post(`${API_URL}clientes`, data);
     }
+
+    putCliente(id, data) {
+        return this.http.put(`${API_URL}clientes/${id}`, data);
+    }
 }

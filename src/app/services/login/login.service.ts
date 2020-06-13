@@ -18,7 +18,8 @@ export class LoginService {
     }
 
     logOut() {
-        localStorage.removeItem('data_user');
+        localStorage.removeItem('user_data');
+        localStorage.removeItem('sucursal');
     }
 
     isLogin() {
@@ -36,10 +37,10 @@ export class LoginService {
     }
 
     saveDataUser(data) {
-        localStorage.setItem('data_user', JSON.stringify(data));
+        localStorage.setItem('user_data', JSON.stringify(data));
     }
 
     getdataUser() {
-        return JSON.parse(localStorage.getItem('data_user'));
+        return JSON.parse(localStorage.getItem('user_data'));
     }
 }
