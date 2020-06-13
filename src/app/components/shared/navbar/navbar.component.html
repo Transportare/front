@@ -4,6 +4,14 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="mdi mdi-menu"></i>
     </button>
+    <div class="sucursal-container">
+        <select-default
+            *ngIf="sucursales"
+            [data]="sucursales"
+            [selected]="sucursalSelected"
+            (selectChange)="changeSucursal($event)"
+        ></select-default>
+    </div>
 
     <!-- Topbar Search -->
     <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
