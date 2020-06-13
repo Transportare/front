@@ -15,7 +15,9 @@ export class AuthGuard implements CanActivate, CanLoad {
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         console.log('Dentro del guard');
         window.addEventListener('storage', (e: any) => {
-            if (e.key === 'data_user') {
+            const userData = window.localStorage.getItem('user_data');
+
+            if (userData) {
                 return true;
             } else {
                 this.router.navigate(['/login']);
