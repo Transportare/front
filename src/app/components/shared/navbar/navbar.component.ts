@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
             this.sucursales = response.map((item) => ({ id: item.IdSucursal, text: item.Nombre }));
             const id = this.sucursalesService.getSucursal();
             if (id) {
-                this.sucursalSelected = this.sucursales.find((s) => s.id === id);
+                this.sucursalSelected = this.sucursales.find((s) => s.id === Number(id));
             }
             this.loading = false;
         });
