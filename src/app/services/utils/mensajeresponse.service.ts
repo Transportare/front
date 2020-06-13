@@ -12,7 +12,7 @@ export class MensajeResponseService {
         });
     }
 
-    danger(msj: string): Observable<any> {
+    danger(msj: string = 'Ocurrio un problema, intente nuevamente por favor.'): Observable<any> {
         return new Observable((observer) => {
             this.mensajeResponse(msj, '¡Oops!', 'error', observer);
         });
