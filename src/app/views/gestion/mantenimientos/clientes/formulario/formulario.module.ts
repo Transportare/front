@@ -6,9 +6,10 @@ import { SelectDefaultModule } from '@common/select-default/select-default.modul
 import { RouterModule } from '@angular/router';
 import { BodyModule } from '@common/body/body.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoaderModule } from '@common/loader/loader.module';
 
 @NgModule({
     declarations: [FormularioComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), SelectDefaultModule, BodyModule, ReactiveFormsModule],
+    imports: [CommonModule, RouterModule.forChild(routes), SelectDefaultModule, BodyModule, ReactiveFormsModule, LoaderModule],
 })
 export class FormularioModule {}

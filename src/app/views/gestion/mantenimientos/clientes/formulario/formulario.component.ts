@@ -40,16 +40,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initData();
-        this.listarSelects();
-        this.nuevo = true;
-        this.activatedRouter.params.subscribe((params) => {
-            if (params.id) {
-                this.idCliente = Number(params.id);
-                this.nuevo = false;
-                this.obtenerCliente();
-            }
-        });
-        this.initForm();
     }
 
     ngOnDestroy(): void {
@@ -68,6 +58,16 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.selectedProvincia = { id: '', text: 'Seleccione Provincia' };
         this.distritos = [];
         this.selectedDistrito = { id: '', text: 'Seleccione Distrito' };
+        this.nuevo = true;
+        this.initForm();
+        this.listarSelects();
+        this.activatedRouter.params.subscribe((params) => {
+            if (params.id) {
+                this.idCliente = Number(params.id);
+                this.nuevo = false;
+                this.obtenerCliente();
+            }
+        });
     }
 
     initForm() {
@@ -76,7 +76,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
             ruc: ['', Validators.required],
             direccion: ['', Validators.required],
             telefono: ['', Validators.required],
-            correo: ['', Validators.required],
+            correo: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
             contacto: ['', Validators.required],
             idUbigeo: ['', Validators.required],
             rubro: ['', Validators.required],
@@ -86,22 +86,24 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     listarSelects() {
+        this.loading = true;
         // Departamentos
-        this.ubigeoService
-            .getDepartamentos()
-            .subscribe((response) => (this.departamentos = [{ id: '', text: 'Seleccione Departamento' }, ...response]));
+        this.ubigeoService.getDepartamentos().subscribe((response) => (this.departamentos = response));
         // this.ubigeoService.getDepartamentos().subscribe((response) => (this.departamentos = response));
 
         // Tipo de Pago
         this.tablaGeneralService.getSelectPorGrupo(6).subscribe((response: any) => {
             this.tipoPagos = response;
         });
+        this.loading = false;
     }
 
     obtenerCliente() {
         this.loading = true;
         this.clienteService.getUnCliente(this.idCliente).subscribe((response) => {
             console.log(response);
+            this.selectedDistrito = { id: response.IdUbigeo, text: response.Distrit };
+            this.selectedPago = { id: response.IdTipoPago, text: response.TipoPago };
             this.formularioCliente.patchValue({
                 nombre: response.Nombre,
                 ruc: response.RUC,
@@ -111,12 +113,26 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 contacto: response.Contacto,
                 rubro: response.Rubro,
                 observacion: response.Observacion,
+                idTipopago: response.IdTipoPago,
+                idUbigeo: response.IdUbigeo,
             });
 
-            this.selectedPago = this.tipoPagos.find((pago) => pago.id === response.IdTipoPago);
-            this.selectedDepartamento = this.departamentos.find((departamento) => departamento.id === response.IdDepartamento);
-            this.getProvincias(Number(response.IdProvincia));
+            // this.selectedPago = this.tipoPagos.find((pago) => pago.id === response.IdTipoPago);
+            // this.selectedDepartamento = this.departamentos.find((departamento) => departamento.id === response.IdDepartamento);
+            // console.log(this.selectedDepartamento);
+            // console.log(this.selectedDepartamento);
             // this.getProvincias(Number(this.selectedDepartamento.id));
+            // this.ubigeoService.getHijos(Number(response.IdDepartamento)).subscribe((r) => {
+            //     this.provincias = r;
+            // });
+
+            this.getProvincias(response.IdDepartamento);
+
+            // this.ubigeoService.getHijos(Number(response.IdProvincia)).subscribe((r) => {
+            //     this.distritos = r;
+            // });
+
+            this.getDistritos(response.IdProvincia);
             // this.selectedProvincia = this.provincias.find((provincia) => provincia.id === response.IdProvincia);
             // this.selectedDistrito = this.distritos.find((distrito) => distrito.id === response.IdUbigeo);
             this.loading = false;
@@ -132,10 +148,15 @@ export class FormularioComponent implements OnInit, OnDestroy {
     changeDepartamento(event) {
         this.selectedProvincia = { id: '', text: 'Seleccione Provincia' };
         this.selectedDistrito = { id: '', text: 'Seleccione Distrito' };
+        this.distritos = [];
         // this.ubigeoService
         //     .getHijos(Number(event.id))
         //     .subscribe((response) => (this.provincias = [{ id: '', text: 'Seleccione Provincias' }, ...response]));
-        this.getProvincias(Number(event.id));
+        // this.getProvincias(Number(event.id));
+        this.getProvincias(event.id);
+        // this.ubigeoService.getHijos(Number(event.id)).subscribe((response) => {
+        //     this.provincias = response;
+        // });
     }
 
     changeProvincia(event) {
@@ -143,7 +164,8 @@ export class FormularioComponent implements OnInit, OnDestroy {
         // this.ubigeoService
         //     .getHijos(Number(event.id))
         //     .subscribe((response) => (this.distritos = [{ id: '', text: 'Seleccione Distrito' }, ...response]));
-        this.getDistritos(Number(event.id));
+        // this.ubigeoService.getHijos(Number(event.id)).subscribe((response) => (this.distritos = response));
+        this.getDistritos(event.id);
     }
 
     changeDistrito(event) {
@@ -152,30 +174,46 @@ export class FormularioComponent implements OnInit, OnDestroy {
         });
     }
 
-    getProvincias(id: number) {
+    getProvincias(id) {
         this.ubigeoService.getHijos(id).subscribe((response) => {
             this.provincias = response;
         });
     }
 
-    getDistritos(id: number) {
+    getDistritos(id) {
         this.ubigeoService.getHijos(id).subscribe((response) => (this.distritos = response));
     }
 
     guardarCliente() {
-        this.clienteService.postClientes(this.formularioCliente.value).subscribe(
-            (response) => {
-                this.msj$ = this.mensajeResponse.succes('Cliente creado correctamente').subscribe((action) => {
-                    if (action) {
-                        this.atras();
-                    }
-                });
-            },
-            (error) => {
-                console.log(error);
-                this.msj$ = this.mensajeResponse.danger('Ocurrio un problema, intente nuevamente por favor.').subscribe();
-            }
-        );
+        if (this.idCliente) {
+            this.clienteService.putCliente(this.idCliente, this.formularioCliente.value).subscribe(
+                (response) => {
+                    this.msj$ = this.mensajeResponse.succes('Cliente actualizado correctamente').subscribe((action) => {
+                        if (action) {
+                            this.atras();
+                        }
+                    });
+                },
+                (error) => {
+                    console.log(error);
+                    this.msj$ = this.mensajeResponse.danger().subscribe();
+                }
+            );
+        } else {
+            this.clienteService.postClientes(this.formularioCliente.value).subscribe(
+                (response) => {
+                    this.msj$ = this.mensajeResponse.succes('Cliente creado correctamente').subscribe((action) => {
+                        if (action) {
+                            this.atras();
+                        }
+                    });
+                },
+                (error) => {
+                    console.log(error);
+                    this.msj$ = this.mensajeResponse.danger().subscribe();
+                }
+            );
+        }
     }
 
     atras() {
