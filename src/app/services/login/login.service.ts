@@ -13,6 +13,7 @@ export class LoginService {
     constructor(private http: HttpClient, private router: Router) {}
 
     logIng(data) {
+        console.log('ga');
         return this.http.post(`${API_URL}login`, data);
     }
 

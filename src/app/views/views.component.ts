@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 declare function init_plugins();
 
 @Component({
-    selector: 'app-layout',
-    templateUrl: './layout.component.html',
-    styleUrls: ['./layout.component.scss'],
+    selector: 'app-views',
+    templateUrl: './views.component.html',
+    styleUrls: ['./views.component.scss'],
 })
-export class LayoutComponent implements OnInit {
+export class ViewComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
