@@ -17,11 +17,11 @@
             </div>
             <div class="modal-body">
                 <div id="sucursales">
-                    <div class="sucursal" *ngFor="let sucursal of sucursales" (click)="seleccionarSucursal(sucursal.IdSucursal)">
+                    <div class="sucursal" *ngFor="let sucursal of sucursales" (click)="seleccionarSucursal(sucursal.id)">
                         <button class="btn btn-primary btn-circle mb-2">
                             <i class="mdi mdi-home"></i>
                         </button>
-                        <span>{{ sucursal.Nombre }}</span>
+                        <span>{{ sucursal.text }}</span>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { API_URL } from 'config/api.route';
-import { Observable, Subject, timer } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',

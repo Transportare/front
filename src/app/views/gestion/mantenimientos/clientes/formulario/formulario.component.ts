@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { UbigeoService } from '@services/utils/ubigeo.service';
 import { ClienteService } from '@services/modulos/gestion/mantenimientos/clientes/clientes.service';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Subscription } from 'rxjs';
+import { SucursalesService } from '@services/utils/sucursales.service';
 declare var $: any;
 
 @Component({
@@ -27,6 +28,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
     idCliente: number;
     loading: boolean;
     nuevo: boolean;
+    sucursales: any[];
 
     constructor(
         private router: Router,
@@ -35,7 +37,8 @@ export class FormularioComponent implements OnInit, OnDestroy {
         private tablaGeneralService: TablaGeneralService,
         private ubigeoService: UbigeoService,
         private clienteService: ClienteService,
-        private mensajeResponse: MensajeResponseService
+        private mensajeResponse: MensajeResponseService,
+        private sucursaleService: SucursalesService
     ) {}
 
     ngOnInit() {
@@ -55,6 +58,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.departamentos = [];
         this.selectedDepartamento = { id: '', text: 'Seleccione Departamento' };
         this.provincias = [];
+        this.sucursales = [];
         this.selectedProvincia = { id: '', text: 'Seleccione Provincia' };
         this.distritos = [];
         this.selectedDistrito = { id: '', text: 'Seleccione Distrito' };
@@ -82,7 +86,30 @@ export class FormularioComponent implements OnInit, OnDestroy {
             rubro: ['', Validators.required],
             idTipopago: ['', Validators.required],
             observacion: ['', Validators.required],
+            sucursales: this.fb.array([], [Validators.required]),
         });
+    }
+
+    onCheckboxChange(e) {
+        const sucursales: FormArray = this.formularioCliente.get('sucursales') as FormArray;
+
+        if (e.target.checked) {
+            sucursales.push(new FormControl(e.target.value));
+            console.log(sucursales.value);
+        } else {
+            // let i = 0;
+            // console.log(i);
+            sucursales.controls.forEach((item: FormControl, index) => {
+                if (item.value === e.target.value) {
+                    // console.log(index);
+                    sucursales.removeAt(index);
+                    console.log(sucursales.value);
+                    return;
+                }
+                // i++;
+                // console.log(i);
+            });
+        }
     }
 
     listarSelects() {
@@ -95,6 +122,13 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.tablaGeneralService.getSelectPorGrupo(6).subscribe((response: any) => {
             this.tipoPagos = response;
         });
+
+        // Sucursales
+        this.sucursaleService.getSucursales().subscribe((response) => {
+            console.log(response);
+            this.sucursales = response;
+        });
+
         this.loading = false;
     }
 
@@ -200,19 +234,20 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 }
             );
         } else {
-            this.clienteService.postClientes(this.formularioCliente.value).subscribe(
-                (response) => {
-                    this.msj$ = this.mensajeResponse.succes('Cliente creado correctamente').subscribe((action) => {
-                        if (action) {
-                            this.atras();
-                        }
-                    });
-                },
-                (error) => {
-                    console.log(error);
-                    this.msj$ = this.mensajeResponse.danger().subscribe();
-                }
-            );
+            // this.clienteService.postClientes(this.formularioCliente.value).subscribe(
+            //     (response) => {
+            //         this.msj$ = this.mensajeResponse.succes('Cliente creado correctamente').subscribe((action) => {
+            //             if (action) {
+            //                 this.atras();
+            //             }
+            //         });
+            //     },
+            //     (error) => {
+            //         console.log(error);
+            //         this.msj$ = this.mensajeResponse.danger().subscribe();
+            //     }
+            // );
+            console.log(this.formularioCliente.value);
         }
     }
 

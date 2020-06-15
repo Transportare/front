@@ -27,32 +27,36 @@
     <ng-container *ngFor="let item of menu">
         <!-- Heading -->
         <div class="sidebar-heading">
-            {{ item.titulo }}
+            {{ item.NomOpcion }}
         </div>
 
-        <!-- Nav Item - {{ item.titulo }} Collapse Menu -->
-        <li class="nav-item" *ngFor="let subitem of item.items" routerLinkActive="active">
+        <!-- Nav Item - {{ item.NomOpcion }} Collapse Menu -->
+        <li class="nav-item" *ngFor="let subitem of item.hijos" routerLinkActive="active">
             <a
                 class="nav-link collapsed"
                 data-toggle="collapse"
-                [attr.data-target]="'#collapse' + subitem.titulo"
+                [attr.data-target]="'#collapse' + subitem.NomOpcion"
                 aria-expanded="false"
-                [attr.aria-controls]="'collapse' + subitem.titulo"
+                [attr.aria-controls]="'collapse' + subitem.NomOpcion"
             >
                 <i [class]="subitem.icon"></i>
-                <span>{{ subitem.titulo }}</span>
+                <span>{{ subitem.NomOpcion }}</span>
             </a>
             <div
-                [id]="'collapse' + subitem.titulo"
+                [id]="'collapse' + subitem.NomOpcion"
                 class="collapse"
-                [ngClass]="{ show: subitem.titulo.toLowerCase() === ruta }"
+                [ngClass]="{ show: subitem.NomOpcion.toLowerCase() === ruta }"
                 data-parent="#accordionSidebar"
-                *ngIf="subitem.submenu.length > 0"
+                *ngIf="subitem.hijos.length > 0"
             >
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a *ngFor="let items of subitem.submenu" class="collapse-item" [routerLink]="[items.url]" routerLinkActive="active">{{
-                        items.titulo
-                    }}</a>
+                    <a
+                        *ngFor="let items of subitem.hijos"
+                        class="collapse-item"
+                        [routerLink]="['/' + item.Url + '/' + subitem.Url, items.Url]"
+                        routerLinkActive="active"
+                        >{{ items.NomOpcion }}</a
+                    >
                 </div>
             </div>
         </li>

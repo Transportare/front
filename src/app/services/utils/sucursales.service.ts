@@ -3,18 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'config/api.route';
 import { LoginService } from '@services/login/login.service';
 import { Subject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SucursalesService {
     private sucursalStorage = new Subject<number>();
 
     constructor(private http: HttpClient, private loginService: LoginService) {}
-
-    // getSucursales() {
-    //     const data = this.loginService.getdataUser();
-    //     const usuario = JSON.parse(atob(data.token.split('.')[1]));
-    //     return this.http.get(`${API_URL}usuarios/getSucursales/${usuario.usuarioToken.DNI}`);
-    // }
 
     getSucursales(): Observable<any> {
         return new Observable((observer) => {
@@ -24,7 +19,14 @@ export class SucursalesService {
                 observer.next(response.usuarioToken.sucursales);
             }
             observer.complete();
-        });
+        }).pipe(
+            map((response: any) => {
+                // console.log(response);
+                return response.map((sucursal: any) => {
+                    return { id: sucursal.IdSucursal, text: sucursal.Nombre };
+                });
+            })
+        );
     }
 
     changeSucursal(): Observable<any> {

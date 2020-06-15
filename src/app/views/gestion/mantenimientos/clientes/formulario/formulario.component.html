@@ -101,6 +101,19 @@
                                 ></select-default>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tipoPago">Sucursales</label>
+                                <div>
+                                    <div *ngFor="let item of sucursales; let i = index">
+                                        <label>
+                                            <input type="checkbox" [value]="item.id" (change)="onCheckboxChange($event)" />
+                                            {{ item.text }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -113,8 +126,8 @@
                 </div>
                 <div class="p-3 text-right">
                     <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-                    <button class="btn btn-primary" type="submit" [disabled]="formularioCliente.invalid"><span>Guardar</span></button>
-                    <!-- <button class="btn btn-primary" type="submit"><span>Guardar</span></button> -->
+                    <!-- <button class="btn btn-primary" type="submit" [disabled]="formularioCliente.invalid"><span>Guardar</span></button> -->
+                    <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
                 </div>
             </form>
         </div>
