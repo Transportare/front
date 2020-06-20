@@ -14,6 +14,8 @@ export class ClientesComponent implements OnInit, OnDestroy {
     data: any[];
     selectItem: any;
     loading: boolean;
+    pagina: number;
+    filas: number;
 
     constructor(private clienteService: ClienteService, private router: Router) {
         this.selectItem = {};
@@ -21,17 +23,25 @@ export class ClientesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = false;
+        this.pagina = 1;
+        this.filas = 10;
         this.data = [];
         this.listar();
     }
 
-    listar() {
+    listar(pagina: number = 1) {
+        this.pagina = pagina;
+        const params = {
+            pagina: this.pagina,
+            filas: this.filas,
+        };
+
         this.loading = true;
-        this.clienteService.getClientes().subscribe((response: any) => {
+        this.clienteService.getClientes(params).subscribe((response: any) => {
             console.log(response);
             this.data = response.data;
-            this.loading = false;
         });
+        this.loading = false;
     }
 
     // obtenerCliente() {

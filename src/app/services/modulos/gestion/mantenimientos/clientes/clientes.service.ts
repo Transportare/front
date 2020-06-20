@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 export class ClienteService {
     constructor(private http: HttpClient) {}
 
-    getClientes() {
-        return this.http.get(`${API_URL}clientes`);
+    getClientes(params) {
+        return this.http.get(`${API_URL}clientes`, { params });
     }
 
     getUnCliente(id: number) {
