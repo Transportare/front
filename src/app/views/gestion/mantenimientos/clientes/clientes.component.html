@@ -56,7 +56,7 @@
                         (click)="selectItem = item"
                         [ngClass]="{ highlighted: selectItem.IdCliente === item.IdCliente }"
                     >
-                        <td>{{ index + 1 }}</td>
+                        <td>{{ (pagina - 1) * filas + index + 1 }}</td>
                         <td>{{ item.Nombre }}</td>
                         <td>{{ item.Contacto }}</td>
                         <td>{{ item.Correo || '-' }}</td>
@@ -78,6 +78,7 @@
                 </tbody>
             </table>
         </div>
+        <app-paginacion [data]="dataPaginacion" (changePage)="listar($event)"></app-paginacion>
     </div>
 </app-body>
 

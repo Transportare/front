@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 import { ClienteService } from '@services/modulos/gestion/mantenimientos/clientes/clientes.service';
+import { PaginacionModel } from '@models/paginacion.model';
 declare var $: any;
 
 @Component({
@@ -16,6 +17,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
     loading: boolean;
     pagina: number;
     filas: number;
+    dataPaginacion: PaginacionModel;
 
     constructor(private clienteService: ClienteService, private router: Router) {
         this.selectItem = {};
@@ -26,7 +28,14 @@ export class ClientesComponent implements OnInit, OnDestroy {
         this.pagina = 1;
         this.filas = 10;
         this.data = [];
+        this.dataPaginacion = new PaginacionModel(0, 0, 0, 0, 0, 0, 0, 0);
         this.listar();
+    }
+
+    ngOnDestroy(): void {
+        // if (this.msj$) {
+        //     this.msj$.unsubscribe();
+        // }
     }
 
     listar(pagina: number = 1) {
@@ -39,6 +48,18 @@ export class ClientesComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.clienteService.getClientes(params).subscribe((response: any) => {
             console.log(response);
+            console.log(response.paginacion);
+            this.dataPaginacion = new PaginacionModel(
+                response.paginacion.item_desde,
+                response.paginacion.item_hasta,
+                response.paginacion.item_pagina,
+                response.paginacion.item_total,
+                response.paginacion.pag_actual,
+                response.paginacion.pag_anterior,
+                response.paginacion.pag_siguiente,
+                response.paginacion.pag_total
+            );
+
             this.data = response.data;
         });
         this.loading = false;
@@ -48,10 +69,8 @@ export class ClientesComponent implements OnInit, OnDestroy {
     //     console.log(this.selectItem);
     // }
 
-    ngOnDestroy(): void {
-        // if (this.msj$) {
-        //     this.msj$.unsubscribe();
-        // }
+    changePage(event) {
+        console.log(event);
     }
 
     nuevoProveedor() {

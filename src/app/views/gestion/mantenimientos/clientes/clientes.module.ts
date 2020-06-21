@@ -7,9 +7,18 @@ import { BodyModule } from '@common/body/body.module';
 import { RouterModule } from '@angular/router';
 import { DirectivesModule } from '@directives/directives.module';
 import { LoaderModule } from '@common/loader/loader.module';
+import { PaginacionModule } from '@common/paginacion/paginacion.module';
 
 @NgModule({
     declarations: [ClientesComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), SelectDefaultModule, BodyModule, DirectivesModule, LoaderModule],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        SelectDefaultModule,
+        BodyModule,
+        DirectivesModule,
+        LoaderModule,
+        PaginacionModule,
+    ],
 })
 export class ClientesModule {}
