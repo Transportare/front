@@ -1,0 +1,22 @@
+<ul class="paginacion">
+    <li>{{ data.item_desde }} - {{ data.item_hasta }} de {{ data.item_total }} Items</li>
+    <li>
+        <ul>
+            <li>
+                <a (click)="previus()" [ngClass]="{ 'not-allowed': data.pag_anterior === null }">
+                    <span class="mdi mdi-chevron-left"></span>
+                </a>
+            </li>
+            <!-- <li class="info-paginacion">
+                Página {{ data.pag_actual }} de
+                <span>{{ data.pag_total }}</span>
+            </li> -->
+            <li class="info-paginacion mr-2 ml-2">Página {{ data.pag_actual }} de {{ data.pag_total }}</li>
+            <li>
+                <a (click)="next()" [ngClass]="{ 'not-allowed': data.pag_siguiente === null }">
+                    <span class="mdi mdi-chevron-right"></span>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>
