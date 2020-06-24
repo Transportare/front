@@ -47,10 +47,11 @@ export class NavbarComponent implements OnInit {
     changeSucursal(event) {
         // console.log(event);
         this.sucursalesService.sucursalElegida(event.id);
-        this.router.navigateByUrl('/dashboard', { skipLocationChange: true }).then(() => {
-            console.log(decodeURI(this.location.path()));
-            this.router.navigate([decodeURI(this.location.path())]);
-        });
+        // this.router.navigateByUrl('/dashboard', { skipLocationChange: true }).then(() => {
+        //     // console.log(decodeURI(this.location.path()));
+        //     this.router.navigate([decodeURI(this.location.path())]);
+        // });
+        this.router.navigateByUrl('/dashboard');
     }
 
     logOut() {
