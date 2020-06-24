@@ -39,30 +39,37 @@ export class ClientesComponent implements OnInit, OnDestroy {
     }
 
     listar(pagina: number = 1) {
+        this.loading = true;
         this.pagina = pagina;
         const params = {
             pagina: this.pagina,
             filas: this.filas,
         };
 
-        this.loading = true;
-        this.clienteService.getClientes(params).subscribe((response: any) => {
-            console.log(response);
-            console.log(response.paginacion);
-            this.dataPaginacion = new PaginacionModel(
-                response.paginacion.item_desde,
-                response.paginacion.item_hasta,
-                response.paginacion.item_pagina,
-                response.paginacion.item_total,
-                response.paginacion.pag_actual,
-                response.paginacion.pag_anterior,
-                response.paginacion.pag_siguiente,
-                response.paginacion.pag_total
-            );
+        this.clienteService.getClientes(params).subscribe(
+            (response: any) => {
+                this.data = response.data;
 
-            this.data = response.data;
-        });
-        this.loading = false;
+                if (response.paginacion) {
+                    this.dataPaginacion = new PaginacionModel(
+                        response.paginacion.item_desde,
+                        response.paginacion.item_hasta,
+                        response.paginacion.item_pagina,
+                        response.paginacion.item_total,
+                        response.paginacion.pag_actual,
+                        response.paginacion.pag_anterior,
+                        response.paginacion.pag_siguiente,
+                        response.paginacion.pag_total
+                    );
+                }
+
+                this.loading = false;
+            },
+            (error) => {
+                console.log(error);
+                this.loading = false;
+            }
+        );
     }
 
     // obtenerCliente() {

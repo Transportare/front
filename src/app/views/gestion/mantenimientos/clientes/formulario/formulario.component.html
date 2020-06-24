@@ -1,135 +1,141 @@
 <app-body [header]="false" [titulo]="nuevo ? 'Nuevo Cliente' : 'Editar Cliente'">
     <div body [ngClass]="{ loader: loading }">
-        <div style="min-height: 300px;">
-            <loader *ngIf="loading"></loader>
-            <form (ngSubmit)="guardarCliente()" *ngIf="!loading" [formGroup]="formularioCliente">
-                <div class="p-4">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nombre" class="required">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" formControlName="nombre" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="ruc">RUC</label>
-                                <input type="text" class="form-control" id="ruc" formControlName="ruc" />
-                            </div>
+        <!-- <div style="min-height: 300px;"> -->
+        <loader *ngIf="loading"></loader>
+        <form (ngSubmit)="guardarCliente()" *ngIf="!loading" [formGroup]="formularioCliente">
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombre" class="required">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" formControlName="nombre" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="direccion">Dirección</label>
-                                <input type="text" class="form-control" id="direccion" formControlName="direccion" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="telefono">Teléfono</label>
-                                <input type="text" class="form-control" id="telefono" formControlName="telefono" />
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ruc">RUC</label>
+                            <input type="text" class="form-control" id="ruc" formControlName="ruc" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="correo">Correo</label>
-                                <input type="text" class="form-control" id="correo" formControlName="correo" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="contacto">Contacto</label>
-                                <input type="text" class="form-control" id="contacto" formControlName="contacto" />
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="direccion">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" formControlName="direccion" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="departamento">Departamento</label>
-                                <select-default
-                                    *ngIf="departamentos"
-                                    [data]="departamentos"
-                                    [selected]="selectedDepartamento"
-                                    (selectChange)="changeDepartamento($event)"
-                                ></select-default>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="provincia">Provincia</label>
-                                <select-default
-                                    *ngIf="provincias"
-                                    [data]="provincias"
-                                    [selected]="selectedProvincia"
-                                    (selectChange)="changeProvincia($event)"
-                                ></select-default>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" formControlName="telefono" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="distrito">Distrito</label>
-                                <select-default
-                                    *ngIf="distritos"
-                                    [data]="distritos"
-                                    [selected]="selectedDistrito"
-                                    (selectChange)="changeDistrito($event)"
-                                ></select-default>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="rubro">Rubro</label>
-                                <input type="text" class="form-control" id="rubro" formControlName="rubro" />
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="correo">Correo</label>
+                            <input type="text" class="form-control" id="correo" formControlName="correo" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="tipoPago">Tipo de Pago</label>
-                                <select-default
-                                    *ngIf="tipoPagos"
-                                    [data]="tipoPagos"
-                                    [selected]="selectedPago"
-                                    (selectChange)="changeTipoPago($event)"
-                                ></select-default>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contacto">Contacto</label>
+                            <input type="text" class="form-control" id="contacto" formControlName="contacto" />
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="tipoPago">Sucursales</label>
-                                <div>
-                                    <div *ngFor="let item of sucursales; let i = index">
-                                        <label>
-                                            <input type="checkbox" [value]="item.id" (change)="onCheckboxChange($event)" />
-                                            {{ item.text }}
-                                        </label>
-                                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="departamento">Departamento</label>
+                            <select-default
+                                *ngIf="departamentos"
+                                [data]="departamentos"
+                                [selected]="selectedDepartamento"
+                                (selectChange)="changeDepartamento($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="provincia">Provincia</label>
+                            <select-default
+                                *ngIf="provincias"
+                                [data]="provincias"
+                                [selected]="selectedProvincia"
+                                (selectChange)="changeProvincia($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="distrito">Distrito</label>
+                            <select-default
+                                *ngIf="distritos"
+                                [data]="distritos"
+                                [selected]="selectedDistrito"
+                                (selectChange)="changeDistrito($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="rubro">Rubro</label>
+                            <input type="text" class="form-control" id="rubro" formControlName="rubro" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipoPago">Tipo de Pago</label>
+                            <select-default
+                                *ngIf="tipoPagos"
+                                [data]="tipoPagos"
+                                [selected]="selectedPago"
+                                (selectChange)="changeTipoPago($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipoPago">Sucursales</label>
+                            <div>
+                                <div *ngFor="let item of sucursales; let i = index">
+                                    <label>
+                                        <input type="checkbox" [value]="item.id" (change)="onCheckboxChange($event)" />
+                                        {{ item.text }}
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="observacion">Observación</label>
-                                <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="observacion">Observación</label>
+                            <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="p-3 text-right">
-                    <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-                    <!-- <button class="btn btn-primary" type="submit" [disabled]="formularioCliente.invalid"><span>Guardar</span></button> -->
-                    <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
-                </div>
-            </form>
-        </div>
+                <!-- <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="observacion">Observación</label>
+                            <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="p-3 text-right">
+                <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+                <button class="btn btn-primary" type="submit" [disabled]="formularioCliente.invalid"><span>Guardar</span></button>
+                <!-- <button class="btn btn-primary" type="submit"><span>Guardar</span></button> -->
+            </div>
+        </form>
     </div>
+    <!-- </div> -->
 </app-body>

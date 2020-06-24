@@ -84,7 +84,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
             contacto: ['', Validators.required],
             idUbigeo: ['', Validators.required],
             rubro: ['', Validators.required],
-            idTipopago: ['', Validators.required],
+            idTipoPago: ['', Validators.required],
             observacion: ['', Validators.required],
             sucursales: this.fb.array([], [Validators.required]),
         });
@@ -134,48 +134,54 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     obtenerCliente() {
         this.loading = true;
-        this.clienteService.getUnCliente(this.idCliente).subscribe((response) => {
-            console.log(response);
-            this.selectedDistrito = { id: response.IdUbigeo, text: response.Distrit };
-            this.selectedPago = { id: response.IdTipoPago, text: response.TipoPago };
-            this.formularioCliente.patchValue({
-                nombre: response.Nombre,
-                ruc: response.RUC,
-                direccion: response.Direccion,
-                telefono: response.Telefono,
-                correo: response.Correo,
-                contacto: response.Contacto,
-                rubro: response.Rubro,
-                observacion: response.Observacion,
-                idTipopago: response.IdTipoPago,
-                idUbigeo: response.IdUbigeo,
-            });
+        this.clienteService.getUnCliente(this.idCliente).subscribe(
+            (response) => {
+                console.log(response);
+                this.selectedDistrito = { id: response.IdUbigeo, text: response.Distrito };
+                this.selectedPago = { id: response.IdTipoPago, text: response.TipoPago };
+                this.formularioCliente.patchValue({
+                    nombre: response.Nombre,
+                    ruc: response.RUC,
+                    direccion: response.Direccion,
+                    telefono: response.Telefono,
+                    correo: response.Correo,
+                    contacto: response.Contacto,
+                    rubro: response.Rubro,
+                    observacion: response.Observacion,
+                    idTipoPago: response.IdTipoPago,
+                    idUbigeo: response.IdUbigeo,
+                });
 
-            // this.selectedPago = this.tipoPagos.find((pago) => pago.id === response.IdTipoPago);
-            // this.selectedDepartamento = this.departamentos.find((departamento) => departamento.id === response.IdDepartamento);
-            // console.log(this.selectedDepartamento);
-            // console.log(this.selectedDepartamento);
-            // this.getProvincias(Number(this.selectedDepartamento.id));
-            // this.ubigeoService.getHijos(Number(response.IdDepartamento)).subscribe((r) => {
-            //     this.provincias = r;
-            // });
+                // this.selectedPago = this.tipoPagos.find((pago) => pago.id === response.IdTipoPago);
+                // this.selectedDepartamento = this.departamentos.find((departamento) => departamento.id === response.IdDepartamento);
+                // console.log(this.selectedDepartamento);
+                // console.log(this.selectedDepartamento);
+                // this.getProvincias(Number(this.selectedDepartamento.id));
+                // this.ubigeoService.getHijos(Number(response.IdDepartamento)).subscribe((r) => {
+                //     this.provincias = r;
+                // });
 
-            this.getProvincias(response.IdDepartamento);
+                this.getProvincias(response.IdDepartamento);
 
-            // this.ubigeoService.getHijos(Number(response.IdProvincia)).subscribe((r) => {
-            //     this.distritos = r;
-            // });
+                // this.ubigeoService.getHijos(Number(response.IdProvincia)).subscribe((r) => {
+                //     this.distritos = r;
+                // });
 
-            this.getDistritos(response.IdProvincia);
-            // this.selectedProvincia = this.provincias.find((provincia) => provincia.id === response.IdProvincia);
-            // this.selectedDistrito = this.distritos.find((distrito) => distrito.id === response.IdUbigeo);
-            this.loading = false;
-        });
+                this.getDistritos(response.IdProvincia);
+                // this.selectedProvincia = this.provincias.find((provincia) => provincia.id === response.IdProvincia);
+                // this.selectedDistrito = this.distritos.find((distrito) => distrito.id === response.IdUbigeo);
+                this.loading = false;
+            },
+            (error) => {
+                console.log(error);
+                this.loading = false;
+            }
+        );
     }
 
     changeTipoPago(event) {
         this.formularioCliente.patchValue({
-            idTipopago: event.id,
+            idTipoPago: event.id,
         });
     }
 
@@ -204,7 +210,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     changeDistrito(event) {
         this.formularioCliente.patchValue({
-            idUbigeo: Number(event.id),
+            idUbigeo: event.id,
         });
     }
 
@@ -233,21 +239,21 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     this.msj$ = this.mensajeResponse.danger().subscribe();
                 }
             );
-        } else {
-            // this.clienteService.postClientes(this.formularioCliente.value).subscribe(
-            //     (response) => {
-            //         this.msj$ = this.mensajeResponse.succes('Cliente creado correctamente').subscribe((action) => {
-            //             if (action) {
-            //                 this.atras();
-            //             }
-            //         });
-            //     },
-            //     (error) => {
-            //         console.log(error);
-            //         this.msj$ = this.mensajeResponse.danger().subscribe();
-            //     }
-            // );
             console.log(this.formularioCliente.value);
+        } else {
+            this.clienteService.postClientes(this.formularioCliente.value).subscribe(
+                (response) => {
+                    this.msj$ = this.mensajeResponse.succes('Cliente creado correctamente').subscribe((action) => {
+                        if (action) {
+                            this.atras();
+                        }
+                    });
+                },
+                (error) => {
+                    console.log(error);
+                    this.msj$ = this.mensajeResponse.danger().subscribe();
+                }
+            );
         }
     }
 
