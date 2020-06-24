@@ -47,6 +47,7 @@ tr.highlighted td {
 
 .loader {
     position: relative;
+    min-height: 300px;
 }
 
 .loader::before {
