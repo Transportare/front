@@ -21,6 +21,14 @@ export const routes: Routes = [
         loadChildren: () => import('./servicios/servicios.module').then((m) => m.ServiciosModule),
     },
     {
+        path: 'usuarios',
+        loadChildren: () => import('./usuarios/usuarios.module').then((m) => m.UsuariosModule),
+    },
+    {
+        path: 'perfiles',
+        loadChildren: () => import('./perfiles/perfiles.module').then((m) => m.PerfilesModule),
+    },
+    {
         path: '',
         redirectTo: '/dashboard',
     },
