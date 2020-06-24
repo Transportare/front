@@ -11,25 +11,39 @@ export class PersonalComponent implements OnInit {
     selectItem: any;
     data: any[];
     loading: boolean;
+    pagina: number;
+    filas: number;
 
     constructor(private router: Router, private personalService: PersonalService) {
         this.selectItem = {};
         this.loading = false;
         this.data = [];
+        this.pagina = 1;
+        this.filas = 10;
     }
 
     ngOnInit() {
         this.listar();
     }
 
-    listar() {
+    listar(pagina: number = 1) {
         this.loading = true;
+        this.pagina = pagina;
+        const params = {
+            pagina: this.pagina,
+            filas: this.filas,
+        };
 
-        this.personalService.getPersonales().subscribe((response: any) => {
-            console.log(response);
-            this.data = response.data;
-            this.loading = false;
-        });
+        this.personalService.getPersonales(params).subscribe(
+            (response: any) => {
+                console.log(response);
+                this.data = response.data;
+                this.loading = false;
+            },
+            (error) => {
+                this.loading = false;
+            }
+        );
     }
 
     nuevo() {
