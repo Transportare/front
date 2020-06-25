@@ -1,150 +1,147 @@
 <app-body [header]="false" [titulo]="'Nuevo Servicio'">
     <div body>
-        <div class="p-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="nombres">Nombres</label>
-                        <input type="text" class="form-control" id="nombres" />
+        <form [formGroup]="formPersonal">
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombres">Nombres</label>
+                            <input type="text" class="form-control" id="nombres" formControlName="nombres" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" class="form-control" id="apellidos" formControlName="apellidos" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="dni">DNI</label>
+                            <input type="text" class="form-control" id="dni" formControlName="dni" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                formControlName="fecNacimiento"
+                                (change)="formPersonal.controls.fecNacimiento.setValue($event.target.value)"
+                                id="fecha_nacimiento"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="departamento">Departamento</label>
+                            <select-default
+                                [data]="departamentos"
+                                [selected]="departamentoSelected"
+                                (selectChange)="changeDepartamento($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="provincia">Provincia</label>
+                            <select-default
+                                [data]="provincias"
+                                [selected]="selectedProvincia"
+                                (selectChange)="changeProvincia($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="distrito">Distrito</label>
+                            <select-default
+                                [data]="distritos"
+                                [selected]="selectedDistrito"
+                                (selectChange)="changeDistrito($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="direccion">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" formControlName="direccion" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="genero">Género</label>
+                            <select-default
+                                [data]="generos"
+                                [selected]="generoSelected"
+                                (selectChange)="generoChange($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="estado_civil">Estado Civil</label>
+                            <select-default
+                                [data]="estadosCiviles"
+                                [selected]="estadoSelected"
+                                (selectChange)="estadoCivilChange($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" formControlName="telefono" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fecha_ingreso">Fecha de Ingreso</label>
+                            <!-- <input type="date" class="form-control" (change)="changeDateIngreso($event)" id="fecha_ingreso" /> -->
+                            <input
+                                type="date"
+                                class="form-control"
+                                formControlName="fecIngreso"
+                                (change)="formPersonal.controls.fecIngreso.setValue($event.target.value)"
+                                id="fecha_ingreso"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipo">Tipo</label>
+                            <select-default
+                                [data]="tipoPerfiles"
+                                [selected]="tipoSelected"
+                                (selectChange)="tipoChange($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="codigo">Código</label>
+                            <input type="text" class="form-control" id="codigo" />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="dni">DNI</label>
-                        <input type="text" class="form-control" id="dni" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-                        <input type="text" class="form-control" id="fecha_nacimiento" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="departamento">Departamento</label>
-                        <select id="departamento" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Departamento 1</option>
-                            <option>Departamento 2</option>
-                            <option>Departamento 3</option>
-                            <option>Departamento 4</option>
-                            <option>Departamento 5</option>
-                            <option>Departamento 6</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="provincia">Provincia</label>
-                        <select id="provincia" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Provincia 1</option>
-                            <option>Provincia 2</option>
-                            <option>Provincia 3</option>
-                            <option>Provincia 4</option>
-                            <option>Provincia 5</option>
-                            <option>Provincia 6</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="distrito">Distrito</label>
-                        <select id="distrito" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Distrito 1</option>
-                            <option>Distrito 2</option>
-                            <option>Distrito 3</option>
-                            <option>Distrito 4</option>
-                            <option>Distrito 5</option>
-                            <option>Distrito 6</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="direccion">Dirección</label>
-                        <input type="text" class="form-control" id="direccion" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="genero">Género</label>
-                        <select id="genero" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Masculino</option>
-                            <option>Femenino</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="estado_civil">Estado Civil</label>
-                        <select id="estado_civil" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Soltero</option>
-                            <option>Casado</option>
-                            <option>Divorciado</option>
-                            <option>Viudo</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="telefono">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="fecha_ingreso">Fecha de Ingreso</label>
-                        <input type="text" class="form-control" id="fecha_ingreso" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tipo">Tipo</label>
-                        <select id="tipo" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Tipo 1</option>
-                            <option>Tipo 2</option>
-                            <option>Tipo 3</option>
-                            <option>Tipo 4</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="codigo">Código</label>
-                        <input type="text" class="form-control" id="codigo" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div footer>
+        </form>
         <div class="p-3 text-right">
             <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
+            <button class="btn btn-primary" type="submit" (click)="guardarPersonal()"><span>Guardar</span></button>
         </div>
     </div>
 </app-body>
