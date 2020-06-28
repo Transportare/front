@@ -1,5 +1,6 @@
-<app-body [header]="false" [titulo]="'Nuevo Servicio'">
-    <div body>
+<app-body [header]="false" [titulo]="idPersonal ? 'Editar Personal - ' + codigoPersonal : 'Nuevo Personal'">
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
         <form [formGroup]="formPersonal">
             <div class="p-4">
                 <div class="row">
@@ -20,7 +21,15 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="dni">DNI</label>
-                            <input type="text" class="form-control" id="dni" formControlName="dni" />
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="8"
+                                (valueEntero)="formPersonal.patchValue({ dni: $event })"
+                                type="text"
+                                class="form-control"
+                                id="dni"
+                                formControlName="dni"
+                            />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -83,7 +92,7 @@
                             <select-default
                                 [data]="generos"
                                 [selected]="generoSelected"
-                                (selectChange)="generoChange($event)"
+                                (selectChange)="formPersonal.patchValue({ idGenero: $event.id })"
                             ></select-default>
                         </div>
                     </div>
@@ -93,7 +102,7 @@
                             <select-default
                                 [data]="estadosCiviles"
                                 [selected]="estadoSelected"
-                                (selectChange)="estadoCivilChange($event)"
+                                (selectChange)="formPersonal.patchValue({ idEstadoCivil: $event.id })"
                             ></select-default>
                         </div>
                     </div>
@@ -102,13 +111,20 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="telefono">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono" formControlName="telefono" />
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="telefono"
+                                EnteroPositivo
+                                [maxNumerolength]="9"
+                                (valueEntero)="formPersonal.patchValue({ telefono: $event })"
+                                formControlName="telefono"
+                            />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="fecha_ingreso">Fecha de Ingreso</label>
-                            <!-- <input type="date" class="form-control" (change)="changeDateIngreso($event)" id="fecha_ingreso" /> -->
                             <input
                                 type="date"
                                 class="form-control"
@@ -126,14 +142,19 @@
                             <select-default
                                 [data]="tipoPerfiles"
                                 [selected]="tipoSelected"
-                                (selectChange)="tipoChange($event)"
+                                (selectChange)="formPersonal.patchValue({ idTipoPersonal: $event.id })"
                             ></select-default>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="codigo">Código</label>
-                            <input type="text" class="form-control" id="codigo" />
+                        <div class="form-group align-items-start">
+                            <label for="codigo">Sucursales</label>
+                            <app-check-multiple
+                                *ngIf="!loading"
+                                [data]="sucursales"
+                                [activos]="activos"
+                                (changeData)="changeData($event)"
+                            ></app-check-multiple>
                         </div>
                     </div>
                 </div>
@@ -141,7 +162,9 @@
         </form>
         <div class="p-3 text-right">
             <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit" (click)="guardarPersonal()"><span>Guardar</span></button>
+            <button class="btn btn-primary" type="submit" (click)="guardarPersonal()" [disabled]="formPersonal.invalid">
+                <span>Guardar</span>
+            </button>
         </div>
     </div>
 </app-body>

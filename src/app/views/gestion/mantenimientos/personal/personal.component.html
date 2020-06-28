@@ -35,17 +35,13 @@
                 <thead>
                     <tr>
                         <th>N°</th>
-                        <th>Ubigeo</th>
                         <th>Código</th>
                         <th>Nombres</th>
                         <th>Apellidos</th>
                         <th>DNI</th>
-                        <th>Fecha De Nacimiento</th>
-                        <th>Dirección</th>
-                        <th>Género</th>
-                        <th>Estado Civil</th>
+                        <th style="min-width: 100px;">Estado Civil</th>
                         <th>Teléfono</th>
-                        <th>Fecha De Ingreso</th>
+                        <th style="min-width: 150px;">Fecha De Ingreso</th>
                         <th>Tipo</th>
                         <th>Estado</th>
                     </tr>
@@ -57,22 +53,18 @@
                         [ngClass]="{ highlighted: selectItem.IdPersonal === item.IdPersonal }"
                     >
                         <td>{{ index + 1 }}</td>
-                        <td>{{ item.ubigeo }}</td>
-                        <td>{{ item.codigo }}</td>
+                        <td>{{ item.Codigo }}</td>
                         <td>{{ item.Nombres }}</td>
                         <td>{{ item.Apellidos }}</td>
                         <td>{{ item.DNI }}</td>
-                        <td>{{ item.fecha_nacimiento }}</td>
-                        <td>{{ item.Direccion }}</td>
-                        <td>{{ item.genero }}</td>
-                        <td>{{ item.estado_civil }}</td>
+                        <td>{{ item.EstadoCivil }}</td>
                         <td>{{ item.Telefono }}</td>
-                        <td>{{ item.fecha_ingreso }}</td>
-                        <td>{{ item.tipo }}</td>
-                        <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+                        <td>{{ item.FecIngreso | date: 'dd-mm-yyyy' }}</td>
+                        <td>{{ item.TipoPersonal }}</td>
+                        <td>{{ item.Flag_Activo ? 'Activo' : 'Inactivo' }}</td>
                     </tr>
                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                        <td colspan="14">
+                        <td colspan="10">
                             No hay información disponible
                         </td>
                     </tr>

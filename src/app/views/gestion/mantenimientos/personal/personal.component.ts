@@ -52,11 +52,11 @@ export class PersonalComponent implements OnInit {
 
     detalle() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.personal.init}/${this.selectItem.id}/${route.personal.detalle}`]);
+        this.router.navigate([`${route.personal.init}/${this.selectItem.IdPersonal}/${route.personal.detalle}`]);
     }
 
     editar() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.personal.init}/${this.selectItem.id}/${route.personal.editar}`]);
+        this.router.navigate([`${route.personal.init}/${this.selectItem.IdPersonal}/${route.personal.editar}`]);
     }
 }
