@@ -6,12 +6,17 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     styleUrls: ['./check-multiple.component.scss'],
 })
 export class CheckMultipleComponent implements OnInit {
-    activos: any[] = [];
-    @Input() data: any[] = [];
+    @Input() activos: any[];
+    @Input() data: any[];
     @Output() changeData: EventEmitter<any[]> = new EventEmitter();
-    constructor() {}
+    constructor() {
+        this.activos = [];
+        this.data = [];
+    }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.verificarChekeados();
+    }
 
     onCheckboxChange(e) {
         if (e.target.checked) {
@@ -26,5 +31,17 @@ export class CheckMultipleComponent implements OnInit {
                 }
             });
         }
+    }
+
+    verificarChekeados() {
+        this.data = this.data.map((item) => {
+            for (const value of this.activos) {
+                if (Number(value) === item.id) {
+                    return { ...item, cheked: true };
+                }
+            }
+
+            return { ...item, cheked: false };
+        });
     }
 }
