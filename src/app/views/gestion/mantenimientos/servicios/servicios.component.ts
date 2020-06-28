@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { Servicio } from '@models/servicio';
+import { ServiciosService } from '@services/modulos/gestion/mantenimientos/servicios/servicios.service';
 
 @Component({
     selector: 'app-servicios',
@@ -9,69 +11,31 @@ import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 })
 export class ServiciosComponent implements OnInit {
     selectItem: any;
-    data: any[];
+    servicios: Servicio[];
+    loading: boolean;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private servicioService: ServiciosService) {
         this.selectItem = {};
+        this.loading = false;
     }
 
     ngOnInit() {
+        this.servicios = [];
         this.listar();
     }
 
     listar() {
-        this.data = [
-            {
-                id: 1,
-                sucursal: 'Sucursal 1',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
+        this.loading = true;
+        this.servicioService.getServicios().subscribe(
+            (response) => {
+                this.servicios = response;
+                this.loading = false;
             },
-            {
-                id: 2,
-                sucursal: 'Sucursal 2',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-            {
-                id: 3,
-                sucursal: 'Sucursal 3',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-            {
-                id: 4,
-                sucursal: 'Sucursal 4',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-            {
-                id: 5,
-                sucursal: 'Sucursal 5',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-        ];
+            (error) => {
+                console.log(error);
+                this.loading = false;
+            }
+        );
     }
 
     nuevo() {
