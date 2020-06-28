@@ -19,6 +19,7 @@ export class ServiciosService {
                     idCliente: servicio.IdCliente,
                     cliente: servicio.Cliente,
                     idTipoServicio: servicio.IdTipoServicio,
+                    tipoServicio: servicio.TipoServicio,
                     nombre: servicio.Nombre,
                     tiempo: servicio.Tiempo,
                     observacion: servicio.Observacion,

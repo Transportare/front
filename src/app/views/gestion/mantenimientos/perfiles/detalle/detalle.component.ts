@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 import { PerfilService } from '@services/modulos/gestion/mantenimientos/perfiles/perfiles.service';
-import { Usuario } from '@models/usuario.model';
+import { Usuario } from '@models/usuario';
 declare var $: any;
 
 @Component({
