@@ -1,6 +1,5 @@
 <app-body [header]="false" [titulo]="nuevo ? 'Nuevo Cliente' : 'Editar Cliente'">
     <div body [ngClass]="{ loader: loading }">
-        <!-- <div style="min-height: 300px;"> -->
         <loader *ngIf="loading"></loader>
         <form (ngSubmit)="guardarCliente()" *ngIf="!loading" [formGroup]="formularioCliente">
             <div class="p-4">
@@ -137,5 +136,4 @@
             </div>
         </form>
     </div>
-    <!-- </div> -->
 </app-body>

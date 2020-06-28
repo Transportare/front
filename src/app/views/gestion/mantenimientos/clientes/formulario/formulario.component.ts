@@ -95,19 +95,12 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
         if (e.target.checked) {
             sucursales.push(new FormControl(e.target.value));
-            console.log(sucursales.value);
         } else {
-            // let i = 0;
-            // console.log(i);
             sucursales.controls.forEach((item: FormControl, index) => {
                 if (item.value === e.target.value) {
-                    // console.log(index);
                     sucursales.removeAt(index);
-                    console.log(sucursales.value);
                     return;
                 }
-                // i++;
-                // console.log(i);
             });
         }
     }
@@ -125,7 +118,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
         // Sucursales
         this.sucursaleService.getSucursales().subscribe((response) => {
-            console.log(response);
             this.sucursales = response;
         });
 
