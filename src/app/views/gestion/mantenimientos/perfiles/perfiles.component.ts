@@ -110,7 +110,7 @@ export class PerfilesComponent implements OnInit, OnDestroy {
                 .subscribe(
                     (response) => {
                         this.cerrarModal();
-                        this.msj$ = this.mensajeResponse.succes('Perfil creado correctamente').subscribe((action) => {
+                        this.msj$ = this.mensajeResponse.succes('Perfil actualizado correctamente').subscribe((action) => {
                             if (action) {
                                 this.listar();
                                 this.selectItem = new Perfil();

@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { PerfilService } from '@services/modulos/gestion/mantenimientos/perfiles/perfiles.service';
+import { Usuario } from '@models/usuario.model';
 declare var $: any;
 
 @Component({
@@ -9,8 +11,19 @@ declare var $: any;
 })
 export class DetalleComponent implements OnInit, OnDestroy {
     data: any[];
-
-    constructor(private router: Router) {}
+    idPerfil: string;
+    usuarios: Usuario[];
+    constructor(private router: Router, private perfilService: PerfilService, private activatedRoute: ActivatedRoute) {
+        this.usuarios = [];
+        this.activatedRoute.params.subscribe((params) => {
+            if (params.id) {
+                this.idPerfil = params.id;
+                this.getUsuarios();
+            } else {
+                this.atras();
+            }
+        });
+    }
 
     ngOnInit() {}
 
@@ -18,6 +31,13 @@ export class DetalleComponent implements OnInit, OnDestroy {
         // if (this.msj$) {
         //     this.msj$.unsubscribe();
         // }
+    }
+
+    getUsuarios() {
+        this.perfilService.getUsuariosPorPerfil(this.idPerfil).subscribe((response) => {
+            console.log(response);
+            this.usuarios = response.usuarios;
+        });
     }
 
     atras() {
