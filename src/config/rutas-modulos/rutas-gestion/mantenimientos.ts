@@ -22,9 +22,6 @@ export const RUTAS_GESTION_MANTENIMIENTOS = {
     },
     usuarios: {
         init: `${item}/usuarios`,
-        detalle: 'detalle',
-        editar: 'editar',
-        nuevo: 'nuevo',
     },
     perfiles: {
         init: `${item}/perfiles`,

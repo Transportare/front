@@ -7,10 +7,10 @@
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
-                title="Detalle"
-                (click)="detalle()"
+                title="Eliminar"
+                (click)="eliminar()"
             >
-                <i class="mdi mdi-format-list-bulleted"></i>
+                <i class="mdi mdi-delete"></i>
             </button>
             <button
                 class="btn btn-circle btn-primary mr-2"
@@ -31,7 +31,7 @@
     <div body [ngClass]="{ loader: loading }">
         <loader *ngIf="loading"></loader>
         <div class="row mx-0">
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-6">
                 <div class="table-responsive pb-3">
                     <table class="table table-striped table-hover box-shadow">
                         <thead>
@@ -44,8 +44,8 @@
                         </thead>
                         <tbody>
                             <tr
-                                *ngFor="let item of data; let index = index"
-                                (click)="selectItem = item"
+                                *ngFor="let item of usuarios; let index = index"
+                                (click)="getPrivilegios(item)"
                                 [ngClass]="{ highlighted: selectItem.idUsuario === item.idUsuario }"
                             >
                                 <td>{{ index + 1 }}</td>
@@ -53,7 +53,7 @@
                                 <td>{{ item.dni }}</td>
                                 <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
                             </tr>
-                            <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                            <tr class="text-center" *ngIf="!usuarios || (usuarios && usuarios.length === 0)">
                                 <td colspan="4">
                                     No hay información disponible
                                 </td>
@@ -62,7 +62,82 @@
                     </table>
                 </div>
             </div>
-            <div class="col-md-6"></div>
+            <div class="col-md-12 col-lg-6 pb-3 privilegios-usuarios">
+                <h6 *ngIf="privilegios.length > 0 && !loading">Privilegios</h6>
+                <ngx-treeview *ngIf="privilegios.length > 0 && !loading" [config]="config" [items]="privilegios"> </ngx-treeview>
+            </div>
         </div>
     </div>
 </app-body>
+
+<div class="modal fade" #modalUsuario tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form [formGroup]="formUsuario" autocomplete="off">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title">
+                        {{ selectItem.idUsuario ? 'Editar Usuario' : 'Nuevo Usuario' }}
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario">
+                        <div class="col-md-12">
+                            <label>Usuario</label>
+                            <input class="form-control" formControlName="usuario" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>DNI</label>
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="8"
+                                (valueEntero)="formUsuario.patchValue({ dni: $event })"
+                                type="text"
+                                class="form-control"
+                                id="dni"
+                                formControlName="dni"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario">
+                        <div class="col-md-12">
+                            <label>Perfil</label>
+                            <select-default
+                                *ngIf="perfiles"
+                                [data]="perfiles"
+                                [selected]="perfilSelected"
+                                (selectChange)="formUsuario.patchValue({ perfil: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>Contraseña</label>
+                            <input type="password" class="form-control" formControlName="password" autocomplete="new-password" />
+                        </div>
+                    </div>
+                    <div class="row mb-2 mx-0" *ngIf="selectItem.idUsuario">
+                        <div class="col-md-12">
+                            <label for="distrito">Estado</label>
+                            <select-default
+                                *ngIf="estados"
+                                [data]="estados"
+                                [selected]="estadoSelected"
+                                (selectChange)="estadoSelected = $event"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="formUsuario.invalid" (click)="generarUsuario()">
+                        Aceptar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
