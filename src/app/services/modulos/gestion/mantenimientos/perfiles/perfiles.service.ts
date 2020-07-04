@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Perfil } from '@models/perfil';
 import { Usuario } from '@models/usuario';
 import * as moment from 'moment';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Injectable({
     providedIn: 'root',
@@ -23,44 +24,52 @@ export class PerfilService {
         );
     }
 
-    getUsuariosPorPerfil(idPerfil): Observable<{ usuarios: Usuario[]; privilegios: any[] }> {
-        return new Observable((observer) => {
-            this.http
-                .get(`${API_URL}perfiles/getUsuarios/${idPerfil}`)
-                .pipe(
-                    map((response: any) => {
-                        const usuarioVacio = new Usuario();
+    getDataPorPerfil(idPerfil): Observable<{ usuarios: Usuario[]; privilegios: TreeviewItem[] }> {
+        return this.http.get(`${API_URL}perfiles/getUsuariosPrivilegios/${idPerfil}`).pipe(
+            map((response: any) => {
+                const usuarioVacio = new Usuario();
 
-                        const usuarios: Usuario[] = response.data.map((usuario) => {
-                            return {
-                                ...usuarioVacio,
-                                idUsuario: usuario.IdUsuario,
-                                fechaAsigancion: moment(usuario.FechaAsignacion).format('YYYY-MM-DD'),
-                                estado: usuario.Flag_Activo,
-                                usuario: usuario.Usuario,
-                                dni: usuario.DNI,
-                            };
-                        });
-
-                        return usuarios;
-                    })
-                )
-                .subscribe((usuarios) => {
-                    this.http
-                        .get(`${API_URL}opciones/${idPerfil}`)
-                        .pipe(
-                            map((response: any) => {
-                                // const privilegios = response.menu.map((privilegio) => ({ ...privilegio }));
-                                const privilegios = response;
-                                return privilegios;
-                            })
-                        )
-                        .subscribe((privilegios) => {
-                            observer.next({ usuarios, privilegios });
-                            observer.complete();
-                        });
+                const usuarios: Usuario[] = response.usuarios.map((usuario) => {
+                    return {
+                        ...usuarioVacio,
+                        idUsuario: usuario.IdUsuario,
+                        fechaAsigancion: moment(usuario.FechaAsignacion).format('YYYY-MM-DD'),
+                        estado: usuario.Flag_Activo,
+                        usuario: usuario.Usuario,
+                        dni: usuario.DNI,
+                    };
                 });
-        });
+
+                const privilegios: TreeviewItem[] = response.privilegios.map((privilegio) => {
+                    return new TreeviewItem({
+                        text: privilegio.NomOpcion,
+                        value: privilegio.IdOpcion,
+                        collapsed: false,
+                        checked: privilegio.checked,
+                        children: privilegio.hijos.map((hijo) => {
+                            return {
+                                text: hijo.NomOpcion,
+                                value: hijo.IdOpcion,
+                                checked: hijo.checked,
+                                children: hijo.hijos.map((hijo2) => {
+                                    return {
+                                        text: hijo2.NomOpcion,
+                                        value: hijo2.IdOpcion,
+                                        checked: hijo2.checked,
+                                    };
+                                }),
+                            };
+                        }),
+                    });
+                });
+
+                return { usuarios, privilegios };
+            })
+        );
+    }
+
+    getPrivilegiosPorPerfil(id, data) {
+        return this.http.post(`${API_URL}opciones/setPrivilegios/${id}`, data);
     }
 
     postPerfil(data: Perfil) {

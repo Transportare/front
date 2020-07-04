@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 import { Usuario } from '@models/usuario';
 import { UsuariosService } from '@services/modulos/gestion/mantenimientos/usuarios/usuarios.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
@@ -16,6 +15,7 @@ declare var $: any;
 })
 export class UsuariosComponent implements OnInit, OnDestroy {
     @ViewChild('modalUsuario', { static: false }) modalUsuario: ElementRef;
+    @ViewChild('modalPass', { static: false }) modalPass: ElementRef;
     selectItem: Usuario;
     usuarios: Usuario[];
     privilegios: TreeviewItem[];
@@ -25,6 +25,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     perfiles: any[];
     perfilSelected: any;
     formUsuario: FormGroup;
+    formPass: FormGroup;
     msj$: Subscription;
     config = TreeviewConfig.create({
         hasAllCheckBox: false,
@@ -84,18 +85,44 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
 
     initForm() {
-        // this.formUsuario = this.fb.group({
-        //     usuario: ['', this.itemsValidator],
-        //     dni: ['', this.dniValidator],
-        //     password: ['', this.itemsValidator],
-        //     perfil: ['', this.itemsValidator],
-        // });
+        this.formPass = this.fb.group(
+            {
+                password1: ['', Validators.required],
+                password2: ['', Validators.required],
+            },
+            {
+                validators: this.passwordsIguales('password1', 'password2'),
+            }
+        );
         this.formUsuario = this.fb.group({
             usuario: ['', Validators.required],
             dni: ['', this.dniValidator],
             password: ['', Validators.required],
             perfil: ['', Validators.required],
         });
+    }
+
+    get pass1NoValido() {
+        return this.formPass.get('password1').invalid && this.formPass.get('password1').touched;
+    }
+
+    get pass2NoValido() {
+        const password1 = this.formPass.get('password1').value;
+        const password2 = this.formPass.get('password2').value;
+        return password1 === password2 ? false : true;
+    }
+
+    passwordsIguales(password1: string, password2: string) {
+        return (formGroup: FormGroup) => {
+            const pass1 = formGroup.controls[password1];
+            const pass2 = formGroup.controls[password2];
+
+            if (pass1.value === pass2.value) {
+                pass2.setErrors(null);
+            } else {
+                pass2.setErrors({ noIguales: true });
+            }
+        };
     }
 
     getPrivilegios(item) {
@@ -122,7 +149,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         this.verificarValidaciones();
         this.formUsuario.patchValue({
             dni: this.selectItem.dni,
+            perfil: this.selectItem.perfil,
         });
+        this.perfilSelected = { id: this.selectItem.perfil, text: this.selectItem.nombrePerfil };
         this.estadoSelected = this.estados.find((e) => e.id === this.selectItem.estado);
         $(this.modalUsuario.nativeElement).modal('show');
     }
@@ -131,10 +160,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         if (this.selectItem.idUsuario) {
             this.formUsuario.get('usuario').clearValidators();
             this.formUsuario.get('password').clearValidators();
-            this.formUsuario.get('perfil').clearValidators();
             this.formUsuario.get('usuario').updateValueAndValidity();
             this.formUsuario.get('password').updateValueAndValidity();
-            this.formUsuario.get('perfil').updateValueAndValidity();
         } else {
             this.formUsuario.get('usuario').setValidators(Validators.required);
             this.formUsuario.get('password').setValidators(Validators.required);
@@ -152,11 +179,39 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         this.selectItem = new Usuario();
     }
 
-    eliminar() {}
+    // Cambiar Contraseña
+
+    cambiarPass() {
+        $(this.modalPass.nativeElement).modal('show');
+    }
+
+    generarPass() {
+        this.usuarioService.putPassword(this.selectItem.idUsuario, { pass: this.formPass.value.password2 }).subscribe(
+            (response) => {
+                this.cerrarModal();
+                this.msj$ = this.mensajeResponse.succes('Contraseña actualizada correctamente').subscribe((action) => {
+                    if (action) {
+                        this.selectItem = new Usuario();
+                        this.cerrarModalPass();
+                    }
+                });
+            },
+            (error) => {
+                this.msj$ = this.mensajeResponse.danger().subscribe();
+            }
+        );
+    }
+
+    cerrarModalPass() {
+        $(this.modalPass.nativeElement).modal('hide');
+        this.formPass.reset();
+        this.selectItem = new Usuario();
+    }
+
+    //
 
     generarUsuario() {
         const usuario: Usuario = new Usuario();
-        console.log({ ...usuario, ...this.formUsuario.value });
         if (!this.selectItem.idUsuario) {
             // Nuevo
             this.usuarioService.postUsuario({ ...usuario, ...this.formUsuario.value }).subscribe(
@@ -170,34 +225,27 @@ export class UsuariosComponent implements OnInit, OnDestroy {
                     });
                 },
                 (error) => {
-                    console.log(error);
                     this.msj$ = this.mensajeResponse.danger().subscribe();
                 }
             );
         } else {
             // Editar
-            console.log({ ...usuario, ...this.formUsuario.value, estado: this.estadoSelected.id });
-
-            // this.perfilService
-            //     .putPerfil({
-            //         idPerfil: this.selectItem.idPerfil,
-            //         nombrePerfil: this.nombrePerfil.value,
-            //         estado: this.estadoSelected.id,
-            //     })
-            //     .subscribe(
-            //         (response) => {
-            //             this.cerrarModal();
-            //             this.msj$ = this.mensajeResponse.succes('Perfil actualizado correctamente').subscribe((action) => {
-            //                 if (action) {
-            //                     this.listar();
-            //                     this.selectItem = new Perfil();
-            //                 }
-            //             });
-            //         },
-            //         (error) => {
-            //             this.msj$ = this.mensajeResponse.danger().subscribe();
-            //         }
-            //     );
+            this.usuarioService
+                .putPerfil({ ...usuario, ...this.formUsuario.value, estado: this.estadoSelected.id }, this.selectItem.idUsuario)
+                .subscribe(
+                    (response) => {
+                        this.cerrarModal();
+                        this.msj$ = this.mensajeResponse.succes('Usuario actualizado correctamente').subscribe((action) => {
+                            if (action) {
+                                this.listar();
+                                this.selectItem = new Usuario();
+                            }
+                        });
+                    },
+                    (error) => {
+                        this.msj$ = this.mensajeResponse.danger().subscribe();
+                    }
+                );
         }
     }
 }

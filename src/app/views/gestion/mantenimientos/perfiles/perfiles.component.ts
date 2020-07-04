@@ -50,17 +50,16 @@ export class PerfilesComponent implements OnInit, OnDestroy {
         this.perfilService.getPerfiles().subscribe(
             (response) => {
                 this.perfiles = response;
-                console.log(response);
                 this.loading = false;
             },
             (error) => {
-                console.log(error);
                 this.loading = false;
             }
         );
     }
 
     nuevo() {
+        this.selectItem = new Perfil();
         $(this.modalPerfil.nativeElement).modal('show');
     }
 
@@ -73,7 +72,7 @@ export class PerfilesComponent implements OnInit, OnDestroy {
     editar() {
         this.nombrePerfil.setValue(this.selectItem.nombrePerfil);
         this.estadoSelected = this.estados.find((e) => e.id === this.selectItem.estado);
-        this.nuevo();
+        $(this.modalPerfil.nativeElement).modal('show');
     }
 
     changeEstado(event) {
@@ -82,7 +81,6 @@ export class PerfilesComponent implements OnInit, OnDestroy {
 
     generarPerfil() {
         const perfil: Perfil = new Perfil();
-        // console.log({ ...perfil, nombrePerfil: this.nombrePerfil.value });
         if (!this.selectItem.idPerfil) {
             // Nuevo
             this.perfilService.postPerfil({ ...perfil, nombrePerfil: this.nombrePerfil.value }).subscribe(

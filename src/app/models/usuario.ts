@@ -4,6 +4,8 @@ export class Usuario {
     estado: number;
     usuario: string;
     dni: string;
+    perfil: string;
+    nombrePerfil: string;
 
     constructor() {}
 }

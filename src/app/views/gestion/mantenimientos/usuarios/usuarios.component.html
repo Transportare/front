@@ -7,10 +7,10 @@
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
-                title="Eliminar"
-                (click)="eliminar()"
+                title="Cambiar Contraseña"
+                (click)="cambiarPass()"
             >
-                <i class="mdi mdi-delete"></i>
+                <i class="mdi mdi-key"></i>
             </button>
             <button
                 class="btn btn-circle btn-primary mr-2"
@@ -31,7 +31,7 @@
     <div body [ngClass]="{ loader: loading }">
         <loader *ngIf="loading"></loader>
         <div class="row mx-0">
-            <div class="col-md-12 col-lg-6">
+            <div class="col-md-12 col-lg-7">
                 <div class="table-responsive pb-3">
                     <table class="table table-striped table-hover box-shadow">
                         <thead>
@@ -39,6 +39,7 @@
                                 <th>N°</th>
                                 <th>Usuario</th>
                                 <th>DNI</th>
+                                <th style="min-width: 150px;">Nombre de Perfil</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
@@ -51,6 +52,7 @@
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ item.usuario }}</td>
                                 <td>{{ item.dni }}</td>
+                                <td>{{ item.nombrePerfil }}</td>
                                 <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
                             </tr>
                             <tr class="text-center" *ngIf="!usuarios || (usuarios && usuarios.length === 0)">
@@ -62,7 +64,7 @@
                     </table>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-6 pb-3 privilegios-usuarios">
+            <div class="col-md-12 col-lg-5 pb-3 privilegios-usuarios">
                 <h6 *ngIf="privilegios.length > 0 && !loading">Privilegios</h6>
                 <ngx-treeview *ngIf="privilegios.length > 0 && !loading" [config]="config" [items]="privilegios"> </ngx-treeview>
             </div>
@@ -100,7 +102,8 @@
                             />
                         </div>
                     </div>
-                    <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario">
+                    <!-- <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario"> -->
+                    <div class="row mb-3 mx-0">
                         <div class="col-md-12">
                             <label>Perfil</label>
                             <select-default
@@ -111,7 +114,7 @@
                             ></select-default>
                         </div>
                     </div>
-                    <div class="row mb-3 mx-0">
+                    <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario">
                         <div class="col-md-12">
                             <label>Contraseña</label>
                             <input type="password" class="form-control" formControlName="password" autocomplete="new-password" />
@@ -134,6 +137,59 @@
                         Cancelar
                     </button>
                     <button type="submit" class="btn btn-primary" [disabled]="formUsuario.invalid" (click)="generarUsuario()">
+                        Aceptar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" #modalPass tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form [formGroup]="formPass" autocomplete="off">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title">Cambiar Contraseña - {{ selectItem.usuario }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>Contraseña</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                formControlName="password1"
+                                [class.is-invalid]="pass1NoValido"
+                                autocomplete="new-password"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>Repetir Contraseña</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                formControlName="password2"
+                                [class.is-invalid]="pass2NoValido"
+                                autocomplete="new-password"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mx-0" *ngIf="formPass.controls.password2.errors && formPass.controls.password2.errors.noIguales">
+                        <div class="col-md-12">
+                            <span class="text-danger">
+                                Las contraseñas deben ser iguales
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModalPass()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="formPass.invalid" (click)="generarPass()">
                         Aceptar
                     </button>
                 </div>
