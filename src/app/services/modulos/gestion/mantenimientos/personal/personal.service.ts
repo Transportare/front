@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { UbigeoService } from '@services/utils/ubigeo.service';
 import { Ubigeo } from '@models/ubigeo';
 import { SucursalesService } from '@services/utils/sucursales.service';
-import { Personal } from '@models/personal';
+import { Personal } from '@models/index';
 import * as moment from 'moment';
 
 @Injectable({
@@ -22,8 +22,35 @@ export class PersonalService {
         private sucursalesService: SucursalesService
     ) {}
 
-    getPersonales(params) {
-        return this.http.get(`${API_URL}personales`, { params });
+    getPersonales(params): Observable<Personal[]> {
+        return this.http.get(`${API_URL}personales`, { params }).pipe(
+            map((response: any) => {
+                const personalVacio = new Personal();
+                return response.data.map((data) => {
+                    const personal: Personal = {
+                        ...personalVacio,
+                        idPersonal: data.IdPersonal,
+                        fecAsignacion: moment(data.FecAsignacion).format('DD/MM/YYYY'),
+                        estado: data.Flag_Activo,
+                        distrito: data.Ubigeo,
+                        codigo: data.Codigo,
+                        nombres: data.Nombres,
+                        apellidos: data.Apellidos,
+                        dni: data.DNI,
+                        fecNacimiento: moment(data.FecNacimiento).format('DD/MM/YYYY'),
+                        direccion: data.Direccion,
+                        genero: data.Genero,
+                        estadoCivil: data.EstadoCivil,
+                        telefono: data.Telefono,
+                        // fecIngreso: moment(data.FecIngreso).format('YYYY-MM-DD'),
+                        fecIngreso: moment(data.FecIngreso).format('DD/MM/YYYY'),
+                        tipoPersonal: data.TipoPersonal,
+                    };
+
+                    return personal;
+                });
+            })
+        );
     }
 
     getOnePersonal(
@@ -36,121 +63,66 @@ export class PersonalService {
         departamentos: Ubigeo[];
         provincias: Ubigeo[];
         distritos: Ubigeo[];
-        sucursales: any[];
     }> {
-        return new Observable((observer) => {
-            this.http
-                .get(`${API_URL}personales/${id}`)
-                .pipe(
-                    map((response: any) => {
-                        const personal: Personal = {
-                            idPersonal: response.data.IdPersonal,
-                            fecAsignacion: moment(response.data.FecAsignacion).format('YYYY-MM-DD'),
-                            estado: response.data.Flag_Activo,
-                            idUbigeo: response.data.IdUbigeo,
-                            idDepartamento: response.data.IdDepartamento,
-                            idProvincia: response.data.IdProvincia,
-                            codigo: response.data.Codigo,
-                            nombres: response.data.Nombres,
-                            apellidos: response.data.Apellidos,
-                            dni: response.data.DNI,
-                            fecNacimiento: moment(response.data.FecNacimiento).format('YYYY-MM-DD'),
-                            direccion: response.data.Direccion,
-                            idGenero: response.data.IdGenero,
-                            idEstadoCivil: response.data.IdEstadoCivil,
-                            telefono: response.data.Telefono,
-                            fecIngreso: moment(response.data.FecIngreso).format('YYYY-MM-DD'),
-                            idTipoPersonal: response.data.IdTipoPersonal,
-                            sucursales: response.data.sucursales,
-                        };
+        return this.http.get(`${API_URL}personales/${id}`).pipe(
+            map((response: any) => {
+                const personalVacio = new Personal();
+                const personal: Personal = {
+                    ...personalVacio,
+                    idPersonal: response.personal.IdPersonal,
+                    fecAsignacion: moment(response.personal.FecAsignacion).format('YYYY-MM-DD'),
+                    estado: response.personal.Flag_Activo,
+                    idUbigeo: response.personal.IdUbigeo,
+                    idDepartamento: response.personal.IdDepartamento,
+                    idProvincia: response.personal.IdProvincia,
+                    codigo: response.personal.Codigo,
+                    nombres: response.personal.Nombres,
+                    apellidos: response.personal.Apellidos,
+                    dni: response.personal.DNI,
+                    fecNacimiento: moment(response.personal.FecNacimiento).format('YYYY-MM-DD'),
+                    direccion: response.personal.Direccion,
+                    idGenero: response.personal.IdGenero,
+                    idEstadoCivil: response.personal.IdEstadoCivil,
+                    telefono: response.personal.Telefono,
+                    fecIngreso: moment(response.personal.FecIngreso).format('YYYY-MM-DD'),
+                    idTipoPersonal: response.personal.IdTipoPersonal,
+                    sucursales: response.personal.sucursales,
+                };
 
-                        return personal;
-                    })
-                )
-                .subscribe((personal: Personal) => {
-                    this.tablaGeneral
-                        .getSelectPorGrupo(1)
-                        .pipe(
-                            map((response: Grupo[]) => {
-                                const generos = response;
-                                return generos;
-                            })
-                        )
-                        .subscribe((generos: Grupo[]) => {
-                            this.tablaGeneral
-                                .getSelectPorGrupo(2)
-                                .pipe(
-                                    map((response: Grupo[]) => {
-                                        const estadosCiviles = response;
-                                        return estadosCiviles;
-                                    })
-                                )
-                                .subscribe((estadosCiviles: Grupo[]) => {
-                                    this.tablaGeneral
-                                        .getSelectPorGrupo(3)
-                                        .pipe(
-                                            map((response: Grupo[]) => {
-                                                const tipoPersonales = response;
-                                                return tipoPersonales;
-                                            })
-                                        )
-                                        .subscribe((tipoPersonales: Grupo[]) => {
-                                            this.ubigeoService
-                                                .getDepartamentos()
-                                                .pipe(
-                                                    map((response: Ubigeo[]) => {
-                                                        const departamentos = response;
-                                                        return departamentos;
-                                                    })
-                                                )
-                                                .subscribe((departamentos) => {
-                                                    this.sucursalesService
-                                                        .getSucursales()
-                                                        .pipe(
-                                                            map((response: any[]) => {
-                                                                const sucursales = response;
-                                                                return sucursales;
-                                                            })
-                                                        )
-                                                        .subscribe((sucursales: any[]) => {
-                                                            this.ubigeoService
-                                                                .getHijos(Number(personal.idDepartamento))
-                                                                .pipe(
-                                                                    map((response: Ubigeo[]) => {
-                                                                        const provincias = response;
-                                                                        return provincias;
-                                                                    })
-                                                                )
-                                                                .subscribe((provincias: any[]) => {
-                                                                    this.ubigeoService
-                                                                        .getHijos(Number(personal.idProvincia))
-                                                                        .pipe(
-                                                                            map((response: Ubigeo[]) => {
-                                                                                const distritos = response;
-                                                                                return distritos;
-                                                                            })
-                                                                        )
-                                                                        .subscribe((distritos) => {
-                                                                            observer.next({
-                                                                                personal,
-                                                                                generos,
-                                                                                estadosCiviles,
-                                                                                tipoPersonales,
-                                                                                departamentos,
-                                                                                sucursales,
-                                                                                distritos,
-                                                                                provincias,
-                                                                            });
-                                                                            observer.complete();
-                                                                        });
-                                                                });
-                                                        });
-                                                });
-                                        });
-                                });
-                        });
-                });
-        });
+                const generos: Grupo[] = response.genero.map((genero) => ({
+                    id: genero.IdTablaGeneral,
+                    text: genero.Descripcion,
+                    grupo: genero.Grupo,
+                }));
+                const estadosCiviles: Grupo[] = response.estadoCivil.map((estado) => ({
+                    id: estado.IdTablaGeneral,
+                    text: estado.Descripcion,
+                    grupo: estado.Grupo,
+                }));
+                const tipoPersonales: Grupo[] = response.tipoPersonal.map((tipo) => ({
+                    id: tipo.IdTablaGeneral,
+                    text: tipo.Descripcion,
+                    grupo: tipo.Grupo,
+                }));
+                const departamentos = response.departamento.map((departamento) => ({
+                    id: departamento.IdUbigeo,
+                    text: departamento.Descripcion,
+                    padre: departamento.Padre,
+                }));
+                const provincias = response.provincia.map((provincia) => ({
+                    id: provincia.IdUbigeo,
+                    text: provincia.Descripcion,
+                    padre: provincia.Padre,
+                }));
+                const distritos = response.distrito.map((distrito) => ({
+                    id: distrito.IdUbigeo,
+                    text: distrito.Descripcion,
+                    padre: distrito.Padre,
+                }));
+
+                return { personal, generos, estadosCiviles, tipoPersonales, departamentos, provincias, distritos };
+            })
+        );
     }
 
     getSelectsDePersonales(): Observable<{
@@ -158,7 +130,6 @@ export class PersonalService {
         estadosCiviles: Grupo[];
         tipoPersonales: Grupo[];
         departamentos: Ubigeo[];
-        sucursales: any[];
     }> {
         return new Observable((observer) => {
             this.tablaGeneral
@@ -197,24 +168,13 @@ export class PersonalService {
                                             })
                                         )
                                         .subscribe((departamentos) => {
-                                            this.sucursalesService
-                                                .getSucursales()
-                                                .pipe(
-                                                    map((response: any[]) => {
-                                                        const sucursales = response;
-                                                        return sucursales;
-                                                    })
-                                                )
-                                                .subscribe((sucursales) => {
-                                                    observer.next({
-                                                        generos,
-                                                        estadosCiviles,
-                                                        tipoPersonales,
-                                                        departamentos,
-                                                        sucursales,
-                                                    });
-                                                    observer.complete();
-                                                });
+                                            observer.next({
+                                                generos,
+                                                estadosCiviles,
+                                                tipoPersonales,
+                                                departamentos,
+                                            });
+                                            observer.complete();
                                         });
                                 });
                         });
@@ -224,5 +184,13 @@ export class PersonalService {
 
     postPersonal(data) {
         return this.http.post(`${API_URL}personales`, data);
+    }
+
+    putPersonal(id, data) {
+        return this.http.put(`${API_URL}personales/${id}`, data);
+    }
+
+    deletePersonal(id) {
+        return this.http.delete(`${API_URL}personales/${id}`);
     }
 }

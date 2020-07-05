@@ -3,7 +3,18 @@
         <div class="py-3 text-right">
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.IdPersonal"
+                [disabled]="!selectItem.idPersonal"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Eliminar"
+                (click)="delete()"
+            >
+                <i class="mdi mdi-delete"></i>
+            </button>
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idPersonal"
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
@@ -14,7 +25,7 @@
             </button>
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.IdPersonal"
+                [disabled]="!selectItem.idPersonal"
                 data-placement="top"
                 data-toggle="tooltip"
                 [DirectiveTooltip]
@@ -43,28 +54,26 @@
                         <th>Teléfono</th>
                         <th style="min-width: 150px;">Fecha De Ingreso</th>
                         <th>Tipo</th>
-                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         *ngFor="let item of data; let index = index"
                         (click)="selectItem = item"
-                        [ngClass]="{ highlighted: selectItem.IdPersonal === item.IdPersonal }"
+                        [ngClass]="{ highlighted: selectItem.idPersonal === item.idPersonal }"
                     >
                         <td>{{ index + 1 }}</td>
-                        <td>{{ item.Codigo }}</td>
-                        <td>{{ item.Nombres }}</td>
-                        <td>{{ item.Apellidos }}</td>
-                        <td>{{ item.DNI }}</td>
-                        <td>{{ item.EstadoCivil }}</td>
-                        <td>{{ item.Telefono }}</td>
-                        <td>{{ item.FecIngreso | date: 'dd-mm-yyyy' }}</td>
-                        <td>{{ item.TipoPersonal }}</td>
-                        <td>{{ item.Flag_Activo ? 'Activo' : 'Inactivo' }}</td>
+                        <td>{{ item.codigo }}</td>
+                        <td>{{ item.nombres }}</td>
+                        <td>{{ item.apellidos }}</td>
+                        <td>{{ item.dni }}</td>
+                        <td>{{ item.estadoCivil }}</td>
+                        <td>{{ item.telefono }}</td>
+                        <td>{{ item.fecIngreso }}</td>
+                        <td>{{ item.tipoPersonal }}</td>
                     </tr>
                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                        <td colspan="10">
+                        <td colspan="19">
                             No hay información disponible
                         </td>
                     </tr>

@@ -110,10 +110,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         });
 
         // Sucursales
-        this.sucursaleService.getSucursales().subscribe((response) => {
-            this.sucursales = response;
-        });
-
+        this.sucursales = this.sucursaleService.getSucursales();
         this.loading = false;
     }
 
@@ -122,7 +119,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.clienteService.getUnCliente(this.idCliente).subscribe(
             (response) => {
                 const cliente: Cliente = response.cliente;
-                this.sucursales = this.sucursaleService.getSucursales2();
+                this.sucursales = this.sucursaleService.getSucursales();
                 this.activos = cliente.sucursales;
                 this.tipoPagos = response.tipoPagos;
                 this.departamentos = response.departamentos;
