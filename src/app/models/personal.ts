@@ -3,6 +3,7 @@ export class Personal {
     fecAsignacion: string;
     estado: number;
     idUbigeo: string;
+    distrito: string;
     idDepartamento: string;
     idProvincia: string;
     codigo: string;
@@ -12,11 +13,14 @@ export class Personal {
     fecNacimiento: string;
     direccion: string;
     idGenero: number;
+    genero: string;
     idEstadoCivil: number;
+    estadoCivil: string;
     telefono: string;
     fecIngreso: string;
     idTipoPersonal: number;
-    sucursales: any[];
+    tipoPersonal: string;
+    sucursales: string[];
 
     constructor() {}
 }
