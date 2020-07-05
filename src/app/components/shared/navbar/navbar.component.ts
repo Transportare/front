@@ -34,14 +34,12 @@ export class NavbarComponent implements OnInit {
 
     listarSucursales() {
         this.loading = true;
-        this.sucursalesService.getSucursales().subscribe((response: any) => {
-            this.sucursales = response;
-            const id = this.sucursalesService.getSucursal();
-            if (id) {
-                this.sucursalSelected = this.sucursales.find((s) => s.id === Number(id));
-            }
-            this.loading = false;
-        });
+        this.sucursales = this.sucursalesService.getSucursales();
+        const id = this.sucursalesService.getSucursal();
+        if (id) {
+            this.sucursalSelected = this.sucursales.find((s) => s.id === Number(id));
+        }
+        this.loading = false;
     }
 
     changeSucursal(event) {

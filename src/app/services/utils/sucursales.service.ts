@@ -11,22 +11,16 @@ export class SucursalesService {
 
     constructor(private http: HttpClient, private loginService: LoginService) {}
 
-    getSucursales(): Observable<any> {
-        return new Observable((observer) => {
-            const data = this.loginService.getdataUser();
-            if (data) {
-                const response = JSON.parse(atob(data.token.split('.')[1]));
-                observer.next(response.usuarioToken.sucursales);
-            }
-            observer.complete();
-        }).pipe(
-            map((response: any) => {
-                // console.log(response);
-                return response.map((sucursal: any) => {
-                    return { id: sucursal.IdSucursal, text: sucursal.Nombre };
-                });
-            })
-        );
+    getSucursales() {
+        const data = this.loginService.getdataUser();
+        if (data) {
+            const response = JSON.parse(atob(data.token.split('.')[1]));
+            const sucursales = response.usuarioToken.sucursales;
+
+            return sucursales.map((sucursal: any) => {
+                return { id: sucursal.IdSucursal, text: sucursal.Nombre };
+            });
+        }
     }
 
     changeSucursal(): Observable<any> {
