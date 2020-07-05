@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 import { ClienteService } from '@services/modulos/gestion/mantenimientos/clientes/clientes.service';
 import { PaginacionModel } from '@models/paginacion.model';
+import { Cliente } from '@models/index';
+import { Subscription } from 'rxjs';
+import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 declare var $: any;
 
 @Component({
@@ -12,15 +15,16 @@ declare var $: any;
 })
 export class ClientesComponent implements OnInit, OnDestroy {
     @ViewChild('detalleCliente', { static: false }) detalleCliente: ElementRef;
-    data: any[];
-    selectItem: any;
+    data: Cliente[];
+    selectItem: Cliente;
     loading: boolean;
     pagina: number;
     filas: number;
     dataPaginacion: PaginacionModel;
+    msj$: Subscription;
 
-    constructor(private clienteService: ClienteService, private router: Router) {
-        this.selectItem = {};
+    constructor(private clienteService: ClienteService, private router: Router, private mensajeResponse: MensajeResponseService) {
+        this.selectItem = new Cliente();
     }
 
     ngOnInit() {
@@ -33,9 +37,9 @@ export class ClientesComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        // if (this.msj$) {
-        //     this.msj$.unsubscribe();
-        // }
+        if (this.msj$) {
+            this.msj$.unsubscribe();
+        }
     }
 
     listar(pagina: number = 1) {
@@ -47,8 +51,8 @@ export class ClientesComponent implements OnInit, OnDestroy {
         };
 
         this.clienteService.getClientes(params).subscribe(
-            (response: any) => {
-                this.data = response.data;
+            (response) => {
+                this.data = response.clientes;
 
                 if (response.paginacion) {
                     this.dataPaginacion = new PaginacionModel(
@@ -72,9 +76,24 @@ export class ClientesComponent implements OnInit, OnDestroy {
         );
     }
 
-    // obtenerCliente() {
-    //     console.log(this.selectItem);
-    // }
+    delete() {
+        this.msj$ = this.mensajeResponse.action('Se eliminara el cliente permanentemente', true).subscribe((action) => {
+            if (action) {
+                this.clienteService.deleteCliente(this.selectItem.idCliente).subscribe(
+                    (response) => {
+                        this.msj$ = this.mensajeResponse.succes('Cliente eliminado correctamente').subscribe((a) => {
+                            if (a) {
+                                this.listar();
+                            }
+                        });
+                    },
+                    (error) => {
+                        this.msj$ = this.mensajeResponse.danger().subscribe();
+                    }
+                );
+            }
+        });
+    }
 
     changePage(event) {
         console.log(event);
@@ -98,6 +117,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
 
     editar() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.clientes.init}/${this.selectItem.IdCliente}/${route.clientes.editar}`]);
+        this.router.navigate([`${route.clientes.init}/${this.selectItem.idCliente}/${route.clientes.editar}`]);
     }
 }

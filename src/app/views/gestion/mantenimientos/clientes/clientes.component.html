@@ -3,7 +3,18 @@
         <div class="py-3 text-right">
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.IdCliente"
+                [disabled]="!selectItem.idCliente"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Eliminar"
+                (click)="delete()"
+            >
+                <i class="mdi mdi-delete"></i>
+            </button>
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idCliente"
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
@@ -14,7 +25,7 @@
             </button>
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.IdCliente"
+                [disabled]="!selectItem.idCliente"
                 data-placement="top"
                 data-toggle="tooltip"
                 [DirectiveTooltip]
@@ -47,31 +58,29 @@
                         <th>RUC</th>
                         <th>Pago</th>
                         <th style="min-width: 160px;">Fecha de Asignación</th>
-                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         *ngFor="let item of data; let index = index"
                         (click)="selectItem = item"
-                        [ngClass]="{ highlighted: selectItem.IdCliente === item.IdCliente }"
+                        [ngClass]="{ highlighted: selectItem.idCliente === item.idCliente }"
                     >
                         <td>{{ (pagina - 1) * filas + index + 1 }}</td>
-                        <td>{{ item.Nombre }}</td>
-                        <td>{{ item.Contacto }}</td>
-                        <td>{{ item.Correo || '-' }}</td>
-                        <td>{{ item.Telefono || '-' }}</td>
-                        <td>{{ item.Direccion }}</td>
-                        <td>{{ item.Sucursal }}</td>
-                        <td>{{ item.Ubigeo }}</td>
-                        <td>{{ item.Rubro || '-' }}</td>
-                        <td>{{ item.RUC }}</td>
-                        <td>{{ item.TipoPago }}</td>
-                        <td>{{ item.FecAsignacion | date: 'dd-MM-yyyy' }}</td>
-                        <td>{{ item.Flag_Activo ? 'Activo' : 'Inactivo' }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.contacto }}</td>
+                        <td>{{ item.correo || '-' }}</td>
+                        <td>{{ item.telefono || '-' }}</td>
+                        <td>{{ item.direccion }}</td>
+                        <td>{{ item.sucursal }}</td>
+                        <td>{{ item.distrito }}</td>
+                        <td>{{ item.rubro || '-' }}</td>
+                        <td>{{ item.ruc }}</td>
+                        <td>{{ item.tipoPago }}</td>
+                        <td>{{ item.fecAsignacion }}</td>
                     </tr>
                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                        <td colspan="14">
+                        <td colspan="13">
                             No hay información disponible
                         </td>
                     </tr>
@@ -94,61 +103,61 @@
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Nombre</label>
-                        <input class="form-control" [value]="selectItem.Nombre || '-'" />
+                        <input class="form-control" [value]="selectItem.nombre || '-'" />
                     </div>
                     <div class="col-md-6">
                         <label>Contacto</label>
-                        <input class="form-control" [value]="selectItem.Contacto || '-'" />
+                        <input class="form-control" [value]="selectItem.contacto || '-'" />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Correo</label>
-                        <input class="form-control" [value]="selectItem.Correo || '-'" />
+                        <input class="form-control" [value]="selectItem.correo || '-'" />
                     </div>
                     <div class="col-md-6">
                         <label>Teléfono</label>
-                        <input class="form-control" [value]="selectItem.Telefono || '-'" />
+                        <input class="form-control" [value]="selectItem.telefono || '-'" />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Dirección</label>
-                        <input class="form-control" [value]="selectItem.Direccion || '-'" />
+                        <input class="form-control" [value]="selectItem.direccion || '-'" />
                     </div>
                     <div class="col-md-6">
                         <label>Sucursal</label>
-                        <input class="form-control" [value]="selectItem.Sucursal || '-'" />
+                        <input class="form-control" [value]="selectItem.sucursal || '-'" />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Ubigeo</label>
-                        <input class="form-control" [value]="selectItem.Ubigeo || '-'" />
+                        <input class="form-control" [value]="selectItem.distrito || '-'" />
                     </div>
                     <div class="col-md-6">
                         <label>Rubro</label>
-                        <input class="form-control" [value]="selectItem.Rubro || '-'" />
+                        <input class="form-control" [value]="selectItem.rubro || '-'" />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>RUC</label>
-                        <input class="form-control" [value]="selectItem.RUC || '-'" />
+                        <input class="form-control" [value]="selectItem.ruc || '-'" />
                     </div>
                     <div class="col-md-6">
                         <label>Tipo de Pago</label>
-                        <input class="form-control" [value]="selectItem.TipoPago || '-'" />
+                        <input class="form-control" [value]="selectItem.tipoPago || '-'" />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Fecha de Asignación</label>
-                        <input class="form-control" [value]="selectItem.FecAsignacion | date: 'dd-MM-yyyy'" />
+                        <input class="form-control" [value]="selectItem.fecAsignacion" />
                     </div>
                     <div class="col-md-6">
                         <label>Estado</label>
-                        <input class="form-control" [value]="selectItem.Flag_Activo ? 'Activo' : 'Inactivo'" />
+                        <input class="form-control" [value]="selectItem.estado ? 'Activo' : 'Inactivo'" />
                     </div>
                 </div>
             </div>

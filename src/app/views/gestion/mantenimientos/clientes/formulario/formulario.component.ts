@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { UbigeoService } from '@services/utils/ubigeo.service';
 import { ClienteService } from '@services/modulos/gestion/mantenimientos/clientes/clientes.service';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Subscription } from 'rxjs';
 import { SucursalesService } from '@services/utils/sucursales.service';
+import { Cliente, Grupo, Ubigeo } from '@models/index';
 declare var $: any;
 
 @Component({
@@ -29,6 +30,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
     loading: boolean;
     nuevo: boolean;
     sucursales: any[];
+    activos: string[];
 
     constructor(
         private router: Router,
@@ -53,6 +55,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     initData() {
         this.loading = false;
+        this.activos = [];
         this.tipoPagos = [];
         this.selectedPago = { id: '', text: 'Seleccione Tipo' };
         this.departamentos = [];
@@ -64,12 +67,13 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.selectedDistrito = { id: '', text: 'Seleccione Distrito' };
         this.nuevo = true;
         this.initForm();
-        this.listarSelects();
         this.activatedRouter.params.subscribe((params) => {
             if (params.id) {
                 this.idCliente = Number(params.id);
                 this.nuevo = false;
                 this.obtenerCliente();
+            } else {
+                this.listarSelects();
             }
         });
     }
@@ -86,23 +90,12 @@ export class FormularioComponent implements OnInit, OnDestroy {
             rubro: ['', Validators.required],
             idTipoPago: ['', Validators.required],
             observacion: ['', Validators.required],
-            sucursales: this.fb.array([], [Validators.required]),
+            sucursales: ['', Validators.required],
         });
     }
 
-    onCheckboxChange(e) {
-        const sucursales: FormArray = this.formularioCliente.get('sucursales') as FormArray;
-
-        if (e.target.checked) {
-            sucursales.push(new FormControl(e.target.value));
-        } else {
-            sucursales.controls.forEach((item: FormControl, index) => {
-                if (item.value === e.target.value) {
-                    sucursales.removeAt(index);
-                    return;
-                }
-            });
-        }
+    changeData(event) {
+        this.formularioCliente.controls.sucursales.setValue(event);
     }
 
     listarSelects() {
@@ -128,40 +121,30 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.clienteService.getUnCliente(this.idCliente).subscribe(
             (response) => {
-                console.log(response);
-                this.selectedDistrito = { id: response.IdUbigeo, text: response.Distrito };
-                this.selectedPago = { id: response.IdTipoPago, text: response.TipoPago };
+                const cliente: Cliente = response.cliente;
+                this.sucursales = this.sucursaleService.getSucursales2();
+                this.activos = cliente.sucursales;
+                this.tipoPagos = response.tipoPagos;
+                this.departamentos = response.departamentos;
+                this.provincias = response.provincias;
+                this.distritos = response.distritos;
+                this.selectedDepartamento = this.departamentos.find((departamento: Ubigeo) => cliente.idDepartamento === departamento.id);
+                this.selectedProvincia = this.provincias.find((provincia: Ubigeo) => cliente.idProvincia === provincia.id);
+                this.selectedDistrito = this.distritos.find((distrito: Ubigeo) => cliente.idUbigeo === distrito.id);
+                this.selectedPago = this.tipoPagos.find((pago: Grupo) => cliente.idTipoPago === pago.id);
                 this.formularioCliente.patchValue({
-                    nombre: response.Nombre,
-                    ruc: response.RUC,
-                    direccion: response.Direccion,
-                    telefono: response.Telefono,
-                    correo: response.Correo,
-                    contacto: response.Contacto,
-                    rubro: response.Rubro,
-                    observacion: response.Observacion,
-                    idTipoPago: response.IdTipoPago,
-                    idUbigeo: response.IdUbigeo,
+                    nombre: cliente.nombre,
+                    ruc: cliente.ruc,
+                    direccion: cliente.direccion,
+                    telefono: cliente.telefono,
+                    correo: cliente.correo,
+                    contacto: cliente.contacto,
+                    rubro: cliente.rubro,
+                    observacion: cliente.observacion,
+                    idTipoPago: cliente.idTipoPago,
+                    idUbigeo: cliente.idUbigeo,
+                    sucursales: cliente.sucursales,
                 });
-
-                // this.selectedPago = this.tipoPagos.find((pago) => pago.id === response.IdTipoPago);
-                // this.selectedDepartamento = this.departamentos.find((departamento) => departamento.id === response.IdDepartamento);
-                // console.log(this.selectedDepartamento);
-                // console.log(this.selectedDepartamento);
-                // this.getProvincias(Number(this.selectedDepartamento.id));
-                // this.ubigeoService.getHijos(Number(response.IdDepartamento)).subscribe((r) => {
-                //     this.provincias = r;
-                // });
-
-                this.getProvincias(response.IdDepartamento);
-
-                // this.ubigeoService.getHijos(Number(response.IdProvincia)).subscribe((r) => {
-                //     this.distritos = r;
-                // });
-
-                this.getDistritos(response.IdProvincia);
-                // this.selectedProvincia = this.provincias.find((provincia) => provincia.id === response.IdProvincia);
-                // this.selectedDistrito = this.distritos.find((distrito) => distrito.id === response.IdUbigeo);
                 this.loading = false;
             },
             (error) => {
@@ -218,7 +201,12 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     guardarCliente() {
         if (this.idCliente) {
-            this.clienteService.putCliente(this.idCliente, this.formularioCliente.value).subscribe(
+            const noSeleccionadas: any[] = this.sucursales
+                .map((item) => {
+                    return item.id.toString();
+                })
+                .filter((s) => !this.formularioCliente.value.sucursales.includes(s));
+            this.clienteService.putCliente(this.idCliente, { ...this.formularioCliente.value, noSeleccionadas }).subscribe(
                 (response) => {
                     this.msj$ = this.mensajeResponse.succes('Cliente actualizado correctamente').subscribe((action) => {
                         if (action) {
@@ -231,7 +219,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     this.msj$ = this.mensajeResponse.danger().subscribe();
                 }
             );
-            console.log(this.formularioCliente.value);
         } else {
             this.clienteService.postClientes(this.formularioCliente.value).subscribe(
                 (response) => {

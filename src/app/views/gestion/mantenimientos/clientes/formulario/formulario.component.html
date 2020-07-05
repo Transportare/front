@@ -99,35 +99,23 @@
                                 (selectChange)="changeTipoPago($event)"
                             ></select-default>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tipoPago">Sucursales</label>
-                            <div>
-                                <div *ngFor="let item of sucursales; let i = index">
-                                    <label>
-                                        <input type="checkbox" [value]="item.id" (change)="onCheckboxChange($event)" />
-                                        {{ item.text }}
-                                    </label>
-                                </div>
-                            </div>
+                        <div class="form-group align-items-start">
+                            <label for="observacion">Observación</label>
+                            <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="observacion">Observación</label>
-                            <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
+                        <div class="form-group align-items-start">
+                            <label for="tipoPago">Sucursales</label>
+                            <app-check-multiple
+                                *ngIf="!loading"
+                                [data]="sucursales"
+                                [activos]="activos"
+                                (changeData)="changeData($event)"
+                            ></app-check-multiple>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="observacion">Observación</label>
-                            <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <div class="p-3 text-right">
                 <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
