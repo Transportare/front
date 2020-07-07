@@ -7,7 +7,8 @@ export class Servicio {
     nombre: string;
     tiempo: number;
     observacion: string;
-    descripcion: string;
+    estado: number;
+    sucursales: string[];
 
     constructor() {}
 }

@@ -1,72 +1,82 @@
 <app-body [header]="false" [titulo]="'Nuevo Servicio'">
-    <div body>
+    <div body [formGroup]="formServicio" [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
         <div class="p-4">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="sucursal">Sucursal</label>
-                        <select id="sucursal" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Sucursal 1</option>
-                            <option>Sucursal 2</option>
-                            <option>Sucursal 3</option>
-                            <option>Sucursal 4</option>
-                        </select>
+                        <label class="required" for="cliente">Cliente</label>
+                        <select-default
+                            [data]="clientes"
+                            [selected]="clienteSelected"
+                            (selectChange)="changeCliente($event)"
+                        ></select-default>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="cliente">Cliente</label>
-                        <select id="cliente" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Cliente 1</option>
-                            <option>Cliente 2</option>
-                            <option>Cliente 3</option>
-                            <option>Cliente 4</option>
-                        </select>
+                        <label class="required" for="tipo">Tipo De Servicio</label>
+                        <select-default
+                            [data]="tipoServicios"
+                            [selected]="tipoSelected"
+                            (selectChange)="formServicio.patchValue({ idTipoServicio: $event.id })"
+                        ></select-default>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="tipo">Tipo De Servicio</label>
-                        <select id="tipo" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Tipo 1</option>
-                            <option>Tipo 2</option>
-                            <option>Tipo 3</option>
-                            <option>Tipo 4</option>
-                        </select>
+                        <label class="required" for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" formControlName="nombre" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" />
+                        <label class="required" for="tiempo">Tiempo</label>
+                        <input
+                            type="text"
+                            EnteroPositivo
+                            (valueEntero)="changeTiempo($event)"
+                            formControlName="tiempo"
+                            class="form-control"
+                            id="tiempo"
+                        />
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tiempo">Tiempo</label>
-                        <input type="text" class="form-control" id="tiempo" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group align-items-start">
                         <label for="observacion">Observación</label>
-                        <input type="text" class="form-control" id="observacion" />
+                        <textarea type="text" class="form-control" id="observacion" rows="3" formControlName="observacion"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group align-items-start">
+                        <label class="required" for="sucursales">Sucursales</label>
+                        <app-check-multiple
+                            *ngIf="!loading && clienteSelected.id !== 0"
+                            [data]="sucursales"
+                            [activos]="activos"
+                            (changeData)="formServicio.controls.sucursales.setValue($event)"
+                        ></app-check-multiple>
+                        <!-- <app-check-multiple
+                            *ngIf="!loading"
+                            [data]="sucursales"
+                            [activos]="activos"
+                            (changeData)="formServicio.controls.sucursales.setValue($event)"
+                        ></app-check-multiple> -->
+                        <span *ngIf="clienteSelected.id === 0" class="text-danger">Debe Seleccionar un cliente</span>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div footer>
         <div class="p-3 text-right">
             <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
+            <button class="btn btn-primary" type="submit" (click)="guardarServicio()" [disabled]="formServicio.invalid">
+                <span>Guardar</span>
+            </button>
         </div>
     </div>
 </app-body>
