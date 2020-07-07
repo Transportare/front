@@ -13,7 +13,6 @@ export class LoginService {
     constructor(private http: HttpClient, private router: Router) {}
 
     logIng(data) {
-        console.log('ga');
         return this.http.post(`${API_URL}login`, data);
     }
 
@@ -42,5 +41,13 @@ export class LoginService {
 
     getdataUser() {
         return JSON.parse(localStorage.getItem('user_data'));
+    }
+
+    getUserLogeado() {
+        const data = this.getdataUser();
+        if (data) {
+            const response = JSON.parse(atob(data.token.split('.')[1]));
+            return response.usuarioToken;
+        }
     }
 }
