@@ -81,9 +81,9 @@ export class FormularioComponent implements OnInit, OnDestroy {
     initForm() {
         this.formularioCliente = this.fb.group({
             nombre: ['', Validators.required],
-            ruc: ['', Validators.required],
+            ruc: ['', [Validators.required, Validators.minLength(11)]],
             direccion: ['', Validators.required],
-            telefono: ['', Validators.required],
+            telefono: ['', [Validators.required, Validators.minLength(7)]],
             correo: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
             contacto: ['', Validators.required],
             idUbigeo: ['', Validators.required],

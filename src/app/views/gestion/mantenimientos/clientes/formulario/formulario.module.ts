@@ -8,6 +8,7 @@ import { BodyModule } from '@common/body/body.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoaderModule } from '@common/loader/loader.module';
 import { CheckMultipleModule } from '@common/check-multiple/check-multiple.module';
+import { DirectivesModule } from '@directives/directives.module';
 
 @NgModule({
     declarations: [FormularioComponent],
@@ -19,6 +20,7 @@ import { CheckMultipleModule } from '@common/check-multiple/check-multiple.modul
         ReactiveFormsModule,
         LoaderModule,
         CheckMultipleModule,
+        DirectivesModule,
     ],
 })
 export class FormularioModule {}

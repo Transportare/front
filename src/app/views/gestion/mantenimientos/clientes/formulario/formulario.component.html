@@ -13,7 +13,15 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="ruc">RUC</label>
-                            <input type="text" class="form-control" id="ruc" formControlName="ruc" />
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="11"
+                                (valueEntero)="formularioCliente.patchValue({ ruc: $event })"
+                                type="text"
+                                class="form-control"
+                                id="ruc"
+                                formControlName="ruc"
+                            />
                         </div>
                     </div>
                 </div>
@@ -27,7 +35,15 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="telefono">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono" formControlName="telefono" />
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="9"
+                                (valueEntero)="formularioCliente.patchValue({ telefono: $event })"
+                                type="text"
+                                class="form-control"
+                                id="telefono"
+                                formControlName="telefono"
+                            />
                         </div>
                     </div>
                 </div>
