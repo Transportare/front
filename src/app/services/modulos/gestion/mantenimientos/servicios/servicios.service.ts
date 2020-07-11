@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Servicio } from '@models/servicio';
 import { API_URL } from 'config/api.route';
 import { map } from 'rxjs/operators';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
-import { Grupo, PaginacionModel } from '@models/index';
+import { Grupo, PaginacionModel, Servicio } from '@models/index';
 
 @Injectable({
     providedIn: 'root',
@@ -125,5 +124,13 @@ export class ServiciosService {
                 }));
             })
         );
+    }
+
+    postServicio(data: Servicio) {
+        return this.http.post(`${API_URL}servicios`, data);
+    }
+
+    putServicio(id, data: Servicio) {
+        return this.http.put(`${API_URL}servicios/${id}`, data);
     }
 }

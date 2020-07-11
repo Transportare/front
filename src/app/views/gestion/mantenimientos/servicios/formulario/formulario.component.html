@@ -61,12 +61,6 @@
                             [activos]="activos"
                             (changeData)="formServicio.controls.sucursales.setValue($event)"
                         ></app-check-multiple>
-                        <!-- <app-check-multiple
-                            *ngIf="!loading"
-                            [data]="sucursales"
-                            [activos]="activos"
-                            (changeData)="formServicio.controls.sucursales.setValue($event)"
-                        ></app-check-multiple> -->
                         <span *ngIf="clienteSelected.id === 0" class="text-danger">Debe Seleccionar un cliente</span>
                     </div>
                 </div>

@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Grupo, Servicio } from '@models/index';
 import { ServiciosService } from '@services/modulos/gestion/mantenimientos/servicios/servicios.service';
 import { LoginService } from '@services/login/login.service';
+import { Subscription } from 'rxjs';
+import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 declare var $: any;
 
 @Component({
@@ -23,13 +25,15 @@ export class FormularioComponent implements OnInit, OnDestroy {
     usuario: any;
     activos: string[];
     sucursales: any[];
+    msj$: Subscription;
 
     constructor(
         private router: Router,
         private fb: FormBuilder,
         private serviciosService: ServiciosService,
         private activatedRoute: ActivatedRoute,
-        private loginService: LoginService
+        private loginService: LoginService,
+        private mensajeResponse: MensajeResponseService
     ) {}
 
     ngOnInit() {
@@ -55,14 +59,13 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        // if (this.msj$) {
-        //     this.msj$.unsubscribe();
-        // }
+        if (this.msj$) {
+            this.msj$.unsubscribe();
+        }
     }
 
     initForm() {
         this.formServicio = this.fb.group({
-            idSucursal: [1, Validators.required],
             idCliente: ['', Validators.required],
             idTipoServicio: ['', Validators.required],
             nombre: ['', Validators.required],
@@ -98,7 +101,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 this.sucursales = response.sucursales;
                 this.activos = servicio.sucursales;
                 this.formServicio.patchValue({
-                    idSucursal: 1,
                     idCliente: servicio.idCliente,
                     idTipoServicio: servicio.idTipoServicio,
                     nombre: servicio.nombre,
@@ -138,6 +140,40 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     guardarServicio() {
         console.log(this.formServicio.value);
+        if (this.id) {
+            const noSeleccionadas: any[] = this.sucursales
+                .map((item) => {
+                    return item.id.toString();
+                })
+                .filter((s) => !this.formServicio.value.sucursales.includes(s));
+
+            console.log({ ...this.formServicio.value, noSeleccionadas });
+            this.serviciosService.putServicio(this.id, { ...this.formServicio.value, noSeleccionadas }).subscribe(
+                (response) => {
+                    this.msj$ = this.mensajeResponse.succes('Servicio actualizado correctamente').subscribe((action) => {
+                        if (action) {
+                            this.atras();
+                        }
+                    });
+                },
+                (error) => {
+                    this.msj$ = this.mensajeResponse.danger().subscribe();
+                }
+            );
+        } else {
+            this.serviciosService.postServicio(this.formServicio.value).subscribe(
+                (response) => {
+                    this.msj$ = this.mensajeResponse.succes('Servicio creado correctamente').subscribe((action) => {
+                        if (action) {
+                            this.atras();
+                        }
+                    });
+                },
+                (error) => {
+                    this.msj$ = this.mensajeResponse.danger().subscribe();
+                }
+            );
+        }
     }
 
     atras() {
