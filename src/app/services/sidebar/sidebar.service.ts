@@ -13,7 +13,6 @@ export class SidebarService {
         const data = this.loginService.getdataUser();
         if (data) {
             const response = JSON.parse(atob(data.token.split('.')[1]));
-            console.log(response);
             return this.http.get(`${API_URL}opciones/${response.usuarioToken.IdPerfil}`);
         }
     }
