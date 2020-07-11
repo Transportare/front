@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="ruc">RUC</label>
+                            <label for="ruc" class="required">RUC</label>
                             <input
                                 EnteroPositivo
                                 [maxNumerolength]="11"
@@ -22,13 +22,14 @@
                                 id="ruc"
                                 formControlName="ruc"
                             />
+                            <span *ngIf="clienteRuc" class="d-block error-input text-danger">El RUC debe ser de 11 números.</span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="direccion">Dirección</label>
+                            <label for="direccion" class="required">Dirección</label>
                             <input type="text" class="form-control" id="direccion" formControlName="direccion" />
                         </div>
                     </div>
@@ -44,6 +45,7 @@
                                 id="telefono"
                                 formControlName="telefono"
                             />
+                            <span *ngIf="clienteTelefono" class="d-block error-input text-danger">Mínimo 7 números</span>
                         </div>
                     </div>
                 </div>
@@ -51,7 +53,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="correo">Correo</label>
-                            <input type="text" class="form-control" id="correo" formControlName="correo" />
+                            <input type="email" class="form-control" id="correo" formControlName="correo" />
+                            <span *ngIf="clienteCorreo" class="d-block error-input text-danger">El patró del correo debe ser válido</span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -64,7 +67,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="departamento">Departamento</label>
+                            <label for="departamento" class="required">Departamento</label>
                             <select-default
                                 *ngIf="departamentos"
                                 [data]="departamentos"
@@ -75,7 +78,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="provincia">Provincia</label>
+                            <label for="provincia" class="required">Provincia</label>
                             <select-default
                                 *ngIf="provincias"
                                 [data]="provincias"
@@ -88,7 +91,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="distrito">Distrito</label>
+                            <label for="distrito" class="required">Distrito</label>
                             <select-default
                                 *ngIf="distritos"
                                 [data]="distritos"
@@ -107,7 +110,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="tipoPago">Tipo de Pago</label>
+                            <label for="tipoPago" class="required">Tipo de Pago</label>
                             <select-default
                                 *ngIf="tipoPagos"
                                 [data]="tipoPagos"
@@ -122,7 +125,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group align-items-start">
-                            <label for="tipoPago">Sucursales</label>
+                            <label class="required" for="tipoPago">Sucursales</label>
                             <app-check-multiple
                                 *ngIf="!loading"
                                 [data]="sucursales"

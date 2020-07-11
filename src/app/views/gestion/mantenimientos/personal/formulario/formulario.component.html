@@ -6,13 +6,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="nombres">Nombres</label>
+                            <label for="nombres" class="required">Nombres</label>
                             <input type="text" class="form-control" id="nombres" formControlName="nombres" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="apellidos">Apellidos</label>
+                            <label for="apellidos" class="required">Apellidos</label>
                             <input type="text" class="form-control" id="apellidos" formControlName="apellidos" />
                         </div>
                     </div>
@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="dni">DNI</label>
+                            <label for="dni" class="required">DNI</label>
                             <input
                                 EnteroPositivo
                                 [maxNumerolength]="8"
@@ -30,11 +30,12 @@
                                 id="dni"
                                 formControlName="dni"
                             />
+                            <span *ngIf="personalDni" class="d-block error-input text-danger">El DNI debe ser de 8 dígitos.</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                            <label for="fecha_nacimiento" class="required">Fecha de Nacimiento</label>
                             <input
                                 type="date"
                                 class="form-control"
@@ -48,7 +49,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="departamento">Departamento</label>
+                            <label for="departamento" class="required">Departamento</label>
                             <select-default
                                 [data]="departamentos"
                                 [selected]="departamentoSelected"
@@ -58,7 +59,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="provincia">Provincia</label>
+                            <label for="provincia" class="required">Provincia</label>
                             <select-default
                                 [data]="provincias"
                                 [selected]="selectedProvincia"
@@ -70,7 +71,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="distrito">Distrito</label>
+                            <label for="distrito" class="required">Distrito</label>
                             <select-default
                                 [data]="distritos"
                                 [selected]="selectedDistrito"
@@ -88,7 +89,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="genero">Género</label>
+                            <label for="genero" class="required">Género</label>
                             <select-default
                                 [data]="generos"
                                 [selected]="generoSelected"
@@ -98,7 +99,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="estado_civil">Estado Civil</label>
+                            <label for="estado_civil" class="required">Estado Civil</label>
                             <select-default
                                 [data]="estadosCiviles"
                                 [selected]="estadoSelected"
@@ -120,11 +121,12 @@
                                 (valueEntero)="formPersonal.patchValue({ telefono: $event })"
                                 formControlName="telefono"
                             />
+                            <span *ngIf="personalTelefono" class="d-block error-input text-danger">Mínimo 7 números</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="fecha_ingreso">Fecha de Ingreso</label>
+                            <label for="fecha_ingreso" class="required">Fecha de Ingreso</label>
                             <input
                                 type="date"
                                 class="form-control"
@@ -138,7 +140,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="tipo">Tipo</label>
+                            <label for="tipo" class="required">Tipo</label>
                             <select-default
                                 [data]="tipoPerfiles"
                                 [selected]="tipoSelected"
@@ -148,7 +150,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group align-items-start">
-                            <label for="codigo">Sucursales</label>
+                            <label for="codigo" class="required">Sucursales</label>
                             <app-check-multiple
                                 *ngIf="!loading"
                                 [data]="sucursales"

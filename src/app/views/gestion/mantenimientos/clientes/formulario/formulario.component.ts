@@ -83,15 +83,27 @@ export class FormularioComponent implements OnInit, OnDestroy {
             nombre: ['', Validators.required],
             ruc: ['', [Validators.required, Validators.minLength(11)]],
             direccion: ['', Validators.required],
-            telefono: ['', [Validators.required, Validators.minLength(7)]],
-            correo: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
-            contacto: ['', Validators.required],
+            telefono: ['', Validators.minLength(7)],
+            correo: ['', Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')],
+            contacto: [''],
             idUbigeo: ['', Validators.required],
-            rubro: ['', Validators.required],
+            rubro: [''],
             idTipoPago: ['', Validators.required],
-            observacion: ['', Validators.required],
+            observacion: [''],
             sucursales: ['', Validators.required],
         });
+    }
+
+    get clienteRuc() {
+        return this.formularioCliente.get('ruc').invalid && this.formularioCliente.get('ruc').touched;
+    }
+
+    get clienteTelefono() {
+        return this.formularioCliente.get('telefono').invalid && this.formularioCliente.get('telefono').touched;
+    }
+
+    get clienteCorreo() {
+        return this.formularioCliente.get('correo').invalid && this.formularioCliente.get('correo').touched;
     }
 
     changeData(event) {
@@ -161,22 +173,11 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.selectedProvincia = { id: '', text: 'Seleccione Provincia' };
         this.selectedDistrito = { id: '', text: 'Seleccione Distrito' };
         this.distritos = [];
-        // this.ubigeoService
-        //     .getHijos(Number(event.id))
-        //     .subscribe((response) => (this.provincias = [{ id: '', text: 'Seleccione Provincias' }, ...response]));
-        // this.getProvincias(Number(event.id));
         this.getProvincias(event.id);
-        // this.ubigeoService.getHijos(Number(event.id)).subscribe((response) => {
-        //     this.provincias = response;
-        // });
     }
 
     changeProvincia(event) {
         this.selectedDistrito = { id: '', text: 'Seleccione Distrito' };
-        // this.ubigeoService
-        //     .getHijos(Number(event.id))
-        //     .subscribe((response) => (this.distritos = [{ id: '', text: 'Seleccione Distrito' }, ...response]));
-        // this.ubigeoService.getHijos(Number(event.id)).subscribe((response) => (this.distritos = response));
         this.getDistritos(event.id);
     }
 

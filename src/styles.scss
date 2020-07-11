@@ -31,7 +31,7 @@ tr.highlighted td {
 
 @media screen and (min-width: 991px) {
     .form-group {
-        grid-template-columns: 100px 1fr;
+        grid-template-columns: 150px 1fr;
         margin-bottom: 2em !important;
         align-items: center;
     }
@@ -39,6 +39,15 @@ tr.highlighted td {
     .form-group label {
         margin-bottom: 0em;
     }
+
+    .error-input {
+        grid-column: 2/3;
+        margin-top: 1em;
+    }
+}
+
+.error-input {
+    margin-top: 1em;
 }
 
 .border-bottom-1 {

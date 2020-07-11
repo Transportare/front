@@ -90,14 +90,22 @@ export class FormularioComponent implements OnInit, OnDestroy {
             apellidos: ['', Validators.required],
             dni: ['', [Validators.required, Validators.minLength(8)]],
             fecNacimiento: ['', Validators.required],
-            direccion: ['', Validators.required],
+            direccion: [''],
             idGenero: ['', Validators.required],
             idEstadoCivil: ['', Validators.required],
-            telefono: ['', [Validators.required, Validators.minLength(7)]],
+            telefono: ['', Validators.minLength(7)],
             fecIngreso: ['', Validators.required],
             idTipoPersonal: ['', Validators.required],
             sucursales: ['', Validators.required],
         });
+    }
+
+    get personalDni() {
+        return this.formPersonal.get('dni').invalid && this.formPersonal.get('dni').touched;
+    }
+
+    get personalTelefono() {
+        return this.formPersonal.get('telefono').invalid && this.formPersonal.get('telefono').touched;
     }
 
     listarSelects() {
