@@ -6,3 +6,4 @@ export { Grupo } from './grupo';
 export { Ubigeo } from './ubigeo';
 export { Personal } from './personal';
 export { Perfil } from './perfil';
+export { OrdenServicio } from './ordenServicio';

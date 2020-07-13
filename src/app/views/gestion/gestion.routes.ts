@@ -10,6 +10,13 @@ export const routes: Routes = [
         data: { roleId: [10] },
     },
     {
+        canActivate: [PerfilGuard],
+        canActivateChild: [PerfilGuard],
+        path: 'procesos',
+        loadChildren: () => import('./procesos/procesos.module').then((m) => m.ProcesosModule),
+        data: { roleId: [20] },
+    },
+    {
         path: '',
         redirectTo: '/dashboard',
     },

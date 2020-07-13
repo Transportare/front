@@ -1,0 +1,165 @@
+<app-body [header]="true" [titulo]="'Orden de Servicios'">
+    <div header>
+        <div class="py-3 text-right">
+            <!-- <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idOrdenServicio"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Detalle"
+                (click)="detalle()"
+            >
+                <i class="mdi mdi-format-list-bulleted"></i>
+            </button> -->
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idOrdenServicio"
+                data-placement="top"
+                data-toggle="tooltip"
+                [DirectiveTooltip]
+                title="Editar"
+                (click)="editar()"
+            >
+                <i class="mdi mdi-pencil"></i>
+            </button>
+            <button class="btn btn-outline-primary ml-3" (click)="nuevo()">
+                Nuevo
+            </button>
+        </div>
+    </div>
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover box-shadow">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Número Orden</th>
+                        <th>Creacion</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Sucursal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let item of ordenes; let index = index"
+                        (click)="selectItem = item"
+                        [ngClass]="{ highlighted: selectItem.idOrdenServicio === item.idOrdenServicio }"
+                    >
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.idOrdenServicio }}</td>
+                        <td>{{ item.fecCreacion }}</td>
+                        <td>{{ item.cliente }}</td>
+                        <td>{{ item.servicio }}</td>
+                        <td>{{ item.sucursal }}</td>
+                    </tr>
+                    <tr class="text-center" *ngIf="!ordenes || (ordenes && ordenes.length === 0)">
+                        <td colspan="7">
+                            No hay información disponible
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-paginacion [data]="dataPaginacion" (changePage)="listar($event)"></app-paginacion>
+    </div>
+</app-body>
+
+<div class="modal fade" #modalNuevaOrden tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">Nueva Orden Servicio</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-12">
+                        <label class="required">Cliente</label>
+                        <select-default
+                            [data]="clientes"
+                            [selected]="clienteSelected"
+                            (selectChange)="changeCliente($event)"
+                        ></select-default>
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-12">
+                        <label class="required">Servicio</label>
+                        <select-default
+                            [data]="servicios"
+                            [selected]="servicioSelected"
+                            (selectChange)="servicioSelected = $event"
+                        ></select-default>
+                    </div>
+                </div>
+                <div class="row mb-2 mx-0">
+                    <div class="col-md-12">
+                        <label>Observacion</label>
+                        <textarea rows="3" class="form-control" [formControl]="observacion"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
+                    Cancelar
+                </button>
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="clienteSelected.id === 0 || servicioSelected.id === 0"
+                    (click)="generarOrden()"
+                >
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" #modalEditarOrden tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">Editar Orden Servicio - {{ selectItem.idOrdenServicio }}</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row mx-0">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Tiempo</label>
+                            <input type="text" class="form-control" [value]="'04 Días'" readonly disabled />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-12">
+                        <label class="required">Recepción</label>
+                        <input type="date" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-12">
+                        <label class="required">Inicio</label>
+                        <input type="text" class="form-control" [value]="'13/07/2020'" readonly disabled />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-12">
+                        <label class="required">Fin</label>
+                        <input type="text" class="form-control" [value]="'16/07/2020'" readonly disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <button type="button" class="btn btn-secondary mr-2" (click)="cerrarEditarOrden()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary" (click)="generarEditarOrden()">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
