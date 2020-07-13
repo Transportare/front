@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Personal, Grupo, Ubigeo } from '@models/index';
 import { SucursalesService } from '@services/utils/sucursales.service';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -127,6 +128,12 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     changeData(event) {
         this.formPersonal.controls.sucursales.setValue(event);
+    }
+
+    changeFechaNacimiento(event) {
+        this.formPersonal.patchValue({
+            fecNacimiento: moment(event).format('YYYY-MM-DD'),
+        });
     }
 
     obtenerPersonal() {
