@@ -7,6 +7,11 @@ export const routes: Routes = [
         data: { roleId: [21] },
     },
     {
+        path: 'carga-datos',
+        loadChildren: () => import('./carga-datos/carga-datos.module').then((m) => m.CargaDatosModule),
+        data: { roleId: [22] },
+    },
+    {
         path: '',
         redirectTo: '/dashboard',
     },

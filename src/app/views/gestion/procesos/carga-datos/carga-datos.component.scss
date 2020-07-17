@@ -1,0 +1,28 @@
+.card-body_imagen {
+    border: dashed #eaecf4 2px;
+    text-align: center;
+    color: rgb(41, 75, 112);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    min-height: 170px;
+    cursor: pointer;
+}
+
+.file-over.card-body_imagen {
+    border-color: #294b70 !important;
+    color: #294b70 !important;
+}
+
+input[type='file'] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
