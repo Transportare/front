@@ -8,7 +8,7 @@
         <loader *ngIf="loading"></loader>
         <div>
             <div class="row mx-0">
-                <div class="col-md-6 px-4 pb-4 pt-2">
+                <div class="col-md-12 col-lg-5 px-4 pb-4 pt-2">
                     <div class="form-group">
                         <label for="telefono">Nro. Órden</label>
                         <input type="text" class="form-control" />
@@ -22,10 +22,21 @@
                         <input type="text" class="form-control" readonly disabled />
                     </div>
                 </div>
-                <!-- <div class="col-md-6 px-4 pb-3 pt-3"> -->
-                <div class="col-md-6 pt-2 pr-4">
-                    <div class="alert alert-danger">
-                        This is a warning alert—check it out!
+                <div class="col-md-12 col-lg-7 pt-2 pr-4">
+                    <div class="alert alert-info">
+                        <ul>
+                            <li>
+                                El usuario que cargará deberá de pertenecer a una sucursal o sede.
+                            </li>
+                            <li>
+                                Los nombres de las columnas del archivo Excel, no deberón tener tildes, ni espacios en blanco, ni puntos, ni
+                                caracteres extraños ($|#"/%.').
+                            </li>
+                            <li>El archivo csv deberá de tener una columna con el nombre >> ORDENAR y DISTRITO.</li>
+                            <li>Los datos del campo DISTRITO no deberá contener caracteres extraños ($|#"/%.')</li>
+                            <li>LAS COLUMNAS DEL ARCHIVO CSV DEBERÁN SER DE TIPO TEXTO.</li>
+                            <li>LIMPIAR EL FORMATO Y QUITAR LOS FILTROS DEL ARCHIVO CSV.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -50,10 +61,22 @@
                         [archivo]="archivo"
                     >
                         Arrastra los archivos aquí para subirlos
-                        <input type="file" #file [multiple]="false" accept=".xlsx, .xls" (change)="onFileChange($event)" />
+                        <input type="file" #file [multiple]="false" accept=".csv" (change)="onFileChange($event)" />
                     </div>
+                    <div class="archivo-dropeado-content" *ngIf="archivo.length">
+                        <div class="archivo-dropeado">
+                            <div class="archivo-icono mr-3">
+                                <i class="mdi mdi-file"></i>
+                            </div>
+                            <div class="archivo-descripcion">
+                                <p class="mb-0">{{ archivo[0].name }}</p>
+                            </div>
+                        </div>
+                        <i class="mdi mdi-close" (click)="deleteFile()"></i>
+                    </div>
+                    <span class="response success" *ngIf="!error.status && error.message.length > 0">{{ error.message }}</span>
+                    <span class="response danger" *ngIf="error.status && error.message.length > 0">{{ error.message }}</span>
                 </div>
-                <div>{{ error | json }}</div>
             </div>
             <div class="modal-footer text-right">
                 <button type="button" class="btn btn-secondary mr-2" (click)="cerrarCarga()">

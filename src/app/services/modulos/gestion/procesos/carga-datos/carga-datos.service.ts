@@ -11,7 +11,8 @@ export class CargaDatosService {
     postCargarDatos(data: File) {
         const formData = new FormData();
         formData.append('archivo', data);
+        formData.append('idOrdenServicio', '6648');
 
-        return this.http.post(`${API_URL}clienteConsignado/upload`, data);
+        return this.http.post(`${API_URL}clienteConsignado/upload`, formData);
     }
 }

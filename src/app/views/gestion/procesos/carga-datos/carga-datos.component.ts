@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { FileItem } from '@models/index';
 import { CargaDatosService } from '@services/modulos/gestion/procesos/carga-datos/carga-datos.service';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 declare var $: any;
 
 @Component({
@@ -40,30 +41,63 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
 
     cerrarCarga() {
         $(this.modalCarga.nativeElement).modal('hide');
+        this.deleteFile();
+    }
+
+    deleteFile() {
+        this.archivo = [];
+        this.error = { message: '', status: false };
     }
 
     guardarCarga() {
-        console.log(this.archivo[0]);
+        if (!this.archivo[0]) return;
+        $(this.modalCarga.nativeElement).modal('hide');
+        this.infoResponse('', 'Espere por favor', 'info');
 
         this.cargarDatosService.postCargarDatos(this.archivo[0].archivo).subscribe(
-            (response) => {
-                console.log(response);
+            (response: any) => {
+                if (response.succes) {
+                    console.log(response);
+                    Swal.close();
+                    this.msj$ = this.mensajeResponse.succes(response.message).subscribe((action) => {
+                        if (action) this.cerrarCarga();
+                    });
+                }
             },
-            (error) => {
+            (error: any) => {
                 console.log(error);
+                Swal.close();
+                this.msj$ = this.mensajeResponse.danger(error.error.message).subscribe((action) => {
+                    if (action) this.cerrarCarga();
+                });
             }
         );
+    }
+
+    private infoResponse(texto: string, titulo: string, action: SweetAlertIcon) {
+        Swal.fire({
+            icon: action,
+            title: titulo,
+            text: texto,
+            onBeforeOpen: () => {
+                Swal.showLoading();
+            },
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+        });
     }
 
     onFileChange(event) {
         const file: FileList = event.target.files;
 
-        if (file[0].name.toLocaleLowerCase().split('.').pop() !== 'xlsx' && file[0].name.toLocaleLowerCase().split('.').pop() !== 'xls') {
-            this.error = { message: 'Solo se aceptan archivos con formato excel.', status: true };
+        if (!file[0]) return;
+
+        if (file[0].name.toLocaleLowerCase().split('.').pop() !== 'csv') {
+            this.error = { message: 'Solo se aceptan archivos con formato csv.', status: true };
             return;
         } else {
             this.error = { message: 'Archivo cargado correctamente.', status: false };
-            this.archivo = [new FileItem(file[0])];
+            this.archivo[0] = new FileItem(file[0]);
         }
     }
 

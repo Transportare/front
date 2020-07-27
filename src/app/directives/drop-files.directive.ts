@@ -65,11 +65,11 @@ export class DropFilesDirective implements OnInit {
             return false;
         }
 
-        if (archivo.name.toLocaleLowerCase().split('.').pop() === 'xlsx' || archivo.name.toLocaleLowerCase().split('.').pop() === 'xls') {
+        if (archivo.name.toLocaleLowerCase().split('.').pop() === 'csv') {
             this.errorDrop.emit({ message: 'Archivo cargado correctamente.', status: false });
             return true;
         } else {
-            this.errorDrop.emit({ message: 'Solo se aceptan archivos con formato excel.', status: true });
+            this.errorDrop.emit({ message: 'Solo se aceptan archivos con formato csv.', status: true });
             return false;
         }
     }
