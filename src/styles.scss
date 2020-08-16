@@ -29,9 +29,17 @@ tr.highlighted td {
     margin-bottom: 1em;
 }
 
+.form-group.group-normal {
+    display: block;
+}
+
+.form-group.group-normal label {
+    margin-bottom: 1em;
+}
+
 @media screen and (min-width: 991px) {
     .form-group {
-        grid-template-columns: 150px 1fr;
+        grid-template-columns: 100px 1fr;
         margin-bottom: 2em !important;
         align-items: center;
     }

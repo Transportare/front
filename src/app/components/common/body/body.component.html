@@ -9,9 +9,5 @@
         <ng-content select="[body]"></ng-content>
         <ng-content select="[footer]"></ng-content>
     </div>
-    <div class="card" *ngIf="bodyCard">
-        <div class="card-body">
-            <ng-content select="[body-card]"></ng-content>
-        </div>
-    </div>
+    <ng-content select="[body-card]" *ngIf="bodyCard"></ng-content>
 </div>
