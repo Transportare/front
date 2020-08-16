@@ -1,0 +1,181 @@
+<app-body [header]="true" [titulo]="'Nuevo Registro'" [body]="false" [bodyCard]="true">
+    <div body-card>
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Remitente</b></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dniRemitente" class="required">DNI</label>
+                                    <input type="text" class="form-control" id="dniRemitente" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="sucursalRemitente" class="required">Sucursal</label>
+                                    <input type="text" class="form-control" id="sucursalRemitente" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombreRemitente" class="required">Nombres</label>
+                                    <input type="text" class="form-control" id="nombreRemitente" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="apellidosRemitente" class="required">Apellidos</label>
+                                    <input type="text" class="form-control" id="apellidosRemitente" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="direccionRemitente" class="required">Dirección</label>
+                                    <input type="text" class="form-control" id="direccionRemitente" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Destinatario</b></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dni" class="required">DNI</label>
+                                    <input type="text" class="form-control" id="dni" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="sucursal" class="required">Sucursal</label>
+                                    <select-default [data]="sucursales" [selected]="sucursalSelected"></select-default>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombre" class="required">Nombres</label>
+                                    <input type="text" class="form-control" id="nombre" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="apellidos" class="required">Apellidos</label>
+                                    <input type="text" class="form-control" id="apellidos" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tipoEntrega" class="required">Entrega</label>
+                                    <label>
+                                        <input type="checkbox" (change)="changeTipoEntrega($event)" />
+                                        Despacho a Domicilio
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="domicilio">
+                                <div class="form-group">
+                                    <label for="distrito" class="required">Distrito</label>
+                                    <select-default [data]="distritos" [selected]="distritoSelected"></select-default>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="domicilio">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="direccion" class="required">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="domicilio">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="referencia" class="required">Referencia</label>
+                                    <input type="text" class="form-control" id="referencia" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Paquete</b></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="piezas" class="required">Cantidad de Piezas</label>
+                                    <input type="text" class="form-control" id="piezas" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="peso" class="required">Peso Total</label>
+                                    <input type="text" class="form-control" id="peso" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tipoPaquete" class="required">Tipo de Paquete</label>
+                                    <select-default [data]="tipoPaquetes" [selected]="tipoPaqueteSelected"></select-default>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- <h5 class="card-title"><b>Paquete</b></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="piezas" class="required">Cantidad de<br />Piezas</label>
+                                    <input type="text" class="form-control" id="piezas" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="peso" class="required">Peso Total</label>
+                                    <input type="text" class="form-control" id="peso" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tipoPaquete" class="required">Tipo de Paquete</label>
+                                    <select-default [data]="tipoPaquetes" [selected]="tipoPaqueteSelected"></select-default>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="text-right">
+                            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+                            <button class="btn btn-primary" type="submit">
+                                <span>Guardar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-body>
