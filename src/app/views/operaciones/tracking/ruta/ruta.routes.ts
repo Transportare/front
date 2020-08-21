@@ -9,7 +9,6 @@ export const routes: Routes = [
     },
     {
         path: 'nuevo',
-        component: FormularioComponent,
         loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
     },
 ];
