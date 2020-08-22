@@ -40,4 +40,12 @@ export class SucursalesService {
         const idSucursal = this.getSucursal();
         return this.getSucursales().find((item) => item.id === Number(idSucursal));
     }
+
+    getAllSucursales() {
+        return this.http.get(`${API_URL}sucursales`).pipe(
+            map((response: any) => {
+                return response.data.map((item) => ({ id: item.IdSucursal, text: item.Nombre }));
+            })
+        );
+    }
 }

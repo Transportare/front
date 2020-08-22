@@ -34,6 +34,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
     remitente: Remitente;
     destinatario: Destinatario;
     paquete: Paquete;
+    nombreSucursal: string;
 
     constructor(
         private router: Router,
@@ -68,11 +69,11 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.sucursales = this.sucursalesService.getSucursales();
-        const sucursal = this.sucursalesService.getSucursalCompleta();
-        this.formRegistro.patchValue({
-            sucursalRemitente: sucursal.text,
+        this.sucursalesService.getAllSucursales().subscribe((response) => {
+            this.sucursales = response;
         });
+        const sucursal = this.sucursalesService.getSucursalCompleta();
+        this.nombreSucursal = sucursal.text;
         this.tablaGeneralService.getSelectPorGrupo(12).subscribe((response) => {
             this.tipoPaquetes = response;
         });
@@ -87,10 +88,12 @@ export class FormularioComponent implements OnInit, OnDestroy {
     initForm() {
         this.formRegistro = this.fb.group({
             dni: ['', Validators.required],
-            nombres: ['', Validators.required],
-            apellidos: ['', Validators.required],
-            direccion: ['', Validators.required],
-            sucursalRemitente: [{ value: '', disabled: true }, Validators.required],
+            // nombres: ['', Validators.required],
+            // apellidos: ['', Validators.required],
+            // direccion: ['', Validators.required],
+            nombres: [{ value: '', disabled: true }, Validators.required],
+            apellidos: [{ value: '', disabled: true }, Validators.required],
+            direccion: [{ value: '', disabled: true }],
 
             dniDestinatario: ['', Validators.required],
             idSucursalDestino: ['', Validators.required],
@@ -147,7 +150,14 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     guardar() {
-        this.rutaService.postRuta(this.formRegistro.value).subscribe(
+        const data = {
+            ...this.formRegistro.value,
+            nombres: this.formRegistro.value.nombres || '',
+            apellidos: this.formRegistro.value.apellidos || '',
+            direccion: this.formRegistro.value.direccion || '',
+        };
+
+        this.rutaService.postRuta(data).subscribe(
             (response: any) => {
                 this.destinatario = response.data.destinatario;
                 this.remitente = response.data.remitente;
@@ -217,7 +227,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
                                 borderColor: ['#000000', '#ffffff', '#ffffff', '#ffffff'],
                             },
                             {
-                                text: `${this.remitente.direccion}`,
+                                text: `${this.remitente.direccion || '-'}`,
                                 colSpan: 2,
                                 borderColor: ['#ffffff', '#ffffff', '#000000', '#ffffff'],
                             },
@@ -331,6 +341,40 @@ export class FormularioComponent implements OnInit, OnDestroy {
         };
 
         pdfMake.createPdf(documentDefinition).open();
+    }
+
+    verificarDni() {
+        if (this.formRegistro.value.dni.length < 8) {
+            return;
+        }
+
+        this.rutaService.getClientesDni(this.formRegistro.value.dni).subscribe((response: any) => {
+            console.log(response);
+            const data = response.data;
+            console.log(data);
+            if (data) {
+                this.formRegistro.patchValue({
+                    nombres: data.Nombre,
+                    apellidos: data.Apellidos,
+                    direccion: data.Direccion,
+                });
+                this.formRegistro.get('nombres').disable();
+                this.formRegistro.get('apellidos').disable();
+                this.formRegistro.get('direccion').disable();
+            } else {
+                this.formRegistro.patchValue({
+                    nombres: '',
+                    apellidos: '',
+                    direccion: '',
+                });
+                this.formRegistro.get('nombres').enable();
+                this.formRegistro.get('apellidos').enable();
+                this.formRegistro.get('direccion').enable();
+            }
+            this.formRegistro.get('nombres').updateValueAndValidity();
+            this.formRegistro.get('apellidos').updateValueAndValidity();
+            this.formRegistro.get('direccion').updateValueAndValidity();
+        });
     }
 
     atras() {

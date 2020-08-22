@@ -9,6 +9,8 @@ export class Ruta {
     cantidadPaquetes: number;
     fechaRegistro: string;
     pesoTotal: string;
+    envio: string;
+    destino: string;
 
     constructor() {}
 }

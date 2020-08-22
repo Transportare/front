@@ -31,6 +31,8 @@ export class RutaService {
                         cantidadPaquetes: item.CantidadPaquetes,
                         pesoTotal: item.PesoTotal,
                         fechaRegistro: moment(item.FechaRegistro).format('DD/MM/YYYY'),
+                        envio: item.Envio,
+                        destino: item.Destino,
                     };
 
                     return ruta;
@@ -47,5 +49,9 @@ export class RutaService {
                 return response.data.map((item): Ubigeo => ({ id: item.IdUbigeo, text: item.Descripcion, padre: '' }));
             })
         );
+    }
+
+    getClientesDni(dni) {
+        return this.http.get(`${API_URL}clientes/dni/${dni}`);
     }
 }

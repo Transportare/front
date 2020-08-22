@@ -5,7 +5,9 @@
             <div class="col-md-12 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><b>Remitente</b></h5>
+                        <h5 class="card-title">
+                            <b>Remitente - {{ nombreSucursal }}</b>
+                        </h5>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -21,11 +23,21 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="sucursalRemitente" class="required">Sucursal</label>
-                                    <input type="text" class="form-control" id="sucursalRemitente" formControlName="sucursalRemitente" />
-                                </div>
+                            <div class="col-md-4">
+                                <!-- <div class="form-group text-right">
+                                    <label></label>
+                                    <button class="btn btn-primary" type="button" (click)="verificarDni()">
+                                        <span>Validar</span>
+                                    </button>
+                                </div> -->
+                                <button
+                                    class="btn btn-primary"
+                                    type="button"
+                                    [disabled]="formRegistro.value.dni.length < 8"
+                                    (click)="verificarDni()"
+                                >
+                                    <span>Validar</span>
+                                </button>
                             </div>
                         </div>
                         <div class="row">
@@ -45,7 +57,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="direccion" class="required">Dirección</label>
+                                    <label for="direccion">Dirección</label>
                                     <input type="text" class="form-control" id="direccion" formControlName="direccion" />
                                 </div>
                             </div>
@@ -121,7 +133,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="tipoEntrega" class="required">Entrega</label>
+                                    <label for="tipoEntrega">Entrega</label>
                                     <label>
                                         <input type="checkbox" (change)="changeTipoEntrega($event)" />
                                         Despacho a Domicilio
@@ -179,7 +191,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="pesoTotal" class="required">Peso Total</label>
+                                    <label for="pesoTotal" class="required">Peso Total (Kg)</label>
                                     <input
                                         type="text"
                                         class="form-control"

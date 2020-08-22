@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PaginacionModel } from '../../../models/paginacion.model';
+import { PaginacionModel } from '@models/index';
 
 @Component({
     selector: 'app-paginacion',
