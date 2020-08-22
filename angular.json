@@ -34,7 +34,7 @@
                         ],
                         "scripts": [
                             "src/assets/plugins/jquery/jquery.min.js",
-                            "src/assets/plugins/bootstrap/bootstrap.min.js",
+                            "src/assets/plugins/bootstrap/bootstrap.bundle.min.js",
                             "src/assets/js/sb-admin-2.js"
                         ]
                     },

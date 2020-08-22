@@ -131,7 +131,11 @@
                             <div class="col-md-6" *ngIf="domicilio">
                                 <div class="form-group">
                                     <label for="distrito" class="required">Distrito</label>
-                                    <select-default [data]="distritos" [selected]="distritoSelected"></select-default>
+                                    <select-default
+                                        [data]="distritos"
+                                        [selected]="distritoSelected"
+                                        (selectChange)="changeDistrito($event)"
+                                    ></select-default>
                                 </div>
                             </div>
                         </div>

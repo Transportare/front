@@ -35,4 +35,9 @@ export class SucursalesService {
     getSucursal() {
         return localStorage.getItem('sucursal');
     }
+
+    getSucursalCompleta() {
+        const idSucursal = this.getSucursal();
+        return this.getSucursales().find((item) => item.id === Number(idSucursal));
+    }
 }

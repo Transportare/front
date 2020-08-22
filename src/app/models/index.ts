@@ -8,3 +8,4 @@ export { Personal } from './personal';
 export { Perfil } from './perfil';
 export { OrdenServicio } from './ordenServicio';
 export { FileItem } from './file-item';
+export { Ruta } from './ruta';

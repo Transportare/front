@@ -15,7 +15,6 @@ export class ClienteService {
     getClientes(params): Observable<{ clientes: Cliente[]; paginacion: PaginacionModel }> {
         return this.http.get(`${API_URL}clientes`, { params }).pipe(
             map((response: any) => {
-                console.log(response);
                 const paginacion: PaginacionModel = response.paginacion;
                 const clientes: Cliente[] = response.data.map((client) => {
                     const cliente: Cliente = {

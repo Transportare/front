@@ -13,6 +13,7 @@ import { SucursalesService } from '@services/utils/sucursales.service';
 import { RutaService } from '@services/modulos/operaciones/tracking/ruta/ruta.service';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
+import { Ubigeo } from '@models/index';
 
 @Component({
     selector: 'app-formulario',
@@ -25,11 +26,10 @@ export class FormularioComponent implements OnInit, OnDestroy {
     sucursalSelected: any;
     tipoPaquetes: any[];
     tipoPaqueteSelected: any;
-    distritos: any[];
-    distritoSelected: any;
+    distritos: Ubigeo[];
+    distritoSelected: Ubigeo;
     domicilio: boolean;
     paquetes: any[];
-    data: any;
     formRegistro: FormGroup;
     remitente: Remitente;
     destinatario: Destinatario;
@@ -50,7 +50,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.tipoPaquetes = [];
         this.tipoPaqueteSelected = { id: '', text: 'Seleccione Tipo' };
         this.distritos = [];
-        this.distritoSelected = { id: '', text: 'Seleccione Distrito' };
+        this.distritoSelected = { id: '', text: 'Seleccione Distrito', padre: '' };
         this.domicilio = false;
         this.paquetes = [];
         this.remitente = { nombres: '', apellidos: '', direccion: '', localidad: '', sucursal: '' };
@@ -69,6 +69,10 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.sucursales = this.sucursalesService.getSucursales();
+        const sucursal = this.sucursalesService.getSucursalCompleta();
+        this.formRegistro.patchValue({
+            sucursalRemitente: sucursal.text,
+        });
         this.tablaGeneralService.getSelectPorGrupo(12).subscribe((response) => {
             this.tipoPaquetes = response;
         });
@@ -93,9 +97,9 @@ export class FormularioComponent implements OnInit, OnDestroy {
             nombreDestinatario: ['', Validators.required],
             apellidoDestinatario: ['', Validators.required],
             telefonoDestinatario: ['', Validators.required],
-            idUbigeoDestino: ['010101'],
-            direccionDestino: [''],
-            referenciaDestino: [''],
+            idUbigeoDestino: [null],
+            direccionDestino: [null],
+            referenciaDestino: [null],
 
             cantidadPaquetes: ['', Validators.required],
             pesoTotal: ['', Validators.required],
@@ -113,17 +117,32 @@ export class FormularioComponent implements OnInit, OnDestroy {
             this.formRegistro.get('idUbigeoDestino').clearValidators();
             this.formRegistro.get('direccionDestino').clearValidators();
             this.formRegistro.get('referenciaDestino').clearValidators();
+            this.formRegistro.patchValue({
+                idUbigeoDestino: null,
+                direccionDestino: null,
+                referenciaDestino: null,
+            });
         }
         this.formRegistro.get('idUbigeoDestino').updateValueAndValidity();
         this.formRegistro.get('direccionDestino').updateValueAndValidity();
         this.formRegistro.get('referenciaDestino').updateValueAndValidity();
-        console.log(this.sucursalSelected);
     }
 
     changeSucursal(event) {
         this.sucursalSelected = event;
         this.formRegistro.patchValue({
             idSucursalDestino: this.sucursalSelected.id,
+            idUbigeoDestino: null,
+        });
+        this.distritoSelected = { id: '', text: 'Seleccione Distrito', padre: '' };
+        this.rutaService.getDistrito(this.sucursalSelected.id).subscribe((response) => {
+            this.distritos = response;
+        });
+    }
+
+    changeDistrito(event) {
+        this.formRegistro.patchValue({
+            idUbigeoDestino: event.id,
         });
     }
 
@@ -153,7 +172,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     generarTicket() {
-        console.log(this.paquete);
         for (let i = 1; i <= Number(this.paquete.cantidad); i++) {
             const element = {
                 pageBreak: 'before',
@@ -253,7 +271,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
                                 borderColor: ['#000000', '#ffffff', '#ffffff', '#ffffff'],
                             },
                             {
-                                text: `${this.destinatario.direccion}`,
+                                text: `${this.destinatario.direccion || '-'}`,
                                 colSpan: 2,
                                 borderColor: ['#ffffff', '#ffffff', '#000000', '#ffffff'],
                             },
@@ -265,7 +283,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
                                 borderColor: ['#000000', '#ffffff', '#ffffff', '#ffffff'],
                             },
                             {
-                                text: `${this.destinatario.localidad}`,
+                                text: `${this.destinatario.localidad || '-'}`,
                                 colSpan: 2,
                                 borderColor: ['#ffffff', '#ffffff', '#000000', '#ffffff'],
                             },
@@ -277,7 +295,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
                                 borderColor: ['#000000', '#ffffff', '#ffffff', '#000000'],
                             },
                             {
-                                text: `${this.destinatario.referencia}`,
+                                text: `${this.destinatario.referencia || '-'}`,
                                 colSpan: 2,
                                 borderColor: ['#000000', '#ffffff', '#000000', '#000000'],
                             },
