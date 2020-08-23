@@ -7,7 +7,7 @@ export const routes: Routes = [
         canActivateChild: [PerfilGuard],
         path: 'salida-masivo',
         loadChildren: () => import('./salidas-masivo/salidas-masivo.module').then((m) => m.SalidasMasivoModule),
-        data: { roleId: [20] },
+        data: { roleId: [31] },
     },
     {
         path: '',

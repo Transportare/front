@@ -7,14 +7,14 @@ export const routes: Routes = [
         canActivateChild: [PerfilGuard],
         path: 'ruta',
         loadChildren: () => import('./ruta/ruta.module').then((m) => m.RutaModule),
-        data: { roleId: [20] },
+        data: { roleId: [51] },
     },
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
         path: 'salida-retorno-ruta',
         loadChildren: () => import('./salida-retorno/salida-retorno.module').then((m) => m.SalidaRetornoModule),
-        data: { roleId: [20] },
+        data: { roleId: [52] },
     },
     {
         path: '',

@@ -18,7 +18,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard, PerfilGuard],
         path: 'operaciones',
         loadChildren: () => import('./operaciones/operaciones.module').then((m) => m.OperacionesModule),
-        data: { roleId: [1] },
+        data: { roleId: [2] },
     },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];

@@ -12,16 +12,16 @@ export const routes: Routes = [
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
-        path: 'tracking',
-        loadChildren: () => import('./tracking/tracking.module').then((m) => m.TrackingModule),
-        data: { roleId: [20] },
+        path: 'paqueteria',
+        loadChildren: () => import('./paqueteria/paqueteria.module').then((m) => m.PaqueteriaModule),
+        data: { roleId: [50] },
     },
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
         path: 'despachos',
         loadChildren: () => import('./despachos/despachos.module').then((m) => m.DespachosModule),
-        data: { roleId: [20] },
+        data: { roleId: [30] },
     },
     {
         path: '',

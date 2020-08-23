@@ -34,7 +34,7 @@ export class OrdenServicioComponent implements OnInit, OnDestroy {
         private orderServicioService: OrdenServicioService
     ) {
         this.pagina = 1;
-        this.filas = 5;
+        this.filas = 10;
         this.selectItem = new OrdenServicio();
         this.observacion = new FormControl('');
         this.dataPaginacion = new PaginacionModel(0, 0, 0, 0, 0, 0, 0, 0);

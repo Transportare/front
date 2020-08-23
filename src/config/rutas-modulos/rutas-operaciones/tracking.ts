@@ -1,5 +1,5 @@
 import { comunes } from './comunes';
-const item = `${comunes.init}tracking`;
+const item = `${comunes.init}paqueteria`;
 export const RUTAS_OPERACIONES_TRACKING = {
     init: `${item}`,
     ruta: {
