@@ -74,7 +74,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.activos = [];
         this.generoSelected = { id: 0, text: 'Seleccione Género', grupo: '' };
         this.estadoSelected = { id: 0, text: 'Seleccione Estado', grupo: '' };
-        this.tipoSelected = { id: 0, text: 'Seleccione Tipo', grupo: '' };
+        this.tipoSelected = { id: 0, text: 'Seleccione Cargo', grupo: '' };
         this.departamentoSelected = { id: '', text: 'Seleccione Departamento', padre: '' };
         this.provincias = [];
         this.selectedProvincia = { id: '', text: 'Seleccione Provincia', padre: '' };

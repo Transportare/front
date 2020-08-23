@@ -13,7 +13,7 @@ import { SucursalesService } from '@services/utils/sucursales.service';
 import { RutaService } from '@services/modulos/operaciones/tracking/ruta/ruta.service';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
-import { Ubigeo } from '@models/index';
+import { Ubigeo, Grupo } from '@models/index';
 
 @Component({
     selector: 'app-formulario',
@@ -24,8 +24,8 @@ export class FormularioComponent implements OnInit, OnDestroy {
     loading: boolean;
     sucursales: any[];
     sucursalSelected: any;
-    tipoPaquetes: any[];
-    tipoPaqueteSelected: any;
+    tipoPaquetes: Grupo[];
+    tipoPaqueteSelected: Grupo;
     distritos: Ubigeo[];
     distritoSelected: Ubigeo;
     domicilio: boolean;
@@ -49,7 +49,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.sucursales = [];
         this.sucursalSelected = { id: '', text: 'Seleccione Sucursal' };
         this.tipoPaquetes = [];
-        this.tipoPaqueteSelected = { id: '', text: 'Seleccione Tipo' };
+        this.tipoPaqueteSelected = { id: 0, text: 'Seleccione Tipo', grupo: '' };
         this.distritos = [];
         this.distritoSelected = { id: '', text: 'Seleccione Distrito', padre: '' };
         this.domicilio = false;
