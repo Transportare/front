@@ -32,7 +32,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         hasFilter: false,
         hasCollapseExpand: true,
         decoupleChildFromParent: false,
-        maxHeight: 300,
+        maxHeight: 400,
     });
 
     private dniValidator = [Validators.required, Validators.minLength(8)];

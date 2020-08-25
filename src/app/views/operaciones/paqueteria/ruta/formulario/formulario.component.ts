@@ -14,6 +14,7 @@ import { RutaService } from '@services/modulos/operaciones/tracking/ruta/ruta.se
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Ubigeo, Grupo } from '@models/index';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     selector: 'app-formulario',
@@ -66,6 +67,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         };
         this.paquete = { codigo: '', cantidad: 0, peso: '' };
         this.initForm();
+        this.revisarDni();
     }
 
     ngOnInit(): void {
@@ -95,11 +97,12 @@ export class FormularioComponent implements OnInit, OnDestroy {
             apellidos: [{ value: '', disabled: true }, Validators.required],
             direccion: [{ value: '', disabled: true }],
 
-            dniDestinatario: ['', Validators.required],
+            dniDestinatario: [''],
             idSucursalDestino: ['', Validators.required],
             nombreDestinatario: ['', Validators.required],
             apellidoDestinatario: ['', Validators.required],
-            telefonoDestinatario: ['', Validators.required],
+            telefonoDestinatario: [''],
+            palabraClave: ['', Validators.required],
             idUbigeoDestino: [null],
             direccionDestino: [null],
             referenciaDestino: [null],
@@ -107,7 +110,35 @@ export class FormularioComponent implements OnInit, OnDestroy {
             cantidadPaquetes: ['', Validators.required],
             pesoTotal: ['', Validators.required],
             idTipoPaquete: ['', Validators.required],
+            precio: ['', Validators.required],
+            detalle: [''],
         });
+    }
+
+    get destintarioDni() {
+        return (
+            this.formRegistro.get('dniDestinatario').invalid &&
+            this.formRegistro.get('dniDestinatario').touched &&
+            this.formRegistro.get('dniDestinatario').value.length !== 0
+        );
+    }
+
+    revisarDni() {
+        this.formRegistro
+            .get('dniDestinatario')
+            .valueChanges.pipe(distinctUntilChanged())
+            .subscribe((value: string) => {
+                if (value.length === 0) {
+                    this.formRegistro.get('palabraClave').setValidators(Validators.required);
+                    this.formRegistro.get('dniDestinatario').clearValidators();
+                } else {
+                    this.formRegistro.get('palabraClave').clearValidators();
+                    this.formRegistro.get('dniDestinatario').setValidators([Validators.required, Validators.minLength(8)]);
+                }
+
+                this.formRegistro.get('dniDestinatario').updateValueAndValidity();
+                this.formRegistro.get('palabraClave').updateValueAndValidity();
+            });
     }
 
     changeTipoEntrega(event) {
@@ -177,7 +208,8 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     generarCodigoBarra() {
         const canvas = document.createElement('canvas');
-        jsBarcode(canvas, `${this.paquete.codigo}`);
+        const opts: jsBarcode.Options = { fontSize: 28, height: 70 };
+        jsBarcode(canvas, `${this.paquete.codigo}`, opts);
         return canvas.toDataURL();
     }
 

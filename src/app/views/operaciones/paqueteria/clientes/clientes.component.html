@@ -1,0 +1,160 @@
+<app-body [header]="true" [titulo]="'Clientes'">
+    <div header>
+        <div class="py-3 text-right">
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idCliente"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Eliminar"
+                (click)="delete()"
+            >
+                <i class="mdi mdi-delete"></i>
+            </button>
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idCliente"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Detalle"
+                (click)="detalle()"
+            >
+                <i class="mdi mdi-format-list-bulleted"></i>
+            </button>
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idCliente"
+                data-placement="top"
+                data-toggle="tooltip"
+                [DirectiveTooltip]
+                title="Editar"
+                (click)="editar()"
+            >
+                <i class="mdi mdi-pencil"></i>
+            </button>
+            <button class="btn btn-outline-primary ml-3" (click)="nuevoProveedor()">
+                Nuevo
+            </button>
+        </div>
+    </div>
+    <div body [ngClass]="{ loader: loading }">
+        <!-- <div class="loader-spin"><i class="spinner"></i></div> -->
+        <loader *ngIf="loading"></loader>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover box-shadow">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>DNI</th>
+                        <th style="min-width: 160px;">Nombre</th>
+                        <th style="min-width: 200px;">Dirección</th>
+                        <th>Sucursal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let item of data; let index = index"
+                        (click)="selectItem = item"
+                        [ngClass]="{ highlighted: selectItem.idCliente === item.idCliente }"
+                    >
+                        <td>{{ (pagina - 1) * filas + index + 1 }}</td>
+                        <td>{{ item.ruc }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.direccion }}</td>
+                        <td>{{ item.sucursal }}</td>
+                    </tr>
+                    <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                        <td colspan="13">
+                            No hay información disponible
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-paginacion [data]="dataPaginacion" (changePage)="listar($event)"></app-paginacion>
+    </div>
+</app-body>
+
+<div class="modal fade" #detalleCliente tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">
+                    Detalle Cliente
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Nombre</label>
+                        <input class="form-control" [value]="selectItem.nombre || '-'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Contacto</label>
+                        <input class="form-control" [value]="selectItem.contacto || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Correo</label>
+                        <input class="form-control" [value]="selectItem.correo || '-'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Teléfono</label>
+                        <input class="form-control" [value]="selectItem.telefono || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Dirección</label>
+                        <input class="form-control" [value]="selectItem.direccion || '-'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Sucursal</label>
+                        <input class="form-control" [value]="selectItem.sucursal || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Ubigeo</label>
+                        <input class="form-control" [value]="selectItem.distrito || '-'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Rubro</label>
+                        <input class="form-control" [value]="selectItem.rubro || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>RUC</label>
+                        <input class="form-control" [value]="selectItem.ruc || '-'" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Tipo de Pago</label>
+                        <input class="form-control" [value]="selectItem.tipoPago || '-'" />
+                    </div>
+                </div>
+                <div class="row mb-3 mx-0">
+                    <div class="col-md-6">
+                        <label>Fecha de Asignación</label>
+                        <input class="form-control" [value]="selectItem.fecAsignacion" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Estado</label>
+                        <input class="form-control" [value]="selectItem.estado ? 'Activo' : 'Inactivo'" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <!-- <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
+                    Cancelar
+                </button> -->
+                <button type="submit" class="btn btn-primary" (click)="cerrarModal()">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

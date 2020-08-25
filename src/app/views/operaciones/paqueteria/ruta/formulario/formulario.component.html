@@ -72,7 +72,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="dniDestinatario" class="required">DNI</label>
+                                    <label for="dniDestinatario">DNI</label>
                                     <input
                                         type="text"
                                         class="form-control"
@@ -82,6 +82,12 @@
                                         [maxNumerolength]="8"
                                         (valueEntero)="formRegistro.patchValue({ dniDestinatario: $event })"
                                     />
+                                    <!-- <span *ngIf="destintarioDni && dni" class="d-block error-input text-danger"
+                                        >El DNI debe ser de 8 dígitos.</span
+                                    > -->
+                                    <span *ngIf="destintarioDni" class="d-block error-input text-danger"
+                                        >El DNI debe ser de 8 dígitos.</span
+                                    >
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -117,7 +123,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="telefonoDestinatario" class="required">Teléfono</label>
+                                    <label for="telefonoDestinatario">Teléfono</label>
                                     <input
                                         type="text"
                                         class="form-control"
@@ -127,6 +133,13 @@
                                         (valueEntero)="formRegistro.patchValue({ telefonoDestinatario: $event })"
                                         formControlName="telefonoDestinatario"
                                     />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="palabraClave">Palabra <span class="d-lg-block">Clave</span></label>
+                                    <input type="text" class="form-control" id="palabraClave" formControlName="palabraClave" />
+                                    <span class="d-block error-input text-info">En caso de no ingresar DNI, este campo es requerido.</span>
                                 </div>
                             </div>
                         </div>
@@ -213,6 +226,20 @@
                                         [selected]="tipoPaqueteSelected"
                                         (selectChange)="formRegistro.patchValue({ idTipoPaquete: $event.id })"
                                     ></select-default>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pesoTotal" class="required">Precio</label>
+                                    <input type="text" class="form-control" id="precio" formControlName="precio" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group align-items-start">
+                                    <label for="detalle">Detalle</label>
+                                    <textarea class="form-control" id="detalle" rows="4" formControlName="detalle"></textarea>
                                 </div>
                             </div>
                         </div>

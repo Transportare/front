@@ -65,20 +65,20 @@ export class UsuariosService {
                     return new TreeviewItem({
                         text: privilegio.NomOpcion,
                         value: privilegio.IdOpcion,
-                        collapsed: true,
+                        collapsed: false,
                         checked: false,
                         disabled: true,
                         children: privilegio.hijos.map((hijo) => {
                             return {
                                 text: hijo.NomOpcion,
                                 value: hijo.IdOpcion,
-                                collapsed: true,
+                                collapsed: false,
                                 checked: false,
                                 children: hijo.hijos.map((hijo2) => {
                                     return {
                                         text: hijo2.NomOpcion,
                                         value: hijo2.IdOpcion,
-                                        collapsed: true,
+                                        collapsed: false,
                                         checked: false,
                                     };
                                 }),
