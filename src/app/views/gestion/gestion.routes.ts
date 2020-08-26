@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { PerfilGuard } from '../../guards/perfil.guard';
+import { PerfilGuard } from '@guards/perfil.guard';
 
 export const routes: Routes = [
     {
