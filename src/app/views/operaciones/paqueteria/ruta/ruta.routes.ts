@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { RutaComponent } from './ruta.component';
-import { FormularioComponent } from './formulario/formulario.component';
 
 export const routes: Routes = [
     {

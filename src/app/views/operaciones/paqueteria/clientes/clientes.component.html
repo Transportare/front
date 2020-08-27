@@ -23,20 +23,6 @@
             >
                 <i class="mdi mdi-format-list-bulleted"></i>
             </button>
-            <button
-                class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.idCliente"
-                data-placement="top"
-                data-toggle="tooltip"
-                [DirectiveTooltip]
-                title="Editar"
-                (click)="editar()"
-            >
-                <i class="mdi mdi-pencil"></i>
-            </button>
-            <button class="btn btn-outline-primary ml-3" (click)="nuevoProveedor()">
-                Nuevo
-            </button>
         </div>
     </div>
     <div body [ngClass]="{ loader: loading }">
@@ -48,8 +34,8 @@
                     <tr>
                         <th>N°</th>
                         <th>DNI</th>
-                        <th style="min-width: 160px;">Nombre</th>
-                        <th style="min-width: 200px;">Dirección</th>
+                        <th style="min-width: 160px">Nombre</th>
+                        <th style="min-width: 200px">Dirección</th>
                         <th>Sucursal</th>
                     </tr>
                 </thead>
@@ -66,9 +52,7 @@
                         <td>{{ item.sucursal }}</td>
                     </tr>
                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                        <td colspan="13">
-                            No hay información disponible
-                        </td>
+                        <td colspan="5">No hay información disponible</td>
                     </tr>
                 </tbody>
             </table>
@@ -81,9 +65,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center">
-                <h5 class="modal-title">
-                    Detalle Cliente
-                </h5>
+                <h5 class="modal-title">Detalle Cliente</h5>
             </div>
             <div class="modal-body">
                 <div class="row mb-3 mx-0">
@@ -151,9 +133,7 @@
                 <!-- <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
                     Cancelar
                 </button> -->
-                <button type="submit" class="btn btn-primary" (click)="cerrarModal()">
-                    Aceptar
-                </button>
+                <button type="submit" class="btn btn-primary" (click)="cerrarModal()">Aceptar</button>
             </div>
         </div>
     </div>

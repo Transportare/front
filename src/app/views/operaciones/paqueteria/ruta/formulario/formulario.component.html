@@ -137,8 +137,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="palabraClave">Palabra <span class="d-lg-block">Clave</span></label>
-                                    <input type="text" class="form-control" id="palabraClave" formControlName="palabraClave" />
+                                    <label for="claveDestinatario">Palabra <span class="d-lg-block">Clave</span></label>
+                                    <input type="text" class="form-control" id="claveDestinatario" formControlName="claveDestinatario" />
                                     <span class="d-block error-input text-info">En caso de no ingresar DNI, este campo es requerido.</span>
                                 </div>
                             </div>
@@ -209,7 +209,7 @@
                                         type="text"
                                         class="form-control"
                                         id="pesoTotal"
-                                        EnteroPositivo
+                                        NumeroDecimal
                                         [separador]="true"
                                         (valueEntero)="formRegistro.patchValue({ pesoTotal: $event })"
                                         formControlName="pesoTotal"
@@ -238,8 +238,19 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group align-items-start">
-                                    <label for="detalle">Detalle</label>
-                                    <textarea class="form-control" id="detalle" rows="4" formControlName="detalle"></textarea>
+                                    <label for="descripcionPaquete">Detalle</label>
+                                    <textarea
+                                        class="form-control"
+                                        id="descripcionPaquete"
+                                        rows="4"
+                                        formControlName="descripcionPaquete"
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pagaDestino">Pago</label>
+                                    <label> <input type="checkbox" formControlName="pagaDestino" /> Contraentrega </label>
                                 </div>
                             </div>
                         </div>

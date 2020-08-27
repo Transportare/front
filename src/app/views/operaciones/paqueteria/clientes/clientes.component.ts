@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
 import { ClienteService } from '@services/modulos/gestion/mantenimientos/clientes/clientes.service';
 import { PaginacionModel } from '@models/paginacion.model';
 import { Cliente } from '@models/index';
@@ -96,15 +95,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
         });
     }
 
-    changePage(event) {
-        console.log(event);
-    }
-
-    nuevoProveedor() {
-        const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.clientes.init}/${route.clientes.nuevo}`]);
-    }
-
     detalle() {
         // const route = RUTAS_GESTION_MANTENIMIENTOS;
         // this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.detalle}`]);
@@ -114,10 +104,5 @@ export class ClientesComponent implements OnInit, OnDestroy {
 
     cerrarModal() {
         $(this.detalleCliente.nativeElement).modal('hide');
-    }
-
-    editar() {
-        const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.clientes.init}/${this.selectItem.idCliente}/${route.clientes.editar}`]);
     }
 }

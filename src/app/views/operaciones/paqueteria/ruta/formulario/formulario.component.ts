@@ -15,6 +15,7 @@ import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Ubigeo, Grupo } from '@models/index';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { separadorMiles } from '@utils/validar-formatos';
 
 @Component({
     selector: 'app-formulario',
@@ -68,6 +69,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.paquete = { codigo: '', cantidad: 0, peso: '' };
         this.initForm();
         this.revisarDni();
+        this.getPrecio();
     }
 
     ngOnInit(): void {
@@ -90,9 +92,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
     initForm() {
         this.formRegistro = this.fb.group({
             dni: ['', Validators.required],
-            // nombres: ['', Validators.required],
-            // apellidos: ['', Validators.required],
-            // direccion: ['', Validators.required],
             nombres: [{ value: '', disabled: true }, Validators.required],
             apellidos: [{ value: '', disabled: true }, Validators.required],
             direccion: [{ value: '', disabled: true }],
@@ -102,7 +101,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
             nombreDestinatario: ['', Validators.required],
             apellidoDestinatario: ['', Validators.required],
             telefonoDestinatario: [''],
-            palabraClave: ['', Validators.required],
+            claveDestinatario: ['', Validators.required],
             idUbigeoDestino: [null],
             direccionDestino: [null],
             referenciaDestino: [null],
@@ -110,8 +109,9 @@ export class FormularioComponent implements OnInit, OnDestroy {
             cantidadPaquetes: ['', Validators.required],
             pesoTotal: ['', Validators.required],
             idTipoPaquete: ['', Validators.required],
-            precio: ['', Validators.required],
-            detalle: [''],
+            precio: [{ value: '', disabled: true }, Validators.required],
+            descripcionPaquete: [''],
+            pagaDestino: [false],
         });
     }
 
@@ -123,21 +123,33 @@ export class FormularioComponent implements OnInit, OnDestroy {
         );
     }
 
+    getPrecio() {
+        this.formRegistro.get('pesoTotal').valueChanges.subscribe((value: string) => {
+            const precioBase = 10;
+            const precioUnitario = 1;
+            const valor = Number(value.split(',').join(''));
+            const precio = valor === 0 ? 10 : Math.ceil(precioBase + (valor - 1) * precioUnitario);
+            this.formRegistro.patchValue({
+                precio: separadorMiles(precio),
+            });
+        });
+    }
+
     revisarDni() {
         this.formRegistro
             .get('dniDestinatario')
             .valueChanges.pipe(distinctUntilChanged())
             .subscribe((value: string) => {
                 if (value.length === 0) {
-                    this.formRegistro.get('palabraClave').setValidators(Validators.required);
+                    this.formRegistro.get('claveDestinatario').setValidators(Validators.required);
                     this.formRegistro.get('dniDestinatario').clearValidators();
                 } else {
-                    this.formRegistro.get('palabraClave').clearValidators();
+                    this.formRegistro.get('claveDestinatario').clearValidators();
                     this.formRegistro.get('dniDestinatario').setValidators([Validators.required, Validators.minLength(8)]);
                 }
 
                 this.formRegistro.get('dniDestinatario').updateValueAndValidity();
-                this.formRegistro.get('palabraClave').updateValueAndValidity();
+                this.formRegistro.get('claveDestinatario').updateValueAndValidity();
             });
     }
 
@@ -182,10 +194,10 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     guardar() {
         const data = {
-            ...this.formRegistro.value,
-            nombres: this.formRegistro.value.nombres || '',
-            apellidos: this.formRegistro.value.apellidos || '',
-            direccion: this.formRegistro.value.direccion || '',
+            ...this.formRegistro.getRawValue(),
+            pesoTotal: Number(this.formRegistro.getRawValue().pesoTotal.split(',').join('')),
+            precio: Number(this.formRegistro.getRawValue().precio.split(',').join('')),
+            pagaDestino: this.formRegistro.getRawValue().pagaDestino ? 1 : 0,
         };
 
         this.rutaService.postRuta(data).subscribe(
@@ -224,14 +236,14 @@ export class FormularioComponent implements OnInit, OnDestroy {
                             {
                                 text: `${this.remitente.sucursal}`,
                                 bold: true,
-                                fontSize: 25,
+                                fontSize: 18,
                                 borderColor: ['#000000', '#000000', '#ffffff', '#000000'],
                             },
                             {},
                             {
                                 text: `${this.destinatario.sucursal}`,
                                 bold: true,
-                                fontSize: 25,
+                                fontSize: 18,
                                 alignment: 'right',
                                 borderColor: ['#ffffff', '#000000', '#000000', '#000000'],
                             },
@@ -381,9 +393,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         }
 
         this.rutaService.getClientesDni(this.formRegistro.value.dni).subscribe((response: any) => {
-            console.log(response);
             const data = response.data;
-            console.log(data);
             if (data) {
                 this.formRegistro.patchValue({
                     nombres: data.Nombre,
