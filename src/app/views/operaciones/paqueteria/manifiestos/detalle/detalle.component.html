@@ -1,51 +1,50 @@
-<app-body [header]="false" titulo="Salida / Retorno de Ruta">
+<app-body [header]="false" titulo="Cargos de Ruta">
     <div body [ngClass]="{ loader: loading }">
         <loader *ngIf="loading"></loader>
         <div class="px-4 pt-4 pb-2">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="required">Chofer</label>
-                        <select-default [data]="choferes" [selected]="choferSelected"></select-default>
+            <div *ngIf="!loading">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Chofer</label>
+                            <input type="text" class="form-control" readonly disabled [value]="manifiesto.personal" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Vehículo</label>
+                            <input type="text" class="form-control" readonly disabled />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="required">Vehículo</label>
-                        <select-default [data]="vehiculos" [selected]="vehiculoSelected"></select-default>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Fecha Salida</label>
+                            <input type="text" class="form-control" readonly disabled [value]="manifiesto.fechaSalida" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sucursal Destino</label>
+                            <input type="text" class="form-control" readonly disabled [value]="manifiesto.sucursal" />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="fechaSalida" class="required">Fecha Salida</label>
-                        <input type="date" class="form-control" id="fechaSalida" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="required">Sucursal Destino</label>
-                        <select-default [data]="sucursales" [selected]="sucursalSelected"></select-default>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
+            <div class="row" *ngIf="manifiesto && manifiesto.idEstado === 151">
                 <div class="col-md-6">
                     <div class="form-group group-normal">
                         <label for="codigo">Código de Barra</label>
                         <input #codigoBarra type="text" class="form-control" id="codigo" (keyup.enter)="agregar()" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group group-normal">
-                        <label for="observaciones" class="required">Observaciones</label>
-                        <textarea id="observaciones" class="form-control" rows="3"></textarea>
+                        <span *ngIf="repetido" class="d-block error-input text-danger"
+                            >Este código de barra: {{ numero }} esta repetido</span
+                        >
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-8">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover box-shadow">
                             <thead>
@@ -69,9 +68,7 @@
                                     <td></td>
                                 </tr>
                                 <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                                    <td colspan="4">
-                                        No hay información disponible
-                                    </td>
+                                    <td colspan="4">No hay información disponible</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -81,9 +78,7 @@
         </div>
         <div class="p-3 text-right">
             <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
-            <!-- <button class="btn btn-primary" type="submit"><span>Guardar</span></button> -->
+            <button *ngIf="manifiesto && manifiesto.idEstado === 151" class="btn btn-primary" type="submit"><span>Guardar</span></button>
         </div>
-        <!-- </form> -->
     </div>
 </app-body>

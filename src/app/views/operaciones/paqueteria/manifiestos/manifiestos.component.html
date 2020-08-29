@@ -1,20 +1,9 @@
-<app-body [header]="true" [titulo]="'Ruta'">
+<app-body [header]="true" [titulo]="'Manifiestos'">
     <div header>
         <div class="py-3 text-right">
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.guiaOs"
-                data-toggle="tooltip"
-                data-placement="top"
-                [DirectiveTooltip]
-                title="Tracking"
-                (click)="tracking()"
-            >
-                <i class="mdi mdi-truck-delivery"></i>
-            </button>
-            <button
-                class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.guiaOs"
+                [disabled]="!selectItem.idGuia"
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
@@ -33,34 +22,28 @@
                 <thead>
                     <tr>
                         <th>N°</th>
-                        <th>Guía</th>
-                        <th>Nombre Cliente</th>
-                        <th>Documento</th>
-                        <th>Cantidad Paquetes</th>
-                        <th>Envio</th>
-                        <th>Destino</th>
-                        <th>Fecha Registro</th>
-                        <th>Peso Seco</th>
+                        <th>Nombres</th>
+                        <th>Fecha Salida</th>
+                        <th>Fecha Cierre</th>
+                        <th>Distrito</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         *ngFor="let item of data; let index = index"
                         (click)="selectItem = item"
-                        [ngClass]="{ highlighted: selectItem.guiaOs === item.guiaOs }"
+                        [ngClass]="{ highlighted: selectItem.idGuia === item.idGuia }"
                     >
                         <td>{{ (pagina - 1) * filas + index + 1 }}</td>
-                        <td>{{ item.guiaOs }}</td>
-                        <td>{{ item.nombreCliente }}</td>
-                        <td>{{ item.ruc }}</td>
-                        <td>{{ item.cantidadPaquetes }}</td>
-                        <td>{{ item.envio }}</td>
-                        <td>{{ item.destino }}</td>
-                        <td>{{ item.fechaRegistro }}</td>
-                        <td>{{ item.pesoTotal }}</td>
+                        <td>{{ item.personal }}</td>
+                        <td>{{ item.fechaSalida }}</td>
+                        <td>{{ item.fechaCierre }}</td>
+                        <td>{{ item.distrito }}</td>
+                        <td>{{ item.estado }}</td>
                     </tr>
                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                        <td colspan="9">No hay información disponible</td>
+                        <td colspan="6">No hay información disponible</td>
                     </tr>
                 </tbody>
             </table>

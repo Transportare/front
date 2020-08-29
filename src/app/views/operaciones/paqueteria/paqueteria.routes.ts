@@ -12,16 +12,16 @@ export const routes: Routes = [
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
-        path: 'salida-retorno-ruta',
-        loadChildren: () => import('./salida-retorno/salida-retorno.module').then((m) => m.SalidaRetornoModule),
-        data: { roleId: [52] },
+        path: 'clientes',
+        loadChildren: () => import('./clientes/clientes.module').then((m) => m.ClientesModule),
+        data: { roleId: [53] },
     },
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
-        path: 'clientes',
-        loadChildren: () => import('./clientes/clientes.module').then((m) => m.ClientesModule),
-        data: { roleId: [53] },
+        path: 'manifiestos',
+        loadChildren: () => import('./manifiestos/manifiestos.module').then((m) => m.ManifiestosModule),
+        data: { roleId: [54] },
     },
     {
         path: '',

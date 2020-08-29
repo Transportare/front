@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { RUTAS_OPERACIONES_TRACKING } from '@routes/rutas-operaciones';
+import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 declare var $: any;
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -10,7 +10,7 @@ import * as jsBarcode from 'JsBarcode';
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SucursalesService } from '@services/utils/sucursales.service';
-import { RutaService } from '@services/modulos/operaciones/tracking/ruta/ruta.service';
+import { RutaService } from '@services/modulos/operaciones/paqueteria/ruta/ruta.service';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Ubigeo, Grupo } from '@models/index';
@@ -420,7 +420,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     atras() {
-        this.router.navigate([`${RUTAS_OPERACIONES_TRACKING.ruta.init}`]);
+        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.ruta.init}`]);
     }
 }
 

@@ -1,1 +1,1 @@
-export { RUTAS_OPERACIONES_TRACKING } from './rutas-operaciones/tracking';
+export { RUTAS_OPERACIONES_PAQUETERIA } from './rutas-operaciones/operaciones';

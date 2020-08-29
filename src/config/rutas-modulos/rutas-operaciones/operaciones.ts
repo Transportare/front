@@ -1,6 +1,6 @@
 import { comunes } from './comunes';
 const item = `${comunes.init}paqueteria`;
-export const RUTAS_OPERACIONES_TRACKING = {
+export const RUTAS_OPERACIONES_PAQUETERIA = {
     init: `${item}`,
     ruta: {
         init: `${item}/ruta`,
@@ -8,7 +8,10 @@ export const RUTAS_OPERACIONES_TRACKING = {
         editar: 'editar',
         detalle: 'detalle',
     },
-    salidaRetorno: {
-        init: `${item}/salida-retorno-ruta`,
+    manifiestos: {
+        init: `${item}/manifiestos`,
+        nuevo: 'nuevo',
+        detalle: 'detalle',
+        cargos: 'cargos',
     },
 };

@@ -2,22 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 import { RutaService } from '@services/modulos/operaciones/paqueteria/ruta/ruta.service';
-import { PaginacionModel, Ruta } from '@models/index';
+import { PaginacionModel, Ruta, Manifiesto } from '@models/index';
+import { ManifiestoService } from '@services/modulos/operaciones/paqueteria/manifiestos/manifiestos.service';
 
 @Component({
     selector: 'app-ruta',
-    templateUrl: './ruta.component.html',
+    templateUrl: './manifiestos.component.html',
 })
-export class RutaComponent implements OnInit {
+export class ManifiestosComponent implements OnInit {
     loading: boolean;
-    selectItem: Ruta;
-    data: Ruta[];
+    selectItem: Manifiesto;
+    data: Manifiesto[];
     pagina: number;
     filas: number;
     dataPaginacion: PaginacionModel;
-    constructor(private router: Router, private rutaService: RutaService) {
+    constructor(private router: Router, private manifiestoService: ManifiestoService) {
         this.loading = false;
-        this.selectItem = new Ruta();
+        this.selectItem = new Manifiesto();
         this.data = [];
         this.pagina = 1;
         this.filas = 10;
@@ -36,10 +37,9 @@ export class RutaComponent implements OnInit {
             filas: this.filas,
         };
 
-        this.rutaService.getRutas(params).subscribe(
-            (response: any) => {
-                console.log(response);
-                this.data = response.rutas;
+        this.manifiestoService.getManifiestos(params).subscribe(
+            (response) => {
+                this.data = response.manifiestos;
 
                 if (response.paginacion) {
                     this.dataPaginacion = new PaginacionModel(
@@ -63,11 +63,12 @@ export class RutaComponent implements OnInit {
         );
     }
 
-    detalle() {}
-
-    tracking() {}
+    detalle() {
+        const route = RUTAS_OPERACIONES_PAQUETERIA;
+        this.router.navigate([`${route.manifiestos.init}/${this.selectItem.idGuia}/${route.manifiestos.detalle}`]);
+    }
 
     nuevo() {
-        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.ruta.init}/${RUTAS_OPERACIONES_PAQUETERIA.ruta.nuevo}`]);
+        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.init}/${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.nuevo}`]);
     }
 }
