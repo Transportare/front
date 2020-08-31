@@ -10,4 +10,8 @@ export const routes: Routes = [
         path: 'nuevo',
         loadChildren: () => import('./formulario/formulario.module').then((m) => m.FormularioModule),
     },
+    {
+        path: ':id/detalle',
+        loadChildren: () => import('./detalle/detalle.module').then((m) => m.DetalleModule),
+    },
 ];

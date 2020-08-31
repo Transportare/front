@@ -87,8 +87,12 @@ export class ManifiestoService {
         return this.http.post(`${API_URL}cargos/temporal`, data);
     }
 
-    getCargosByGuia(id) {
-        return this.http.get(`${API_URL}cargos/${id}`);
+    getCargosByGuia(id, params) {
+        return this.http.get(`${API_URL}cargos/${id}`, { params }).pipe(
+            map((response: any) => {
+                return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
+            })
+        );
     }
 
     deleteCargo(id) {

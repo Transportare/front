@@ -8,8 +8,4 @@ export const routes: Routes = [
         path: '',
         component: SalidasRetornoComponent,
     },
-    {
-        path: `:id/${route.manifiestos.cargos}`,
-        loadChildren: () => import('./cargos/cargos.module').then((m) => m.CargosModule),
-    },
 ];

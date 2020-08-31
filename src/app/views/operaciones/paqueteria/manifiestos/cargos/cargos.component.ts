@@ -21,7 +21,8 @@ export class CargosComponent implements OnInit {
     numero: string;
     id: string;
     manifiesto: Manifiesto;
-    @ViewChild('codigoBarra', { static: true }) codigoBarra: ElementRef;
+    codigoEstado: any;
+    @ViewChild('codigoBarra', { static: false }) codigoBarra: ElementRef;
 
     constructor(
         private msj: MensajeResponseService,
@@ -35,41 +36,43 @@ export class CargosComponent implements OnInit {
         this.repetido = false;
         this.data = [];
         this.selectItem = {};
+        this.codigoEstado = {};
         this.activatedRoute.params.subscribe((params) => {
             if (params.id) {
                 this.id = params.id;
                 this.getDetalle();
-                this.listarCargos();
+                // this.listarCargos();
             }
         });
     }
 
     ngOnInit(): void {}
 
-    listarCargos() {
-        this.loading = true;
-        this.manifiestoService.getCargosByGuia(this.id).subscribe(
-            (response: any) => {
-                this.data = response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
-                this.loading = false;
-            },
-            (error) => {
-                this.loading = false;
-            }
-        );
+    async listarCargos() {
+        this.data = await this.manifiestoService.getCargosByGuia(this.id, { idEstado: this.manifiesto.idEstado }).toPromise();
     }
 
-    getDetalle() {
+    async getDetalle() {
         this.loading = true;
-        this.manifiestoService.getOneManifiesto(this.id).subscribe(
-            (response) => {
-                this.manifiesto = response;
-                this.loading = false;
-            },
-            (error) => {
-                this.loading = false;
-            }
-        );
+        // this.manifiestoService.getOneManifiesto(this.id).subscribe(
+        //     (response) => {
+        //         this.manifiesto = response;
+        //         this.loading = false;
+        //     },
+        //     (error) => {
+        //         this.loading = false;
+        //     }
+        // );
+        try {
+            this.manifiesto = await this.manifiestoService.getOneManifiesto(this.id).toPromise();
+            console.log(this.manifiesto);
+            // this.data = await this.manifiestoService.getCargosByGuia(this.id, { idEstado: this.manifiesto.idEstado }).toPromise();
+            await this.listarCargos();
+            this.loading = false;
+        } catch (error) {
+            console.log(error);
+            this.loading = false;
+        }
     }
 
     agregar() {
@@ -91,8 +94,15 @@ export class CargosComponent implements OnInit {
                 .subscribe(
                     (response: any) => {
                         const data = response.data;
-                        this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
-                        this.codigoBarra.nativeElement.focus();
+                        if (data.idCargo) {
+                            this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
+                            this.codigoBarra.nativeElement.focus();
+                            this.codigoEstado = {};
+                        } else {
+                            this.codigoBarra.nativeElement.blur();
+                            this.codigoEstado = data;
+                            // this.msj$ = this.msj.danger(`El codigo de barra tiene el estado: ${data.estadoCargo}`).subscribe();
+                        }
                     },
                     (error) => {
                         console.log(error);
@@ -102,10 +112,11 @@ export class CargosComponent implements OnInit {
         this.codigoBarra.nativeElement.value = '';
     }
 
-    deleteCargo(id) {
+    deleteCargo(id, index) {
         this.manifiestoService.deleteCargo(id).subscribe(
-            (response) => {
-                this.listarCargos();
+            async (response) => {
+                // await this.listarCargos();
+                this.data.splice(index, 1);
             },
             (error) => {
                 console.log(error);

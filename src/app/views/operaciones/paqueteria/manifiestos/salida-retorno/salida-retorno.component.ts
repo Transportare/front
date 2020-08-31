@@ -71,7 +71,7 @@ export class SalidasRetornoComponent implements OnInit, OnDestroy {
                 this.msj$ = this.msj.succes('Guia creada correctamente').subscribe((action) => {
                     if (action) {
                         const id = response.idGuia;
-                        this.router.navigate([`${route.manifiestos.init}/${route.manifiestos.nuevo}/${id}/${route.manifiestos.cargos}`]);
+                        this.router.navigate([`${route.manifiestos.init}/${id}/${route.manifiestos.cargos}`]);
                     }
                 });
             },

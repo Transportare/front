@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'config/api.route';
 import { Observable } from 'rxjs';
-import { Ubigeo, Ruta, PaginacionModel } from '@models/index';
+import { Ubigeo, Ruta, PaginacionModel, Cargo } from '@models/index';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -40,6 +40,16 @@ export class RutaService {
 
                 return { rutas, paginacion };
             })
+        );
+    }
+
+    getOneRuta(id): Observable<Cargo> {
+        return this.http.get(`${API_URL}rutas/${id}`).pipe(
+            map(
+                (response: any): Cargo => {
+                    return response.data;
+                }
+            )
         );
     }
 

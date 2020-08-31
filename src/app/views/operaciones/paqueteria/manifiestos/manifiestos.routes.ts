@@ -12,6 +12,10 @@ export const routes: Routes = [
     },
     {
         path: `:id/detalle`,
-        loadChildren: () => import('./detalle/detalle.module').then((m) => m.DetalleModule),
+        loadChildren: () => import('./cargos/cargos.module').then((m) => m.CargosModule),
+    },
+    {
+        path: `:id/cargos`,
+        loadChildren: () => import('./cargos/cargos.module').then((m) => m.CargosModule),
     },
 ];

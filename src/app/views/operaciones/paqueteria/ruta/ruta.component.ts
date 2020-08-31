@@ -38,7 +38,6 @@ export class RutaComponent implements OnInit {
 
         this.rutaService.getRutas(params).subscribe(
             (response: any) => {
-                console.log(response);
                 this.data = response.rutas;
 
                 if (response.paginacion) {
@@ -63,7 +62,11 @@ export class RutaComponent implements OnInit {
         );
     }
 
-    detalle() {}
+    detalle() {
+        this.router.navigate([
+            `${RUTAS_OPERACIONES_PAQUETERIA.ruta.init}/${this.selectItem.guiaOs}/${RUTAS_OPERACIONES_PAQUETERIA.ruta.detalle}`,
+        ]);
+    }
 
     tracking() {}
 

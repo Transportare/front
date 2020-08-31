@@ -32,13 +32,16 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="manifiesto && manifiesto.idEstado === 151">
                 <div class="col-md-6">
                     <div class="form-group group-normal">
                         <label for="codigo">Código de Barra</label>
                         <input #codigoBarra type="text" class="form-control" id="codigo" (keyup.enter)="agregar()" />
                         <span *ngIf="repetido" class="d-block error-input text-danger"
                             >Este código de barra: {{ numero }} esta repetido</span
+                        >
+                        <span *ngIf="codigoEstado.codigoBarra" class="d-block error-input text-danger"
+                            >El codigo de barra {{ codigoEstado.codigoBarra }} - estado: {{ codigoEstado.estadoCargo }}</span
                         >
                     </div>
                 </div>
@@ -52,7 +55,7 @@
                                     <th>N°</th>
                                     <th>Código</th>
                                     <th>Estado</th>
-                                    <th class="text-center">Acción</th>
+                                    <th class="text-center" *ngIf="manifiesto && manifiesto.idEstado === 151">Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,8 +64,12 @@
                                     <td style="vertical-align: middle">{{ index + 1 }}</td>
                                     <td style="vertical-align: middle">{{ item.codigo }}</td>
                                     <td style="vertical-align: middle">{{ item.estado }}</td>
-                                    <td class="text-center" style="vertical-align: middle">
-                                        <button class="btn btn-primary rounded-circle" (click)="deleteCargo(item.id)">
+                                    <td
+                                        class="text-center"
+                                        style="vertical-align: middle"
+                                        *ngIf="manifiesto && manifiesto.idEstado === 151"
+                                    >
+                                        <button class="btn btn-primary rounded-circle" (click)="deleteCargo(item.id, index)">
                                             <i class="mdi mdi-close"></i>
                                         </button>
                                     </td>
@@ -78,8 +85,15 @@
         </div>
         <div class="p-3 text-right">
             <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit" (click)="guardar()"><span>Guardar</span></button>
-            <!-- <button class="btn btn-primary" type="submit"><span>Guardar</span></button> -->
+            <button
+                *ngIf="manifiesto && manifiesto.idEstado === 151"
+                class="btn btn-primary"
+                type="submit"
+                [disabled]="data.length === 0"
+                (click)="guardar()"
+            >
+                Guardar
+            </button>
         </div>
         <!-- </form> -->
     </div>
