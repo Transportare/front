@@ -24,15 +24,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
         return next.handle(request).pipe(
             tap(
-                (event: HttpEvent<any>) => {
-                    if (event instanceof HttpResponse) {
-                        console.log(event);
-                    }
-                },
+                (event: HttpEvent<any>) => {},
                 (error: any) => {
                     if (error instanceof HttpErrorResponse) {
                         if (error.status === 401 || error.status === 403) {
-                            console.log('Error en el token o validacion (401 - 403)');
                             this.loginService.logOut();
                             this.router.navigate(['/login']);
                         }

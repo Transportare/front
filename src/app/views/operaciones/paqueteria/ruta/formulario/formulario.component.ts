@@ -185,7 +185,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
         this.rutaService.postRuta(data).subscribe(
             (response: any) => {
-                console.log(response);
                 this.pdfMakeService.generarPdf(response.data);
                 this.msj$ = this.msj.succes('Ruta creada correctamente').subscribe((action) => {
                     if (action) {

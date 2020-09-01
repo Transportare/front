@@ -140,7 +140,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.personalService.getOnePersonal(this.idPersonal).subscribe(
             (response) => {
-                console.log(response);
                 this.sucursales = this.sucursalService.getSucursales();
                 const personal: Personal = response.personal;
                 this.departamentos = response.departamentos;
@@ -174,7 +173,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 this.loading = false;
             },
             (error) => {
-                console.log(error);
                 this.loading = false;
             }
         );
@@ -219,8 +217,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     return item.id.toString();
                 })
                 .filter((s) => !this.formPersonal.value.sucursales.includes(s));
-
-            console.log({ ...this.formPersonal.value, noSeleccionadas });
 
             this.personalService.putPersonal(this.idPersonal, { ...this.formPersonal.value, noSeleccionadas }).subscribe(
                 (response) => {

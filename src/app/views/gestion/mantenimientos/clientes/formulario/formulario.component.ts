@@ -157,7 +157,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 this.loading = false;
             },
             (error) => {
-                console.log(error);
                 this.loading = false;
             }
         );
@@ -213,7 +212,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     });
                 },
                 (error) => {
-                    console.log(error);
                     this.msj$ = this.mensajeResponse.danger().subscribe();
                 }
             );
@@ -227,7 +225,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     });
                 },
                 (error) => {
-                    console.log(error);
                     this.msj$ = this.mensajeResponse.danger().subscribe();
                 }
             );

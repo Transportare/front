@@ -70,7 +70,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
                 this.loading = false;
             },
             (error) => {
-                console.log(error);
                 this.loading = false;
             }
         );

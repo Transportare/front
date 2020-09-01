@@ -57,7 +57,6 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
         this.cargarDatosService.postCargarDatos(this.archivo[0].archivo).subscribe(
             (response: any) => {
                 if (response.succes) {
-                    console.log(response);
                     Swal.close();
                     this.msj$ = this.mensajeResponse.succes(response.message).subscribe((action) => {
                         if (action) this.cerrarCarga();
@@ -65,7 +64,6 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
                 }
             },
             (error: any) => {
-                console.log(error);
                 Swal.close();
                 this.msj$ = this.mensajeResponse.danger(error.error.message).subscribe((action) => {
                     if (action) this.cerrarCarga();

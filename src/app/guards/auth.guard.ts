@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate, CanLoad {
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        console.log('Dentro del guard');
         window.addEventListener('storage', (e: any) => {
             const userData = window.localStorage.getItem('user_data');
 

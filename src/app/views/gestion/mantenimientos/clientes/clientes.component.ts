@@ -70,7 +70,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
                 this.loading = false;
             },
             (error) => {
-                console.log(error);
                 this.loading = false;
             }
         );
@@ -93,10 +92,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
                 );
             }
         });
-    }
-
-    changePage(event) {
-        console.log(event);
     }
 
     nuevoProveedor() {

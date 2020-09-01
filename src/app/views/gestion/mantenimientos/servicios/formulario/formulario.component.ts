@@ -108,7 +108,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     observacion: servicio.observacion,
                     sucursales: servicio.sucursales,
                 });
-                console.log(response);
                 this.loading = false;
             },
             (error) => {
@@ -139,7 +138,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     guardarServicio() {
-        console.log(this.formServicio.value);
         if (this.id) {
             const noSeleccionadas: any[] = this.sucursales
                 .map((item) => {
@@ -147,7 +145,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 })
                 .filter((s) => !this.formServicio.value.sucursales.includes(s));
 
-            console.log({ ...this.formServicio.value, noSeleccionadas });
             this.serviciosService.putServicio(this.id, { ...this.formServicio.value, noSeleccionadas }).subscribe(
                 (response) => {
                     this.msj$ = this.mensajeResponse.succes('Servicio actualizado correctamente').subscribe((action) => {

@@ -65,12 +65,10 @@ export class CargosComponent implements OnInit {
         // );
         try {
             this.manifiesto = await this.manifiestoService.getOneManifiesto(this.id).toPromise();
-            console.log(this.manifiesto);
             // this.data = await this.manifiestoService.getCargosByGuia(this.id, { idEstado: this.manifiesto.idEstado }).toPromise();
             await this.listarCargos();
             this.loading = false;
         } catch (error) {
-            console.log(error);
             this.loading = false;
         }
     }
@@ -104,9 +102,7 @@ export class CargosComponent implements OnInit {
                             // this.msj$ = this.msj.danger(`El codigo de barra tiene el estado: ${data.estadoCargo}`).subscribe();
                         }
                     },
-                    (error) => {
-                        console.log(error);
-                    }
+                    (error) => {}
                 );
         }
         this.codigoBarra.nativeElement.value = '';
@@ -118,9 +114,7 @@ export class CargosComponent implements OnInit {
                 // await this.listarCargos();
                 this.data.splice(index, 1);
             },
-            (error) => {
-                console.log(error);
-            }
+            (error) => {}
         );
     }
 

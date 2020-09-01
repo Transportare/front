@@ -122,7 +122,6 @@ export class OrdenServicioComponent implements OnInit, OnDestroy {
 
         this.orderServicioService.postOrdenServicio(data).subscribe(
             (response: any) => {
-                console.log(response);
                 this.cerrarModal();
                 this.msj$ = this.mensajeResponse.succes(`Orden de Servicio N° ${response.id} creado correctamente`).subscribe((action) => {
                     if (action) {
@@ -211,7 +210,6 @@ export class OrdenServicioComponent implements OnInit, OnDestroy {
     editar() {
         // this.nombrePerfil.setValue(this.selectItem.nombrePerfil);
         // this.estadoSelected = this.estados.find((e) => e.id === this.selectItem.estado);
-        console.log(this.selectItem);
         $(this.modalEditarOrden.nativeElement).modal('show');
     }
 

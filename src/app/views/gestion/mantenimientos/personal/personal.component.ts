@@ -47,7 +47,6 @@ export class PersonalComponent implements OnInit, OnDestroy {
 
         this.personalService.getPersonales(params).subscribe(
             (response: any) => {
-                console.log(response);
                 this.data = response;
                 this.loading = false;
             },
