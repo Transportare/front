@@ -1,6 +1,6 @@
 <app-body [header]="true" [titulo]="'Detalle de Ruta'">
     <div header class="py-4 text-right">
-        <button class="btn btn-primary" (click)="open()"><i class="mdi mdi-file"></i> Descargar PDF</button>
+        <button class="btn btn-primary" (click)="open()"><i class="mdi mdi-file"></i> Generar PDF</button>
     </div>
     <div body [ngClass]="{ loader: loading }">
         <loader *ngIf="loading"></loader>
@@ -148,6 +148,12 @@
                         </div>
                     </div>
                     <div class="row mb-4 pb-3">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column">
+                                <label class="mb-0"><b>Fecha</b></label>
+                                <span>{{ data.paquete.fecha || '-' }}</span>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="d-flex flex-column">
                                 <label class="mb-0"><b>Detalle</b></label>

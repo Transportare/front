@@ -155,7 +155,11 @@ export class PdfMakeService {
                                 margin: [0, 20, 0, 20],
                             },
                         ],
-                        [`${data.paquete.fecha || moment().format('yyyy-MM-DD')}`, { text: 'Firma Recepción', alignment: 'center' }, ''],
+                        [
+                            `${moment(data.paquete.fecha).format('yyyy-MM-DD') || moment().format('yyyy-MM-DD')}`,
+                            { text: 'Firma Recepción', alignment: 'center' },
+                            '',
+                        ],
                         // ${moment().format('yyyy-MM-DD')}
                     ],
                 },
