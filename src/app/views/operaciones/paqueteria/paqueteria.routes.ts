@@ -24,6 +24,13 @@ export const routes: Routes = [
         data: { roleId: [54] },
     },
     {
+        canActivate: [PerfilGuard],
+        canActivateChild: [PerfilGuard],
+        path: 'descargo-masivo',
+        loadChildren: () => import('./descargo-masivo/descargo-masivo.module').then((m) => m.DescargoMasivoModule),
+        data: { roleId: [56] },
+    },
+    {
         path: '',
         redirectTo: '/dashboard',
     },
