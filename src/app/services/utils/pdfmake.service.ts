@@ -92,13 +92,12 @@ export class PdfMakeService {
                             },
                         ],
                         [
-                            { text: 'PAQUETES', bold: true, borderColor: ['#000000', '#ffffff', '#ffffff', '#000000'] },
-                            {},
                             {
-                                text: 'TERRESTRE',
+                                text: `${data.paquete.pago === 1 ? 'PAGO CONTRAENTREGA' : ''}`,
                                 bold: true,
-                                borderColor: ['#ffffff', '#ffffff', '#000000', '#000000'],
-                                alignment: 'right',
+                                fontSize: 16,
+                                borderColor: ['#000000', '#ffffff', '#000000', '#000000'],
+                                colSpan: 3,
                             },
                         ],
                         [
