@@ -30,6 +30,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
     paquetes: any[];
     formRegistro: FormGroup;
     nombreSucursal: string;
+    persona: boolean;
 
     constructor(
         private router: Router,
@@ -49,6 +50,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.distritos = [];
         this.distritoSelected = { id: '', text: 'Seleccione Distrito', padre: '' };
         this.domicilio = false;
+        this.persona = false;
         this.paquetes = [];
         this.initForm();
         this.revisarDni();
@@ -74,10 +76,12 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     initForm() {
         this.formRegistro = this.fb.group({
-            dni: ['', Validators.required],
+            dni: ['', [Validators.required, Validators.minLength(8)]],
             nombres: [{ value: '', disabled: true }, Validators.required],
             apellidos: [{ value: '', disabled: true }, Validators.required],
             direccion: [{ value: '', disabled: true }],
+
+            razonSocial: [{ value: '', disabled: true }],
 
             dniDestinatario: [''],
             idSucursalDestino: ['', Validators.required],
@@ -136,6 +140,22 @@ export class FormularioComponent implements OnInit, OnDestroy {
             });
     }
 
+    changeTipoPersona(event) {
+        this.persona = event.target.checked;
+        this.formRegistro.patchValue({
+            dni: '',
+        });
+        if (this.persona) {
+            this.formRegistro.get('dni').setValidators([Validators.required, Validators.minLength(11)]);
+            this.formRegistro.get('razonSocial').setValidators(Validators.required);
+        } else {
+            this.formRegistro.get('dni').setValidators([Validators.required, Validators.minLength(8)]);
+            this.formRegistro.get('razonSocial').clearValidators();
+        }
+        this.formRegistro.get('dni').updateValueAndValidity();
+        this.formRegistro.get('razonSocial').updateValueAndValidity();
+    }
+
     changeTipoEntrega(event) {
         this.domicilio = event.target.checked;
         if (this.domicilio) {
@@ -181,7 +201,9 @@ export class FormularioComponent implements OnInit, OnDestroy {
             pesoTotal: Number(this.formRegistro.getRawValue().pesoTotal.split(',').join('')),
             precio: Number(this.formRegistro.getRawValue().precio.split(',').join('')),
             pagaDestino: this.formRegistro.getRawValue().pagaDestino ? 1 : 0,
+            nombres: this.formRegistro.getRawValue().nombres || this.formRegistro.getRawValue().razonSocial,
         };
+        delete data.razonSocial;
 
         this.rutaService.postRuta(data).subscribe(
             (response: any) => {
@@ -200,34 +222,50 @@ export class FormularioComponent implements OnInit, OnDestroy {
     }
 
     verificarDni() {
-        if (this.formRegistro.value.dni.length < 8) {
+        if (this.formRegistro.controls.dni.invalid) {
             return;
         }
 
         this.rutaService.getClientesDni(this.formRegistro.value.dni).subscribe((response: any) => {
+            console.log(response);
             const data = response.data;
             if (data) {
-                this.formRegistro.patchValue({
-                    nombres: data.Nombre,
-                    apellidos: data.Apellidos,
-                    direccion: data.Direccion,
-                });
-                this.formRegistro.get('nombres').disable();
-                this.formRegistro.get('apellidos').disable();
-                this.formRegistro.get('direccion').disable();
+                if (this.persona) {
+                    this.formRegistro.patchValue({
+                        razonSocial: data.Nombre,
+                    });
+                    this.formRegistro.get('razonSocial').disable();
+                } else {
+                    this.formRegistro.patchValue({
+                        nombres: data.Nombre,
+                        apellidos: data.Apellidos,
+                        direccion: data.Direccion,
+                    });
+                    this.formRegistro.get('nombres').disable();
+                    this.formRegistro.get('apellidos').disable();
+                    this.formRegistro.get('direccion').disable();
+                }
             } else {
-                this.formRegistro.patchValue({
-                    nombres: '',
-                    apellidos: '',
-                    direccion: '',
-                });
-                this.formRegistro.get('nombres').enable();
-                this.formRegistro.get('apellidos').enable();
-                this.formRegistro.get('direccion').enable();
+                if (this.persona) {
+                    this.formRegistro.patchValue({
+                        razonSocial: '',
+                    });
+                    this.formRegistro.get('razonSocial').enable();
+                } else {
+                    this.formRegistro.patchValue({
+                        nombres: '',
+                        apellidos: '',
+                        direccion: '',
+                    });
+                    this.formRegistro.get('nombres').enable();
+                    this.formRegistro.get('apellidos').enable();
+                    this.formRegistro.get('direccion').enable();
+                }
             }
             this.formRegistro.get('nombres').updateValueAndValidity();
             this.formRegistro.get('apellidos').updateValueAndValidity();
             this.formRegistro.get('direccion').updateValueAndValidity();
+            this.formRegistro.get('razonSocial').updateValueAndValidity();
         });
     }
 

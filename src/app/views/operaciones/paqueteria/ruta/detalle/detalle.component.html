@@ -1,173 +1,203 @@
-<app-body [header]="true" [titulo]="'Detalle de Ruta'">
-    <div header class="py-4 text-right">
-        <button class="btn btn-primary" (click)="open()"><i class="mdi mdi-file"></i> Generar PDF</button>
-    </div>
-    <div body [ngClass]="{ loader: loading }">
+<app-body [header]="true" [titulo]="'Detalle de Ruta'" [body]="false" [bodyCard]="true">
+    <div body-card [ngClass]="{ loader: loading }">
         <loader *ngIf="loading"></loader>
-        <accordion *ngIf="!loading">
-            <acordion-container [title]="'REMITENTE'" [show]="true">
-                <div class="px-4">
-                    <div class="row mb-4 pb-3 border-bottom-1">
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Nombres</b></label>
-                                <span>{{ data.remitente.nombres || '-' }}</span>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="text-right">
+                    <button class="btn btn-primary" (click)="open()"><i class="mdi mdi-file"></i> Generar PDF</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="!loading">
+            <div class="col-lg-7 mb-4">
+                <div class="card">
+                    <h5 class="card-header">
+                        <b>Remitente</b>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Nombres</b></label>
+                                    <span>{{ data.remitente.nombres || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Apellidos</b></label>
+                                    <span>{{ data.remitente.apellidos || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>DNI</b></label>
+                                    <span>{{ data.remitente.dni || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Oficina</b></label>
+                                    <span>{{ data.remitente.sucursalRemite || '-' }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Apellidos</b></label>
-                                <span>{{ data.remitente.apellidos || '-' }}</span>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Sucursal</b></label>
+                                    <span>{{ data.remitente.sucursal || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Localidad</b></label>
+                                    <span>{{ data.remitente.localidad || '-' }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>DNI</b></label>
-                                <span>{{ data.remitente.dni || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Oficina</b></label>
-                                <span>{{ data.remitente.sucursalRemite || '-' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4 pb-3">
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Sucursal</b></label>
-                                <span>{{ data.remitente.sucursal || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Localidad</b></label>
-                                <span>{{ data.remitente.localidad || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Dirección</b></label>
-                                <span>{{ data.remitente.direccion || '-' }}</span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Dirección</b></label>
+                                    <span>{{ data.remitente.direccion || '-' }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </acordion-container>
-            <acordion-container [title]="'DESTINATARIO'" [show]="false">
-                <div class="px-4">
-                    <div class="row mb-4 pb-3 border-bottom-1">
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Nombres</b></label>
-                                <span>{{ data.destinatario.nombres || '-' }}</span>
+            </div>
+            <div class="col-lg-5 mb-4">
+                <div class="card">
+                    <h5 class="card-header">
+                        <b>Paquete</b>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Código</b></label>
+                                    <span>{{ data.paquete.codigo || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Cantidad</b></label>
+                                    <span>{{ data.paquete.cantidad || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Peso</b></label>
+                                    <span>{{ data.paquete.peso || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Precio</b></label>
+                                    <span>{{ data.paquete.precio || '-' }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Apellidos</b></label>
-                                <span>{{ data.destinatario.apellidos || '-' }}</span>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Fecha</b></label>
+                                    <span>{{ data.paquete.fecha || '-' }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>DNI</b></label>
-                                <span>{{ data.destinatario.dni || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Sucursal</b></label>
-                                <span>{{ data.destinatario.sucursal || '-' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4 pb-3 border-bottom-1">
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Localidad</b></label>
-                                <span>{{ data.destinatario.localidad || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Dirección</b></label>
-                                <span>{{ data.destinatario.direccion || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Telefono</b></label>
-                                <span>{{ data.destinatario.telefono || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Palabra Clave</b></label>
-                                <span>{{ data.destinatario.palabraClave || '-' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4 pb-3">
-                        <div class="col-md-6">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Referencia</b></label>
-                                <span>{{ data.destinatario.referencia || '-' }}</span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Detalle</b></label>
+                                    <span>{{ data.paquete.detalles || '-' }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </acordion-container>
-            <acordion-container [title]="'PAQUETE'" [show]="false">
-                <div class="px-4">
-                    <div class="row mb-4 pb-3 border-bottom-1">
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Código</b></label>
-                                <span>{{ data.paquete.codigo || '-' }}</span>
+            </div>
+            <div class="col-lg-7 mb-4">
+                <h5 class="card-header"><b>Destinatario</b></h5>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Nombres</b></label>
+                                    <span>{{ data.destinatario.nombres || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Apellidos</b></label>
+                                    <span>{{ data.destinatario.apellidos || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>DNI</b></label>
+                                    <span>{{ data.destinatario.dni || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Sucursal</b></label>
+                                    <span>{{ data.destinatario.sucursal || '-' }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Cantidad</b></label>
-                                <span>{{ data.paquete.cantidad || '-' }}</span>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Telefono</b></label>
+                                    <span>{{ data.destinatario.telefono || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Palabra Clave</b></label>
+                                    <span>{{ data.destinatario.palabraClave || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Referencia</b></label>
+                                    <span>{{ data.destinatario.referencia || '-' }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Peso</b></label>
-                                <span>{{ data.paquete.peso || '-' }}</span>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Localidad</b></label>
+                                    <span>{{ data.destinatario.localidad || '-' }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Precio</b></label>
-                                <span>{{ data.paquete.precio || '-' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4 pb-3">
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Fecha</b></label>
-                                <span>{{ data.paquete.fecha || '-' }}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex flex-column">
-                                <label class="mb-0"><b>Detalle</b></label>
-                                <span>{{ data.paquete.detalles || '-' }}</span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Dirección</b></label>
+                                    <span>{{ data.destinatario.direccion || '-' }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </acordion-container>
-        </accordion>
-    </div>
-    <div footer>
-        <div class="p-3 text-right">
-            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-right">
+                            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+                            <button class="btn btn-primary" type="submit">
+                                <span>Guardar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </app-body>
