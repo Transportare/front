@@ -41,7 +41,6 @@ export class CargosComponent implements OnInit {
             if (params.id) {
                 this.id = params.id;
                 this.getDetalle();
-                // this.listarCargos();
             }
         });
     }
@@ -54,15 +53,6 @@ export class CargosComponent implements OnInit {
 
     async getDetalle() {
         this.loading = true;
-        // this.manifiestoService.getOneManifiesto(this.id).subscribe(
-        //     (response) => {
-        //         this.manifiesto = response;
-        //         this.loading = false;
-        //     },
-        //     (error) => {
-        //         this.loading = false;
-        //     }
-        // );
         try {
             this.manifiesto = await this.manifiestoService.getOneManifiesto(this.id).toPromise();
             console.log(this.manifiesto);
@@ -93,15 +83,6 @@ export class CargosComponent implements OnInit {
                 })
                 .subscribe(
                     (response: any) => {
-                        // if (data.idCargo) {
-                        //     this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
-                        //     this.codigoBarra.nativeElement.focus();
-                        //     this.codigoEstado = {};
-                        // } else {
-                        //     this.codigoBarra.nativeElement.blur();
-                        //     this.codigoEstado = data;
-                        // }
-
                         if (!response.succes) {
                             this.errorCodigo = { error: true, mensaje: response.message };
                             this.codigoBarra.nativeElement.blur();
