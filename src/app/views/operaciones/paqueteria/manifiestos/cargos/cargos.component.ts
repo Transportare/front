@@ -21,7 +21,7 @@ export class CargosComponent implements OnInit {
     numero: string;
     id: string;
     manifiesto: Manifiesto;
-    codigoEstado: any;
+    errorCodigo: { error: boolean; mensaje: string };
     @ViewChild('codigoBarra', { static: false }) codigoBarra: ElementRef;
 
     constructor(
@@ -36,7 +36,7 @@ export class CargosComponent implements OnInit {
         this.repetido = false;
         this.data = [];
         this.selectItem = {};
-        this.codigoEstado = {};
+        this.errorCodigo = { error: false, mensaje: '' };
         this.activatedRoute.params.subscribe((params) => {
             if (params.id) {
                 this.id = params.id;
@@ -93,15 +93,23 @@ export class CargosComponent implements OnInit {
                 })
                 .subscribe(
                     (response: any) => {
-                        const data = response.data;
-                        if (data.idCargo) {
+                        // if (data.idCargo) {
+                        //     this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
+                        //     this.codigoBarra.nativeElement.focus();
+                        //     this.codigoEstado = {};
+                        // } else {
+                        //     this.codigoBarra.nativeElement.blur();
+                        //     this.codigoEstado = data;
+                        // }
+
+                        if (!response.succes) {
+                            this.errorCodigo = { error: true, mensaje: response.message };
+                            this.codigoBarra.nativeElement.blur();
+                        } else {
+                            const data = response.data;
+                            this.errorCodigo = { error: false, mensaje: '' };
                             this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
                             this.codigoBarra.nativeElement.focus();
-                            this.codigoEstado = {};
-                        } else {
-                            this.codigoBarra.nativeElement.blur();
-                            this.codigoEstado = data;
-                            // this.msj$ = this.msj.danger(`El codigo de barra tiene el estado: ${data.estadoCargo}`).subscribe();
                         }
                     },
                     (error) => {
