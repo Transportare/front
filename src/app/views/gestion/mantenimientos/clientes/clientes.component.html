@@ -103,70 +103,67 @@
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Nombre</label>
-                        <input class="form-control" [value]="selectItem.nombre || '-'" />
+                        <input class="form-control" [value]="selectItem.nombre || '-'" readonly disabled />
                     </div>
                     <div class="col-md-6">
                         <label>Contacto</label>
-                        <input class="form-control" [value]="selectItem.contacto || '-'" />
+                        <input class="form-control" [value]="selectItem.contacto || '-'" readonly disabled />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Correo</label>
-                        <input class="form-control" [value]="selectItem.correo || '-'" />
+                        <input class="form-control" [value]="selectItem.correo || '-'" readonly disabled />
                     </div>
                     <div class="col-md-6">
                         <label>Teléfono</label>
-                        <input class="form-control" [value]="selectItem.telefono || '-'" />
+                        <input class="form-control" [value]="selectItem.telefono || '-'" readonly disabled />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Dirección</label>
-                        <input class="form-control" [value]="selectItem.direccion || '-'" />
+                        <input class="form-control" [value]="selectItem.direccion || '-'" readonly disabled />
                     </div>
                     <div class="col-md-6">
                         <label>Sucursal</label>
-                        <input class="form-control" [value]="selectItem.sucursal || '-'" />
+                        <input class="form-control" [value]="selectItem.sucursal || '-'" readonly disabled />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Ubigeo</label>
-                        <input class="form-control" [value]="selectItem.distrito || '-'" />
+                        <input class="form-control" [value]="selectItem.distrito || '-'" readonly disabled />
                     </div>
                     <div class="col-md-6">
                         <label>Rubro</label>
-                        <input class="form-control" [value]="selectItem.rubro || '-'" />
+                        <input class="form-control" [value]="selectItem.rubro || '-'" readonly disabled />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>RUC</label>
-                        <input class="form-control" [value]="selectItem.ruc || '-'" />
+                        <input class="form-control" [value]="selectItem.ruc || '-'" readonly disabled />
                     </div>
                     <div class="col-md-6">
                         <label>Tipo de Pago</label>
-                        <input class="form-control" [value]="selectItem.tipoPago || '-'" />
+                        <input class="form-control" [value]="selectItem.tipoPago || '-'" readonly disabled />
                     </div>
                 </div>
                 <div class="row mb-3 mx-0">
                     <div class="col-md-6">
                         <label>Fecha de Asignación</label>
-                        <input class="form-control" [value]="selectItem.fecAsignacion" />
+                        <input class="form-control" [value]="selectItem.fecAsignacion" readonly disabled />
                     </div>
                     <div class="col-md-6">
                         <label>Estado</label>
-                        <input class="form-control" [value]="selectItem.estado ? 'Activo' : 'Inactivo'" />
+                        <input class="form-control" [value]="selectItem.estado ? 'Activo' : 'Inactivo'" readonly disabled />
                     </div>
                 </div>
             </div>
             <div class="modal-footer text-right">
-                <!-- <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
-                    Cancelar
-                </button> -->
                 <button type="submit" class="btn btn-primary" (click)="cerrarModal()">
-                    Aceptar
+                    Cerrar
                 </button>
             </div>
         </div>
