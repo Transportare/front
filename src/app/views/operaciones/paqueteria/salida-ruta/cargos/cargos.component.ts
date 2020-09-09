@@ -55,7 +55,7 @@ export class CargosComponent implements OnInit {
         this.loading = true;
         try {
             this.manifiesto = await this.manifiestoService.getOneManifiesto(this.id).toPromise();
-            // this.data = await this.manifiestoService.getCargosByGuia(this.id, { idEstado: this.manifiesto.idEstado }).toPromise();
+
             await this.listarCargos();
             this.loading = false;
         } catch (error) {
