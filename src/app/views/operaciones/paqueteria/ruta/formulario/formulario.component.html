@@ -11,36 +11,45 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="dni" class="required">DNI</label>
+                                    <label for="dni" class="required">{{ persona ? 'RUC' : 'DNI' }}</label>
                                     <input
                                         type="text"
                                         class="form-control"
                                         id="dni"
                                         EnteroPositivo
-                                        [maxNumerolength]="8"
+                                        [maxNumerolength]="persona ? 11 : 8"
                                         (valueEntero)="formRegistro.patchValue({ dni: $event })"
                                         formControlName="dni"
                                     />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <!-- <div class="form-group text-right">
                                     <label></label>
                                     <button class="btn btn-primary" type="button" (click)="verificarDni()">
                                         <span>Validar</span>
                                     </button>
                                 </div> -->
-                                <button
-                                    class="btn btn-primary"
-                                    type="button"
-                                    [disabled]="formRegistro.value.dni.length < 8"
-                                    (click)="verificarDni()"
-                                >
-                                    <span>Validar</span>
-                                </button>
+                                <!-- <div class="form-group"> -->
+                                <label class="d-lg-none" style="margin-bottom: 1em">Acciones</label>
+                                <div class="d-flex align-items-center" style="margin-bottom: 1rem">
+                                    <button
+                                        class="btn btn-primary mr-4"
+                                        type="button"
+                                        [disabled]="formRegistro.controls.dni.invalid"
+                                        (click)="verificarDni()"
+                                    >
+                                        <span>Validar</span>
+                                    </button>
+                                    <label class="mb-0">
+                                        <input type="checkbox" (change)="changeTipoPersona($event)" />
+                                        Persona Jurídica
+                                    </label>
+                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" *ngIf="!persona">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nombres" class="required">Nombres</label>
@@ -54,11 +63,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" *ngIf="!persona">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="direccion">Dirección</label>
                                     <input type="text" class="form-control" id="direccion" formControlName="direccion" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="persona">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <!-- <label class="required" for="razon">Razón Social</label> -->
+                                    <label for="tipoPaquete" class="required">Razón <br class="none" />Social </label>
+                                    <input type="text" class="form-control" id="razon" formControlName="razonSocial" />
                                 </div>
                             </div>
                         </div>
@@ -250,7 +268,18 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="pagaDestino">Pago</label>
-                                    <label> <input type="checkbox" formControlName="pagaDestino" /> Contraentrega </label>
+                                    <!-- <label> <input type="checkbox" formControlName="pagaDestino" /> Contraentrega </label> -->
+                                    <div class="d-flex">
+                                        <label class="md-check mr-4">
+                                            <input type="radio" [value]="false" name="pagaDestino" formControlName="pagaDestino" />
+                                            Pago en efectivo
+                                        </label>
+
+                                        <label class="md-check">
+                                            <input type="radio" [value]="true" name="pagaDestino" formControlName="pagaDestino" />
+                                            Contraentrega
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

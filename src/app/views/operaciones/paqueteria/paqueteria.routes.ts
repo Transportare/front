@@ -24,6 +24,20 @@ export const routes: Routes = [
         data: { roleId: [54] },
     },
     {
+        canActivate: [PerfilGuard],
+        canActivateChild: [PerfilGuard],
+        path: 'salida-ruta',
+        loadChildren: () => import('./salida-ruta/salida-ruta.module').then((m) => m.SalidaRutaModule),
+        data: { roleId: [55] },
+    },
+    {
+        canActivate: [PerfilGuard],
+        canActivateChild: [PerfilGuard],
+        path: 'descargo-masivo',
+        loadChildren: () => import('./descargo-masivo/descargo-masivo.module').then((m) => m.DescargoMasivoModule),
+        data: { roleId: [56] },
+    },
+    {
         path: '',
         redirectTo: '/dashboard',
     },

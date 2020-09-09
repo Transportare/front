@@ -215,7 +215,14 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         if (!this.selectItem.idUsuario) {
             // Nuevo
             this.usuarioService.postUsuario({ ...usuario, ...this.formUsuario.value }).subscribe(
-                (response) => {
+                (response: any) => {
+
+                    // valida si el usuario esta registrado
+                    if(response.id) {
+                        this.msj$ = this.mensajeResponse.danger(`${response.message}`).subscribe();
+                        return;
+                    }
+
                     this.cerrarModal();
                     this.msj$ = this.mensajeResponse.succes('Usuario creado correctamente').subscribe((action) => {
                         if (action) {

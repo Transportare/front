@@ -14,4 +14,9 @@ export const RUTAS_OPERACIONES_PAQUETERIA = {
         detalle: 'detalle',
         cargos: 'cargos',
     },
+    salidaRuta: {
+        init: `${item}/salida-ruta`,
+        detalle: 'detalle',
+        cargos: 'cargos',
+    },
 };

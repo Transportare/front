@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
-import { RutaService } from '@services/modulos/operaciones/paqueteria/ruta/ruta.service';
 import { PaginacionModel, Ruta, Manifiesto } from '@models/index';
 import { ManifiestoService } from '@services/modulos/operaciones/paqueteria/manifiestos/manifiestos.service';
 
@@ -64,10 +63,6 @@ export class ManifiestosComponent implements OnInit {
 
     detalle() {
         const route = RUTAS_OPERACIONES_PAQUETERIA;
-        this.router.navigate([`${route.manifiestos.init}/${this.selectItem.idGuia}/${route.manifiestos.detalle}`]);
-    }
-
-    nuevo() {
-        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.init}/${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.nuevo}`]);
+        this.router.navigate([`${route.salidaRuta.init}/${this.selectItem.idGuia}/${route.salidaRuta.cargos}`]);
     }
 }

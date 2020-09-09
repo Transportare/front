@@ -9,6 +9,7 @@ declare var $: any;
 @Component({
     selector: 'app-detalle',
     templateUrl: './detalle.component.html',
+    styleUrls: ['./detalle.component.scss'],
 })
 export class DetalleComponent implements OnInit, OnDestroy {
     data: Cargo;

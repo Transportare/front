@@ -21,7 +21,7 @@ export class CargosComponent implements OnInit {
     numero: string;
     id: string;
     manifiesto: Manifiesto;
-    codigoEstado: any;
+    errorCodigo: { error: boolean; mensaje: string };
     @ViewChild('codigoBarra', { static: false }) codigoBarra: ElementRef;
 
     constructor(
@@ -36,12 +36,11 @@ export class CargosComponent implements OnInit {
         this.repetido = false;
         this.data = [];
         this.selectItem = {};
-        this.codigoEstado = {};
+        this.errorCodigo = { error: false, mensaje: '' };
         this.activatedRoute.params.subscribe((params) => {
             if (params.id) {
                 this.id = params.id;
                 this.getDetalle();
-                // this.listarCargos();
             }
         });
     }
@@ -54,15 +53,6 @@ export class CargosComponent implements OnInit {
 
     async getDetalle() {
         this.loading = true;
-        // this.manifiestoService.getOneManifiesto(this.id).subscribe(
-        //     (response) => {
-        //         this.manifiesto = response;
-        //         this.loading = false;
-        //     },
-        //     (error) => {
-        //         this.loading = false;
-        //     }
-        // );
         try {
             this.manifiesto = await this.manifiestoService.getOneManifiesto(this.id).toPromise();
             // this.data = await this.manifiestoService.getCargosByGuia(this.id, { idEstado: this.manifiesto.idEstado }).toPromise();
@@ -91,15 +81,14 @@ export class CargosComponent implements OnInit {
                 })
                 .subscribe(
                     (response: any) => {
-                        const data = response.data;
-                        if (data.idCargo) {
+                        if (!response.succes) {
+                            this.errorCodigo = { error: true, mensaje: response.message };
+                            this.codigoBarra.nativeElement.blur();
+                        } else {
+                            const data = response.data;
+                            this.errorCodigo = { error: false, mensaje: '' };
                             this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
                             this.codigoBarra.nativeElement.focus();
-                            this.codigoEstado = {};
-                        } else {
-                            this.codigoBarra.nativeElement.blur();
-                            this.codigoEstado = data;
-                            // this.msj$ = this.msj.danger(`El codigo de barra tiene el estado: ${data.estadoCargo}`).subscribe();
                         }
                     },
                     (error) => {}
@@ -111,7 +100,6 @@ export class CargosComponent implements OnInit {
     deleteCargo(id, index) {
         this.manifiestoService.deleteCargo(id).subscribe(
             async (response) => {
-                // await this.listarCargos();
                 this.data.splice(index, 1);
             },
             (error) => {}
@@ -134,6 +122,6 @@ export class CargosComponent implements OnInit {
     }
 
     atras() {
-        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.init}`]);
+        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.salidaRuta.init}`]);
     }
 }

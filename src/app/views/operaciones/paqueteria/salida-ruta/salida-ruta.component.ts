@@ -8,11 +8,11 @@ import { Grupo } from '@models/index';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-salida-retorno',
-    templateUrl: './salida-retorno.component.html',
+    selector: 'app-salida-ruta',
+    templateUrl: './salida-ruta.component.html',
     styles: [],
 })
-export class SalidasRetornoComponent implements OnInit, OnDestroy {
+export class SalidaRutaComponent implements OnInit, OnDestroy {
     loading: boolean;
     choferes: Grupo[];
     choferSelected: Grupo;
@@ -71,7 +71,7 @@ export class SalidasRetornoComponent implements OnInit, OnDestroy {
                 this.msj$ = this.msj.succes('Guia creada correctamente').subscribe((action) => {
                     if (action) {
                         const id = response.idGuia;
-                        this.router.navigate([`${route.manifiestos.init}/${id}/${route.manifiestos.cargos}`]);
+                        this.router.navigate([`${route.salidaRuta.init}/${id}/${route.salidaRuta.cargos}`]);
                     }
                 });
             },
@@ -79,9 +79,5 @@ export class SalidasRetornoComponent implements OnInit, OnDestroy {
                 this.msj$ = this.msj.danger().subscribe();
             }
         );
-    }
-
-    atras() {
-        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.init}`]);
     }
 }
