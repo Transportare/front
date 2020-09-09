@@ -24,14 +24,6 @@ export class DashboardComponent implements OnInit {
         }
     }
 
-    // listarSucursales() {
-    //     this.loading = true;
-    //     this.sucursalesService.getSucursales().subscribe((response: any) => {
-    //         this.sucursales = response;
-    //         this.loading = false;
-    //     });
-    // }
-
     listarSucursales() {
         this.loading = true;
         this.sucursales = this.sucursalesService.getSucursales();
