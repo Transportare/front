@@ -11,9 +11,7 @@
         <div class="modal-content" [ngClass]="{ loader: loading }">
             <loader *ngIf="loading"></loader>
             <div class="modal-header justify-content-center">
-                <h5 class="modal-title">
-                    Sucursales
-                </h5>
+                <h5 class="modal-title">Sucursales</h5>
             </div>
             <div class="modal-body">
                 <div id="sucursales">
@@ -24,14 +22,6 @@
                         <span>{{ sucursal.text }}</span>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer text-right">
-                <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
-                    Cancelar
-                </button>
-                <button type="submit" class="btn btn-primary">
-                    Aceptar
-                </button>
             </div>
         </div>
     </div>

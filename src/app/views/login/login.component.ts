@@ -34,20 +34,7 @@ export class LoginComponent implements OnInit {
         return this.formLogin.get('password').invalid && this.formLogin.get('password').touched;
     }
 
-    // validate(): boolean {
-    //     if (this.formLogin.value.username === 'demo' && this.formLogin.value.password === 'demo') {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
     ingresar() {
-        // if (this.formLogin.invalid) {
-        //     return Object.values(this.formLogin.controls).forEach((control) => {
-        //         control.markAsTouched();
-        //     });
-        // }
         if (this.formLogin.invalid) {
             return;
         }
@@ -59,22 +46,10 @@ export class LoginComponent implements OnInit {
 
         this.loginService.logIng(data).subscribe(
             (response) => {
-                console.log(response);
                 this.loginService.saveDataUser(response);
                 this.route.navigate(['/dashboard']);
             },
-            (error) => {
-                console.log(error);
-            }
+            (error) => {}
         );
-
-        console.log(data);
-
-        // if (this.validate()) {
-        //     this.error = false;
-        //     this.route.navigate(['/dashboard']);
-        // } else {
-        //     this.error = true;
-        // }
     }
 }
