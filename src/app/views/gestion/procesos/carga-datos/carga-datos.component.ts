@@ -5,6 +5,7 @@ import { MensajeResponseService } from '@services/utils/mensajeresponse.service'
 import { FileItem } from '@models/index';
 import { CargaDatosService } from '@services/modulos/gestion/procesos/carga-datos/carga-datos.service';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { FormControl } from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -18,12 +19,20 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
     archivo: FileItem[];
     estaSobre: boolean;
     error: { status: boolean; message: string };
+    codigo: FormControl;
+    cliente: FormControl;
+    servicio: FormControl;
+    habilitar: boolean;
     @ViewChild('modalCarga', { static: false }) modalCarga: ElementRef;
 
     constructor(private router: Router, private mensajeResponse: MensajeResponseService, private cargarDatosService: CargaDatosService) {
         this.loading = false;
+        this.habilitar = false;
         this.estaSobre = false;
         this.archivo = [];
+        this.codigo = new FormControl('');
+        this.cliente = new FormControl({ value: '', disabled: true });
+        this.servicio = new FormControl({ value: '', disabled: true });
         this.error = { status: false, message: '' };
     }
 
@@ -33,6 +42,26 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
         if (this.msj$) {
             this.msj$.unsubscribe();
         }
+    }
+
+    verificarCodigo() {
+        const value: string = this.codigo.value;
+
+        if (value.length === 0 || isNaN(Number(value))) {
+            return;
+        }
+
+        this.cargarDatosService.getOrdenServicio(value).subscribe((response) => {
+            if (response.succes) {
+                this.habilitar = true;
+                this.cliente.setValue(response.data);
+            } else {
+                this.habilitar = false;
+                this.cliente.setValue('');
+            }
+
+            this.codigo.setValue('');
+        });
     }
 
     abrirCarga() {
