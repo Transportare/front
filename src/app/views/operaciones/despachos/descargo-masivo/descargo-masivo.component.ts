@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Subscription } from 'rxjs';
-import { ManifiestoService } from '@services/modulos/operaciones/paqueteria/manifiestos/manifiestos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Manifiesto, Grupo } from '@models/index';
 import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';

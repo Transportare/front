@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DespachoService } from '@services/modulos/operaciones/despachos/despachos.service';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { DescargoService } from '@services/modulos/operaciones/paqueteria/descargo/descargo.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-descargo-masivo',
@@ -66,7 +67,7 @@ export class DescargoMasivoComponent implements OnInit {
             accion: [true],
             estadoId: ['', Validators.required],
             detalleId: [''],
-            fecha: ['', Validators.required],
+            fecha: [moment().format('yyyy-MM-DD'), Validators.required],
         });
     }
 

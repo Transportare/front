@@ -95,7 +95,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
             idGenero: ['', Validators.required],
             idEstadoCivil: ['', Validators.required],
             telefono: ['', Validators.minLength(7)],
-            fecIngreso: ['', Validators.required],
+            fecIngreso: [moment().format('YYYY-MM-DD'), Validators.required],
             idTipoPersonal: ['', Validators.required],
             sucursales: ['', Validators.required],
         });

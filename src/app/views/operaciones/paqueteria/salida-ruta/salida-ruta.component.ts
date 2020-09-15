@@ -6,6 +6,7 @@ import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 import { ManifiestoService } from '@services/modulos/operaciones/paqueteria/manifiestos/manifiestos.service';
 import { Grupo } from '@models/index';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-salida-ruta',
@@ -58,7 +59,7 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
         this.form = this.fb.group({
             idChofer: ['', Validators.required],
             idVehiculo: [null],
-            fechaSalida: ['', Validators.required],
+            fechaSalida: [moment().format('yyyy-MM-DD'), Validators.required],
             idSucursal: ['', Validators.required],
             observacion: [''],
         });
