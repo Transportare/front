@@ -1,7 +1,7 @@
 <app-body [header]="true" [titulo]="'Orden de Servicios'">
     <div header>
         <div class="py-3 text-right">
-            <button class="btn btn-primary" (click)="abrirCarga()">Generar Subida</button>
+            <button class="btn btn-primary" [disabled]="!habilitar" (click)="abrirCarga()">Generar Subida</button>
         </div>
     </div>
     <div body [ngClass]="{ loader: loading }">
@@ -11,25 +11,31 @@
                 <div class="col-md-12 col-lg-5 px-4 pb-4 pt-2">
                     <div class="form-group">
                         <label for="telefono">Nro. Órden</label>
-                        <input type="text" class="form-control" />
+                        <input
+                            type="text"
+                            class="form-control"
+                            EnteroPositivo
+                            (valueEntero)="codigo.setValue($event)"
+                            [maxLength]="10"
+                            [formControl]="codigo"
+                            (keyup.enter)="verificarCodigo()"
+                        />
                     </div>
                     <div class="form-group">
                         <label for="telefono">Cliente</label>
-                        <input type="text" class="form-control" readonly disabled />
+                        <input type="text" class="form-control" [formControl]="cliente" />
                     </div>
                     <div class="form-group mb-0">
                         <label for="telefono">Servicio</label>
-                        <input type="text" class="form-control" readonly disabled />
+                        <input type="text" class="form-control" [formControl]="servicio" />
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-7 pt-2 pr-4">
                     <div class="alert alert-info">
                         <ul>
+                            <li>El usuario que cargará deberá de pertenecer a una sucursal o sede.</li>
                             <li>
-                                El usuario que cargará deberá de pertenecer a una sucursal o sede.
-                            </li>
-                            <li>
-                                Los nombres de las columnas del archivo Excel, no deberón tener tildes, ni espacios en blanco, ni puntos, ni
+                                Los nombres de las columnas del archivo Excel, no deberá tener tildes, ni espacios en blanco, ni puntos, ni
                                 caracteres extraños ($|#"/%.').
                             </li>
                             <li>El archivo csv deberá de tener una columna con el nombre >> ORDENAR y DISTRITO.</li>
@@ -79,12 +85,8 @@
                 </div>
             </div>
             <div class="modal-footer text-right">
-                <button type="button" class="btn btn-secondary mr-2" (click)="cerrarCarga()">
-                    Cancelar
-                </button>
-                <button type="submit" class="btn btn-primary" (click)="guardarCarga()">
-                    Aceptar
-                </button>
+                <button type="button" class="btn btn-secondary mr-2" (click)="cerrarCarga()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" (click)="guardarCarga()">Aceptar</button>
             </div>
         </div>
     </div>
