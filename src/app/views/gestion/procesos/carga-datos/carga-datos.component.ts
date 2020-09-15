@@ -51,17 +51,23 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.cargarDatosService.getOrdenServicio(value).subscribe((response) => {
-            if (response.succes) {
-                this.habilitar = true;
-                this.cliente.setValue(response.data);
-            } else {
-                this.habilitar = false;
-                this.cliente.setValue('');
-            }
+        this.cargarDatosService.getOrdenServicio(value).subscribe(
+            (response) => {
+                if (response.succes) {
+                    this.habilitar = true;
+                    this.cliente.setValue(response.data);
+                } else {
+                    this.habilitar = false;
+                    this.msj$ = this.mensajeResponse.danger(response.mensaje).subscribe();
+                    this.cliente.setValue('');
+                }
 
-            this.codigo.setValue('');
-        });
+                this.codigo.setValue('');
+            },
+            (error) => {
+                this.msj$ = this.mensajeResponse.danger('Ocurrio un error.').subscribe();
+            }
+        );
     }
 
     abrirCarga() {
