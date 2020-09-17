@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PaginacionModel, Seguimiento } from '@models/index';
 import { FormControl } from '@angular/forms';
-import { SeguimientoService } from '@services/modulos/consultas/seguimiento/seguimiento.service';
+import { SeguimientoService } from '@services/modulos/operaciones/consultas/seguimiento/seguimiento.service';
 import { RUTAS_OPERACIONES_CONSULTAS } from '@routes/rutas-operaciones';
 
 @Component({

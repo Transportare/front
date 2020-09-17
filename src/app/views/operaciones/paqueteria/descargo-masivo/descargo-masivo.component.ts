@@ -67,6 +67,7 @@ export class DescargoMasivoComponent implements OnInit {
             accion: [true],
             estadoId: ['', Validators.required],
             detalleId: [''],
+            manifiesto: [''],
             fecha: [moment().format('yyyy-MM-DD'), Validators.required],
         });
     }
