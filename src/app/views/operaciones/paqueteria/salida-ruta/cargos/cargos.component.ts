@@ -5,6 +5,7 @@ import { ManifiestoService } from '@services/modulos/operaciones/paqueteria/mani
 import { ActivatedRoute, Router } from '@angular/router';
 import { Manifiesto } from '@models/index';
 import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
+import { PdfMakeService } from '@services/utils/pdfmake.service';
 
 @Component({
     selector: 'app-salida-retorno',
@@ -28,7 +29,8 @@ export class CargosComponent implements OnInit {
         private msj: MensajeResponseService,
         private manifiestoService: ManifiestoService,
         private activatedRoute: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private pdfMakeService: PdfMakeService
     ) {
         this.loading = false;
         this.numero = '';
@@ -55,6 +57,7 @@ export class CargosComponent implements OnInit {
         this.loading = true;
         try {
             this.manifiesto = await this.manifiestoService.getOneManifiesto(this.id).toPromise();
+            console.log(this.manifiesto);
 
             await this.listarCargos();
             this.loading = false;
@@ -113,7 +116,33 @@ export class CargosComponent implements OnInit {
 
     guardar() {
         this.manifiestoService.postCargoDefinitivo({ idGuia: this.id }).subscribe(
-            (response) => {
+            (response: any) => {
+                const data = response.data;
+
+                const cabecera: Manifiesto = {
+                    ...new Manifiesto(),
+                    idGuia: data.cabecera.IdGuia,
+                    personal: data.cabecera.Chofer,
+                    fechaSalida: data.cabecera.FechaSalida,
+                    sucursalDestino: data.cabecera.SucursalDestino,
+                    sucursalRemitente: data.cabecera.SucursalRemite,
+                    idEstado: data.cabecera.IdEstadoGuia,
+                    estado: data.cabecera.Estado,
+                };
+
+                const cargos = data.detalle.map((item) => ({
+                    nombres: item.Nombre,
+                    apellidos: item.Apellidos,
+                    cantidadPaquetes: item.CantidadPaquetes,
+                    guiaOs: item.GuiaOs,
+                    idCliente: item.IdCliente,
+                    idOrdenServicio: item.IdOrdenServicio,
+                    idServicio: item.IdServicio,
+                    pagaDestino: item.PagaDestino,
+                    pesoTotal: item.PesoTotal,
+                }));
+
+                this.pdfMakeService.generarPdfCargos({ cabecera, cargos });
                 this.msj$ = this.msj.succes('Cargos asignados correctamente').subscribe((action) => {
                     if (action) {
                         this.atras();
