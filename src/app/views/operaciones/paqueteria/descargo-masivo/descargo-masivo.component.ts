@@ -54,6 +54,7 @@ export class DescargoMasivoComponent implements OnInit {
         this.detalleSelected = { id: 0, text: 'Seleccione', grupo: '' };
         this.tablaGeneralService.getSelectPorGrupo(9).subscribe((response) => {
             this.estados = response;
+            this.estados.splice(0, 2);
         });
         this.initForm();
     }
