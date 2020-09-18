@@ -8,6 +8,10 @@ export const RUTAS_OPERACIONES_PAQUETERIA = {
         editar: 'editar',
         detalle: 'detalle',
     },
+    clientes: {
+        init: `${item}/clientes`,
+        detalle: 'detalle',
+    },
     manifiestos: {
         init: `${item}/manifiestos`,
         nuevo: 'nuevo',

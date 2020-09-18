@@ -4,7 +4,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as jsBarcode from 'JsBarcode';
 import * as moment from 'moment';
-import { Cargo } from '@models/index';
+import { Cargo, Manifiesto } from '@models/index';
 
 @Injectable({ providedIn: 'root' })
 export class PdfMakeService {
@@ -184,4 +184,101 @@ export class PdfMakeService {
 
         pdfMake.createPdf(documentDefinition).open();
     }
+
+    generarPdfCargos({ cabecera, cargos }: Data) {
+        const documentDefinition = {
+            content: [
+                {
+                    margin: [0, 0, 0, 10],
+                    columns: [
+                        [
+                            {
+                                text: 'SUCURSAL REMITENTE',
+                                bold: true,
+                            },
+                            { text: `${cabecera.sucursalRemitente}` },
+                        ],
+                        [
+                            {
+                                text: 'N° MANIFIESTO',
+                                bold: true,
+                            },
+                            { text: `${cabecera.idGuia}` },
+                        ],
+                    ],
+                },
+                {
+                    margin: [0, 0, 0, 10],
+                    columns: [
+                        [
+                            {
+                                text: 'SUCURSAL DESTINO',
+                                bold: true,
+                            },
+                            { text: `${cabecera.sucursalDestino}` },
+                        ],
+                        [
+                            {
+                                text: 'FECHA SALIDA',
+                                bold: true,
+                            },
+                            { text: `${cabecera.fechaSalida}` },
+                        ],
+                    ],
+                },
+                {
+                    margin: [0, 0, 0, 30],
+                    columns: [
+                        [
+                            {
+                                text: 'CHOFER',
+                                bold: true,
+                            },
+                            { text: `${cabecera.personal}` },
+                        ],
+                    ],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['auto', '*', 'auto', 'auto', 'auto'],
+                        body: [
+                            [
+                                { text: 'Código Barra', bold: true },
+                                { text: 'Nombre Cliente', bold: true },
+                                { text: 'Cant Paquetes', bold: true },
+                                { text: 'Peso', bold: true },
+                                { text: 'Pago', bold: true },
+                            ],
+                            ...cargos.map((c) => [
+                                c.guiaOs,
+                                `${c.nombres} ${c.apellidos}`,
+                                c.cantidadPaquetes,
+                                c.pesoTotal,
+                                c.pagaDestino === 1 ? 'Contraentrega' : '',
+                            ]),
+                        ],
+                    },
+                },
+            ],
+        };
+        pdfMake.createPdf(documentDefinition).open();
+    }
+}
+
+interface Data {
+    cabecera: Manifiesto;
+    cargos: ItemCargo[];
+}
+
+interface ItemCargo {
+    nombres: string;
+    apellidos: string;
+    cantidadPaquetes: number;
+    guiaOs: string;
+    idCliente: number;
+    idOrdenServicio: number;
+    idServicio: number;
+    pagaDestino: number;
+    pesoTotal: string;
 }

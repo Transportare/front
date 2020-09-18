@@ -12,8 +12,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Vehículo</label>
-                            <input type="text" class="form-control" readonly disabled />
+                            <label>Sucursal Destino</label>
+                            <input type="text" class="form-control" readonly disabled [value]="manifiesto.sucursalDestino" />
                         </div>
                     </div>
                 </div>
@@ -26,8 +26,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Sucursal Destino</label>
-                            <input type="text" class="form-control" readonly disabled [value]="manifiesto.sucursal" />
+                            <label>Sucursal Remitente</label>
+                            <input type="text" class="form-control" readonly disabled [value]="manifiesto.sucursalRemitente" />
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                 [disabled]="data.length === 0"
                 (click)="guardar()"
             >
-                Guardar
+                Procesar
             </button>
         </div>
         <!-- </form> -->

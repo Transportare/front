@@ -5,6 +5,7 @@ import { PaginacionModel } from '@models/paginacion.model';
 import { Cliente } from '@models/index';
 import { Subscription } from 'rxjs';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
+import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 declare var $: any;
 
 @Component({
@@ -95,10 +96,8 @@ export class ClientesComponent implements OnInit, OnDestroy {
     }
 
     detalle() {
-        // const route = RUTAS_GESTION_MANTENIMIENTOS;
-        // this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.detalle}`]);
-        $(this.detalleCliente.nativeElement).modal('show');
-        // this.obtenerCliente();
+        const route = RUTAS_OPERACIONES_PAQUETERIA;
+        this.router.navigate([`${route.clientes.init}/${this.selectItem.idCliente}/${route.clientes.detalle}`]);
     }
 
     cerrarModal() {
