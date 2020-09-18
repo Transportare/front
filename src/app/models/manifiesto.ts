@@ -6,7 +6,8 @@ export class Manifiesto {
     fechaSalida: string;
     fechaCierre: string;
     distrito: string;
-    sucursal: string;
+    sucursalDestino: string;
+    sucursalRemitente: string;
     idEstado: number;
     estado: string;
 

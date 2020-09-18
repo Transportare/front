@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'config/api.route';
 import { Observable } from 'rxjs';
-import { Ubigeo, Manifiesto, Ruta, PaginacionModel, Grupo } from '@models/index';
+import { Manifiesto, PaginacionModel, Grupo } from '@models/index';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -41,8 +41,8 @@ export class ManifiestoService {
                     idGuia: response.data.IdGuia,
                     personal: response.data.Personal,
                     fechaSalida: response.data.FechaSalida,
-                    idUbigeo: response.data.IdUbigeo,
-                    sucursal: response.data.Sucursal,
+                    sucursalDestino: response.data.SucursalDestino,
+                    sucursalRemitente: response.data.SucursalRemite,
                     idEstado: response.data.IdEstadoGuia,
                     estado: response.data.Estado,
                 };
