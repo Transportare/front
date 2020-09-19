@@ -115,7 +115,7 @@ export class CargosComponent implements OnInit {
                 const cabecera: Manifiesto = {
                     ...new Manifiesto(),
                     idGuia: data.cabecera.IdGuia,
-                    personal: data.cabecera.Chofer,
+                    personal: data.cabecera.Personal,
                     fechaSalida: data.cabecera.FechaSalida,
                     sucursalDestino: data.cabecera.SucursalDestino,
                     sucursalRemitente: data.cabecera.SucursalRemite,
@@ -155,7 +155,7 @@ export class CargosComponent implements OnInit {
             const cabecera: Manifiesto = {
                 ...new Manifiesto(),
                 idGuia: data.IdGuia,
-                personal: data.Chofer,
+                personal: data.Personal,
                 fechaSalida: data.FechaSalida,
                 sucursalDestino: data.SucursalDestino,
                 sucursalRemitente: data.SucursalRemite,

@@ -166,14 +166,20 @@ export class FormularioComponent implements OnInit, OnDestroy {
             this.formRegistro.get('dni').setValidators([Validators.required, Validators.minLength(11)]);
             this.formRegistro.get('razonSocial').setValidators(Validators.required);
             this.formRegistro.get('razonSocial').disable();
+            this.formRegistro.get('nombres').clearValidators();
+            this.formRegistro.get('apellidos').clearValidators();
         } else {
             this.formRegistro.get('dni').setValidators([Validators.required, Validators.minLength(8)]);
             this.formRegistro.get('razonSocial').clearValidators();
             this.formRegistro.get('nombres').disable();
             this.formRegistro.get('apellidos').disable();
+            this.formRegistro.get('nombres').setValidators(Validators.required);
+            this.formRegistro.get('apellidos').setValidators(Validators.required);
         }
         this.formRegistro.get('dni').updateValueAndValidity();
         this.formRegistro.get('razonSocial').updateValueAndValidity();
+        this.formRegistro.get('nombres').updateValueAndValidity();
+        this.formRegistro.get('apellidos').updateValueAndValidity();
     }
 
     changeTipoEntrega(event) {
@@ -273,37 +279,38 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     this.formRegistro.patchValue({
                         razonSocial: data.Nombre,
                     });
+                    this.formRegistro.get('razonSocial').clearValidators();
                     this.formRegistro.get('razonSocial').disable();
                 } else {
                     this.formRegistro.patchValue({
                         nombres: data.Nombre,
                         apellidos: data.Apellidos,
-                        // direccion: data.Direccion,
                     });
+                    this.formRegistro.get('nombres').clearValidators();
+                    this.formRegistro.get('apellidos').clearValidators();
                     this.formRegistro.get('nombres').disable();
                     this.formRegistro.get('apellidos').disable();
-                    // this.formRegistro.get('direccion').disable();
                 }
             } else {
                 if (this.persona) {
                     this.formRegistro.patchValue({
                         razonSocial: '',
                     });
+                    this.formRegistro.get('razonSocial').setValidators(Validators.required);
                     this.formRegistro.get('razonSocial').enable();
                 } else {
                     this.formRegistro.patchValue({
                         nombres: '',
                         apellidos: '',
-                        // direccion: '',
                     });
+                    this.formRegistro.get('nombres').setValidators(Validators.required);
+                    this.formRegistro.get('apellidos').setValidators(Validators.required);
                     this.formRegistro.get('nombres').enable();
                     this.formRegistro.get('apellidos').enable();
-                    // this.formRegistro.get('direccion').enable();
                 }
             }
             this.formRegistro.get('nombres').updateValueAndValidity();
             this.formRegistro.get('apellidos').updateValueAndValidity();
-            // this.formRegistro.get('direccion').updateValueAndValidity();
             this.formRegistro.get('razonSocial').updateValueAndValidity();
         });
     }
