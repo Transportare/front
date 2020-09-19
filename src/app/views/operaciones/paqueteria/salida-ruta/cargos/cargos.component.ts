@@ -57,8 +57,6 @@ export class CargosComponent implements OnInit {
         this.loading = true;
         try {
             this.manifiesto = await this.manifiestoService.getOneManifiesto(this.id).toPromise();
-            console.log(this.manifiesto);
-
             await this.listarCargos();
             this.loading = false;
         } catch (error) {
@@ -148,6 +146,37 @@ export class CargosComponent implements OnInit {
                 this.msj$ = this.msj.danger().subscribe();
             }
         );
+    }
+
+    detalle() {
+        this.manifiestoService.generarPdfManifiesto(this.id).subscribe((response: any) => {
+            const { data, detalle } = response;
+
+            const cabecera: Manifiesto = {
+                ...new Manifiesto(),
+                idGuia: data.IdGuia,
+                personal: data.Chofer,
+                fechaSalida: data.FechaSalida,
+                sucursalDestino: data.SucursalDestino,
+                sucursalRemitente: data.SucursalRemite,
+                idEstado: data.IdEstadoGuia,
+                estado: data.Estado,
+            };
+
+            const cargos = detalle.map((item) => ({
+                nombres: item.Nombre,
+                apellidos: item.Apellidos,
+                cantidadPaquetes: item.CantidadPaquetes,
+                guiaOs: item.GuiaOs,
+                idCliente: item.IdCliente,
+                idOrdenServicio: item.IdOrdenServicio,
+                idServicio: item.IdServicio,
+                pagaDestino: item.PagaDestino,
+                pesoTotal: item.PesoTotal,
+            }));
+
+            this.pdfMakeService.generarPdfCargos({ cabecera, cargos });
+        });
     }
 
     atras() {

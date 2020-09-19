@@ -102,4 +102,8 @@ export class ManifiestoService {
     postCargoDefinitivo(data) {
         return this.http.post(`${API_URL}cargos`, data);
     }
+
+    generarPdfManifiesto(id) {
+        return this.http.get(`${API_URL}guias/pdf/${id}`);
+    }
 }

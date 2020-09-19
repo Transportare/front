@@ -254,7 +254,7 @@ export class PdfMakeService {
                                 c.guiaOs,
                                 `${c.nombres} ${c.apellidos}`,
                                 c.cantidadPaquetes,
-                                c.pesoTotal,
+                                `${c.pesoTotal} kg`,
                                 c.pagaDestino === 1 ? 'Contraentrega' : '',
                             ]),
                         ],
