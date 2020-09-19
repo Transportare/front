@@ -26,7 +26,10 @@ export class FormularioComponent implements OnInit, OnDestroy {
     tipoPaqueteSelected: Grupo;
     distritos: Ubigeo[];
     distritoSelected: Ubigeo;
+    distritosRemitente: Ubigeo[];
+    distritoSelectedRemitente: Ubigeo;
     domicilio: boolean;
+    recojo: boolean;
     paquetes: any[];
     formRegistro: FormGroup;
     nombreSucursal: string;
@@ -49,12 +52,19 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.tipoPaqueteSelected = { id: 0, text: 'Seleccione Tipo', grupo: '' };
         this.distritos = [];
         this.distritoSelected = { id: '', text: 'Seleccione Distrito', padre: '' };
+        this.distritosRemitente = [];
+        this.distritoSelectedRemitente = { id: '', text: 'Seleccione Distrito', padre: '' };
         this.domicilio = false;
+        this.recojo = false;
         this.persona = false;
         this.paquetes = [];
         this.initForm();
         this.revisarDni();
         this.getPrecio();
+        const sucursal = localStorage.getItem('sucursal');
+        this.rutaService.getDistrito(Number(sucursal)).subscribe((response) => {
+            this.distritosRemitente = response;
+        });
     }
 
     ngOnInit(): void {
@@ -79,7 +89,11 @@ export class FormularioComponent implements OnInit, OnDestroy {
             dni: ['', [Validators.required, Validators.minLength(8)]],
             nombres: [{ value: '', disabled: true }, Validators.required],
             apellidos: [{ value: '', disabled: true }, Validators.required],
-            direccion: [{ value: '', disabled: true }],
+            // direccion: [{ value: '', disabled: true }],
+
+            idUbigeoRecojo: [null],
+            direccionRecojo: [null],
+            referenciaRecojo: [null],
 
             razonSocial: [{ value: '', disabled: true }],
 
@@ -144,13 +158,19 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.persona = event.target.checked;
         this.formRegistro.patchValue({
             dni: '',
+            razonSocial: '',
+            nombres: '',
+            apellidos: '',
         });
         if (this.persona) {
             this.formRegistro.get('dni').setValidators([Validators.required, Validators.minLength(11)]);
             this.formRegistro.get('razonSocial').setValidators(Validators.required);
+            this.formRegistro.get('razonSocial').disable();
         } else {
             this.formRegistro.get('dni').setValidators([Validators.required, Validators.minLength(8)]);
             this.formRegistro.get('razonSocial').clearValidators();
+            this.formRegistro.get('nombres').disable();
+            this.formRegistro.get('apellidos').disable();
         }
         this.formRegistro.get('dni').updateValueAndValidity();
         this.formRegistro.get('razonSocial').updateValueAndValidity();
@@ -175,6 +195,27 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.formRegistro.get('idUbigeoDestino').updateValueAndValidity();
         this.formRegistro.get('direccionDestino').updateValueAndValidity();
         this.formRegistro.get('referenciaDestino').updateValueAndValidity();
+    }
+
+    changeRecojo({ target }: { target: HTMLInputElement }) {
+        this.recojo = target.checked;
+        if (this.recojo) {
+            this.formRegistro.get('idUbigeoRecojo').setValidators(Validators.required);
+            this.formRegistro.get('direccionRecojo').setValidators(Validators.required);
+            this.formRegistro.get('referenciaRecojo').setValidators(Validators.required);
+        } else {
+            this.formRegistro.get('idUbigeoRecojo').clearValidators();
+            this.formRegistro.get('direccionRecojo').clearValidators();
+            this.formRegistro.get('referenciaRecojo').clearValidators();
+            this.formRegistro.patchValue({
+                idUbigeoRecojo: null,
+                direccionRecojo: null,
+                referenciaRecojo: null,
+            });
+        }
+        this.formRegistro.get('idUbigeoRecojo').updateValueAndValidity();
+        this.formRegistro.get('direccionRecojo').updateValueAndValidity();
+        this.formRegistro.get('referenciaRecojo').updateValueAndValidity();
     }
 
     changeSucursal(event) {
@@ -226,7 +267,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
         }
 
         this.rutaService.getClientesDni(this.formRegistro.value.dni).subscribe((response: any) => {
-            console.log(response);
             const data = response.data;
             if (data) {
                 if (this.persona) {
@@ -238,11 +278,11 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     this.formRegistro.patchValue({
                         nombres: data.Nombre,
                         apellidos: data.Apellidos,
-                        direccion: data.Direccion,
+                        // direccion: data.Direccion,
                     });
                     this.formRegistro.get('nombres').disable();
                     this.formRegistro.get('apellidos').disable();
-                    this.formRegistro.get('direccion').disable();
+                    // this.formRegistro.get('direccion').disable();
                 }
             } else {
                 if (this.persona) {
@@ -254,16 +294,16 @@ export class FormularioComponent implements OnInit, OnDestroy {
                     this.formRegistro.patchValue({
                         nombres: '',
                         apellidos: '',
-                        direccion: '',
+                        // direccion: '',
                     });
                     this.formRegistro.get('nombres').enable();
                     this.formRegistro.get('apellidos').enable();
-                    this.formRegistro.get('direccion').enable();
+                    // this.formRegistro.get('direccion').enable();
                 }
             }
             this.formRegistro.get('nombres').updateValueAndValidity();
             this.formRegistro.get('apellidos').updateValueAndValidity();
-            this.formRegistro.get('direccion').updateValueAndValidity();
+            // this.formRegistro.get('direccion').updateValueAndValidity();
             this.formRegistro.get('razonSocial').updateValueAndValidity();
         });
     }

@@ -2,6 +2,8 @@
     <div body-card>
         <!-- <div class="row" [formGroup]="formRegistro"> -->
         <div class="row" [formGroup]="formRegistro">
+            <pre>{{ formRegistro.invalid }}</pre>
+            <pre>{{ formRegistro.getRawValue() | json }}</pre>
             <div class="col-md-12 mb-4">
                 <div class="card">
                     <div class="card-body">
@@ -24,13 +26,6 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <!-- <div class="form-group text-right">
-                                    <label></label>
-                                    <button class="btn btn-primary" type="button" (click)="verificarDni()">
-                                        <span>Validar</span>
-                                    </button>
-                                </div> -->
-                                <!-- <div class="form-group"> -->
                                 <label class="d-lg-none" style="margin-bottom: 1em">Acciones</label>
                                 <div class="d-flex align-items-center" style="margin-bottom: 1rem">
                                     <button
@@ -46,7 +41,6 @@
                                         Persona Jurídica
                                     </label>
                                 </div>
-                                <!-- </div> -->
                             </div>
                         </div>
                         <div class="row" *ngIf="!persona">
@@ -63,20 +57,55 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="!persona">
+                        <!-- <div class="row" *ngIf="!persona">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="direccion">Dirección</label>
                                     <input type="text" class="form-control" id="direccion" formControlName="direccion" />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row" *ngIf="persona">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <!-- <label class="required" for="razon">Razón Social</label> -->
                                     <label for="tipoPaquete" class="required">Razón <br class="none" />Social </label>
                                     <input type="text" class="form-control" id="razon" formControlName="razonSocial" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    <label>
+                                        <input id="recojo" type="checkbox" (change)="changeRecojo($event)" />
+                                        Recojo a Domicilio
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="recojo">
+                                <div class="form-group">
+                                    <label for="distrito" class="required">Distrito</label>
+                                    <select-default
+                                        [data]="distritosRemitente"
+                                        [selected]="distritoSelectedRemitente"
+                                        (selectChange)="formRegistro.patchValue({ idUbigeoRecojo: $event.id })"
+                                    ></select-default>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="recojo">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="direccionRecojo" class="required">Dirección</label>
+                                    <input type="text" class="form-control" id="direccionRecojo" formControlName="direccionRecojo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="recojo">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="referenciaRecojo" class="required">Referencia</label>
+                                    <input type="text" class="form-control" id="referenciaRecojo" formControlName="referenciaRecojo" />
                                 </div>
                             </div>
                         </div>
@@ -163,8 +192,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="tipoEntrega">Entrega</label>
+                                <div>
                                     <label>
                                         <input type="checkbox" (change)="changeTipoEntrega($event)" />
                                         Despacho a Domicilio
