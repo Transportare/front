@@ -20,5 +20,11 @@ export const routes: Routes = [
         loadChildren: () => import('./operaciones/operaciones.module').then((m) => m.OperacionesModule),
         data: { roleId: [2] },
     },
+    {
+        canActivate: [AuthGuard, PerfilGuard],
+        path: 'paqueteria',
+        loadChildren: () => import('./paqueteria/paqueteria.module').then((m) => m.PaqueteriaModule),
+        data: { roleId: [3] },
+    },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];

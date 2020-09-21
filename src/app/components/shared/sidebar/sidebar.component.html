@@ -35,17 +35,17 @@
             <a
                 class="nav-link collapsed"
                 data-toggle="collapse"
-                [attr.data-target]="'#collapse' + subitem.NomOpcion"
+                [attr.data-target]="'#collapse' + subitem.IdOpcion"
                 aria-expanded="false"
-                [attr.aria-controls]="'collapse' + subitem.NomOpcion"
+                [attr.aria-controls]="'collapse' + subitem.IdOpcion"
             >
                 <i [class]="subitem.icon"></i>
                 <span>{{ subitem.NomOpcion }}</span>
             </a>
             <div
-                [id]="'collapse' + subitem.NomOpcion"
+                [id]="'collapse' + subitem.IdOpcion"
                 class="collapse"
-                [ngClass]="{ show: subitem.NomOpcion.toLowerCase() === ruta }"
+                [ngClass]="{ show: item.Url === ruta1 && subitem.NomOpcion.toLowerCase() === ruta2 }"
                 data-parent="#accordionSidebar"
                 *ngIf="subitem.hijos.length > 0"
             >

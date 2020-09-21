@@ -11,15 +11,18 @@ import { Subscription } from 'rxjs';
 export class SidebarComponent implements OnInit, OnDestroy {
     @ViewChild('menuTransportare', { static: true }) menuTransportare: ElementRef;
     menu: any;
-    ruta: string;
+    ruta1: string;
+    ruta2: string;
     suscriber: Subscription;
     constructor(private sidebarService: SidebarService, private router: Router) {
-        this.ruta = '';
+        this.ruta1 = '';
+        this.ruta2 = '';
         this.menu = [];
         this.suscriber = this.router.events.subscribe((response: NavigationEnd) => {
             if (response.url) {
                 const arrayRuta = response.url.split('/');
-                this.ruta = arrayRuta[2];
+                this.ruta1 = arrayRuta[1];
+                this.ruta2 = arrayRuta[2];
             }
         });
         this.sidebarService.listarMenu().subscribe((response: any) => {

@@ -5,16 +5,23 @@ export const routes: Routes = [
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
+        path: 'mantenimientos',
+        loadChildren: () => import('./mantenimientos/mantenimientos.module').then((m) => m.MantenimientosModule),
+        data: { roleId: [50] },
+    },
+    {
+        canActivate: [PerfilGuard],
+        canActivateChild: [PerfilGuard],
         path: 'despachos',
         loadChildren: () => import('./despachos/despachos.module').then((m) => m.DespachosModule),
-        data: { roleId: [30] },
+        data: { roleId: [55] },
     },
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
         path: 'consultas',
         loadChildren: () => import('./consultas/consultas.module').then((m) => m.ConsultasModule),
-        data: { roleId: [40] },
+        data: { roleId: [60] },
     },
     {
         path: '',
