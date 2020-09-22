@@ -7,6 +7,8 @@ import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DespachoService } from '@services/modulos/operaciones/despachos/despachos.service';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
+import { DescargoService } from '@services/modulos/operaciones/paqueteria/descargo/descargo.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-descargo-masivo',
@@ -33,7 +35,7 @@ export class DescargoMasivoComponent implements OnInit {
 
     constructor(
         private msj: MensajeResponseService,
-        private despachoService: DespachoService,
+        private descargoService: DescargoService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private fb: FormBuilder,
@@ -52,6 +54,7 @@ export class DescargoMasivoComponent implements OnInit {
         this.detalleSelected = { id: 0, text: 'Seleccione', grupo: '' };
         this.tablaGeneralService.getSelectPorGrupo(9).subscribe((response) => {
             this.estados = response;
+            this.estados.splice(0, 2);
         });
         this.initForm();
     }
@@ -65,7 +68,8 @@ export class DescargoMasivoComponent implements OnInit {
             accion: [true],
             estadoId: ['', Validators.required],
             detalleId: [''],
-            fecha: ['', Validators.required],
+            manifiesto: [''],
+            fecha: [moment().format('yyyy-MM-DD'), Validators.required],
         });
     }
 
@@ -94,7 +98,7 @@ export class DescargoMasivoComponent implements OnInit {
     }
 
     listarCargos() {
-        this.despachoService.getCargosByGuia().subscribe((response) => {
+        this.descargoService.getCargosByGuia().subscribe((response) => {
             this.data = response;
         });
     }
@@ -126,7 +130,7 @@ export class DescargoMasivoComponent implements OnInit {
                         fecha: this.form.value.fecha,
                     };
 
-                    this.despachoService.postCargo(cargo).subscribe(
+                    this.descargoService.postCargo(cargo).subscribe(
                         (response: any) => {
                             if (!response.succes) {
                                 this.errorCodigo = { error: true, mensaje: response.message };
@@ -147,7 +151,7 @@ export class DescargoMasivoComponent implements OnInit {
         } else {
             // this.repetido = false;
             this.errorCodigo = { error: false, mensaje: '' };
-            this.despachoService.deleteByCodigo(this.codigoBarra.nativeElement.value).subscribe((response: any) => {
+            this.descargoService.deleteByCodigo(this.codigoBarra.nativeElement.value).subscribe((response: any) => {
                 if (!response.succes) {
                     this.errorCodigo = { error: true, mensaje: response.message };
                 } else {
@@ -160,7 +164,7 @@ export class DescargoMasivoComponent implements OnInit {
     }
 
     deleteCargo(id, index) {
-        this.despachoService.deleteCargo(id).subscribe(
+        this.descargoService.deleteCargo(id).subscribe(
             (response) => {
                 this.data.splice(index, 1);
             },
@@ -171,7 +175,7 @@ export class DescargoMasivoComponent implements OnInit {
     }
 
     guardar() {
-        this.despachoService.postDescargoRegistrado().subscribe(
+        this.descargoService.postDescargoRegistrado().subscribe(
             (response) => {
                 this.msj$ = this.msj.succes('Descargo realizado correctamente').subscribe((action) => {
                     if (action) {
