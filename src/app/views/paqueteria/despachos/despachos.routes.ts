@@ -12,16 +12,23 @@ export const routes: Routes = [
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
+        path: 'despacho-destino',
+        loadChildren: () => import('./despacho-destino/despacho-destino.module').then((m) => m.DespachoDestinoModule),
+        data: { roleId: [56] },
+    },
+    {
+        canActivate: [PerfilGuard],
+        canActivateChild: [PerfilGuard],
         path: 'salida-ruta',
         loadChildren: () => import('./salida-ruta/salida-ruta.module').then((m) => m.SalidaRutaModule),
-        data: { roleId: [57] },
+        data: { roleId: [58] },
     },
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
         path: 'descargo-masivo',
         loadChildren: () => import('./descargo-masivo/descargo-masivo.module').then((m) => m.DescargoMasivoModule),
-        data: { roleId: [58] },
+        data: { roleId: [59] },
     },
     {
         path: '',

@@ -1,12 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
-import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import { RUTAS_PAQUETERIA_DESPACHOS } from '@routes/rutas-paqueteria';
-import { ManifiestoService } from '@services/modulos/operaciones/paqueteria/manifiestos/manifiestos.service';
-import { Grupo } from '@models/index';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-salida-ruta',
@@ -15,70 +7,50 @@ import * as moment from 'moment';
 })
 export class SalidaRutaComponent implements OnInit, OnDestroy {
     loading: boolean;
-    choferes: Grupo[];
-    choferSelected: Grupo;
-    vehiculos: any[];
-    vehiculoSelected: any;
-    sucursales: Grupo[];
-    sucursalSelected: Grupo;
+    accion: boolean;
+    mensajeros: any[];
+    mensajeroSelected: any;
+    departamentos: any[];
+    departamentoSelected: any;
+    provincias: any[];
+    provinciaSelected: any;
+    distritos: any[];
+    distritoSelected: any;
+    data: any[];
     selectItem: any;
-    msj$: Subscription;
-    form: FormGroup;
+    @ViewChild('codigoBarra', { static: true }) codigoBarra: ElementRef;
 
-    constructor(
-        private msj: MensajeResponseService,
-        private router: Router,
-        private manifiestoService: ManifiestoService,
-        private fb: FormBuilder
-    ) {
+    constructor() {
         this.loading = false;
-        this.choferes = [];
-        this.choferSelected = { id: 0, text: 'Seleccione', grupo: '' };
-        this.vehiculos = [];
-        this.vehiculoSelected = { id: '', text: 'Seleccione' };
-        this.sucursales = [];
-        this.sucursalSelected = { id: 0, text: 'Seleccione', grupo: '' };
+        this.accion = false;
+        this.mensajeros = [];
+        this.mensajeroSelected = { id: '', text: 'Seleccione' };
+        this.departamentos = [];
+        this.departamentoSelected = { id: '', text: 'Seleccione' };
+        this.provincias = [];
+        this.provinciaSelected = { id: '', text: 'Seleccione' };
+        this.distritos = [];
+        this.distritoSelected = { id: '', text: 'Seleccione' };
+        this.data = [];
         this.selectItem = {};
     }
 
-    ngOnInit(): void {
-        this.initForm();
-        this.manifiestoService.getData().subscribe((response) => {
-            this.choferes = response.choferes;
-            this.sucursales = response.sucursales;
-        });
+    ngOnInit(): void {}
+
+    ngOnDestroy() {}
+
+    changeAccion(event) {
+        this.accion = Number(event) === 1 ? true : false;
     }
 
-    ngOnDestroy(): void {
-        if (this.msj$) {
-            this.msj$.unsubscribe();
+    agregar() {
+        if (this.codigoBarra.nativeElement.value.length <= 0) {
+            return;
         }
+        this.data.push({ id: '', codigo: this.codigoBarra.nativeElement.value, estado: '' });
+        this.codigoBarra.nativeElement.value = '';
+        this.codigoBarra.nativeElement.focus();
     }
 
-    initForm() {
-        this.form = this.fb.group({
-            idChofer: ['', Validators.required],
-            idVehiculo: [null],
-            fechaSalida: [moment().format('yyyy-MM-DD'), Validators.required],
-            idSucursal: ['', Validators.required],
-            observacion: [''],
-        });
-    }
-
-    guardar() {
-        const route = RUTAS_PAQUETERIA_DESPACHOS;
-        this.manifiestoService.postManifiesto(this.form.value).subscribe(
-            (response: any) => {
-                this.msj$ = this.msj.succes('Guia creada correctamente').subscribe((action) => {
-                    if (action) {
-                        const id = response.idGuia;
-                        this.router.navigate([`${route.salidaRuta.init}/${id}/${route.salidaRuta.cargos}`]);
-                    }
-                });
-            },
-            (error) => {
-                this.msj$ = this.msj.danger().subscribe();
-            }
-        );
-    }
+    atras() {}
 }

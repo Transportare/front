@@ -1,5 +1,8 @@
-<app-body [header]="manifiesto && manifiesto.idEstado === 152 ? true : false" titulo="Cargos de Ruta">
-    <div header *ngIf="manifiesto && manifiesto.idEstado === 152">
+<app-body
+    [header]="action && action === 'descargo' ? false : true"
+    titulo="{{ action && action === 'descargo' ? 'Descargo' : 'Detalle' }} Manifiesto"
+>
+    <div header *ngIf="action !== 'descargo'">
         <div class="py-3 text-right">
             <button class="btn btn-primary" type="button" (click)="detalle()"><i class="mdi mdi-file"></i> Generar PDF</button>
         </div>
@@ -37,14 +40,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row" *ngIf="manifiesto && manifiesto.idEstado === 151">
+            <div class="row" *ngIf="action && action === 'descargo'">
                 <div class="col-md-6">
                     <div class="form-group group-normal">
                         <label for="codigo">Código de Barra</label>
-                        <input #codigoBarra type="text" class="form-control" id="codigo" maxlength="13" (keyup.enter)="agregar()" />
-                        <span *ngIf="repetido" class="d-block error-input text-danger"
-                            >Este código de barra: {{ numero }} esta repetido</span
-                        >
+                        <input #codigoBarra type="text" class="form-control" id="codigo" maxlength="13" (keyup.enter)="verificar()" />
                         <span *ngIf="errorCodigo.error" class="d-block error-input text-danger">{{ errorCodigo.mensaje }}</span>
                     </div>
                 </div>
@@ -58,27 +58,17 @@
                                     <th>N°</th>
                                     <th>Código</th>
                                     <th>Estado</th>
-                                    <th class="text-center" *ngIf="manifiesto && manifiesto.idEstado === 151">Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of data; let index = index" (click)="selectItem = item">
                                     <!-- <td>{{ (pagina - 1) * filas + index + 1 }}</td> -->
-                                    <td style="vertical-align: middle">{{ index + 1 }}</td>
-                                    <td style="vertical-align: middle">{{ item.codigo }}</td>
-                                    <td style="vertical-align: middle">{{ item.estado }}</td>
-                                    <td
-                                        class="text-center"
-                                        style="vertical-align: middle"
-                                        *ngIf="manifiesto && manifiesto.idEstado === 151"
-                                    >
-                                        <button class="btn btn-primary rounded-circle" type="button" (click)="deleteCargo(item.id, index)">
-                                            <i class="mdi mdi-close"></i>
-                                        </button>
-                                    </td>
+                                    <td [ngStyle]="{ color: item.cheked ? '#29b6ff' : null }">{{ index + 1 }}</td>
+                                    <td [ngStyle]="{ color: item.cheked ? '#29b6ff' : null }">{{ item.codigo }}</td>
+                                    <td [ngStyle]="{ color: item.cheked ? '#29b6ff' : null }">{{ item.estado }}</td>
                                 </tr>
                                 <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                                    <td colspan="4">No hay información disponible</td>
+                                    <td colspan="3">No hay información disponible</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -87,17 +77,16 @@
             </div>
         </div>
         <div class="p-3 text-right">
-            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Atras</button>
             <button
-                *ngIf="manifiesto && manifiesto.idEstado === 151"
+                *ngIf="action && action === 'descargo'"
                 class="btn btn-primary"
-                type="submit"
-                [disabled]="data.length === 0"
-                (click)="guardar()"
+                type="button"
+                [disabled]="validarProcesar()"
+                (click)="procesar()"
             >
                 Procesar
             </button>
         </div>
-        <!-- </form> -->
     </div>
 </app-body>

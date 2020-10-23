@@ -8,7 +8,6 @@ import { RUTAS_PAQUETERIA_CONSULTAS } from '@routes/rutas-paqueteria';
 @Component({
     selector: 'app-tracking',
     templateUrl: './tracking.component.html',
-    styleUrls: ['./tracking.component.scss'],
 })
 export class TrackingComponent implements OnInit {
     loading: boolean;
@@ -50,8 +49,8 @@ export class TrackingComponent implements OnInit {
         );
     }
 
-    detalle() {
+    detalle(codigo) {
         const route = RUTAS_PAQUETERIA_CONSULTAS;
-        this.router.navigate([`${route.tracking.init}/${this.selectItem.codigoBarra}/${route.tracking.detalle}`]);
+        this.router.navigate([`${route.tracking.init}/${codigo}/${route.tracking.detalle}`]);
     }
 }

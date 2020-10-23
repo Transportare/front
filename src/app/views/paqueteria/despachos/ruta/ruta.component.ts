@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RUTAS_PAQUETERIA_DESPACHOS } from '@routes/rutas-paqueteria';
+import { RUTAS_PAQUETERIA_CONSULTAS, RUTAS_PAQUETERIA_DESPACHOS } from '@routes/rutas-paqueteria';
 import { RutaService } from '@services/modulos/operaciones/paqueteria/ruta/ruta.service';
 import { PaginacionModel, Ruta } from '@models/index';
 
@@ -63,7 +63,7 @@ export class RutaComponent implements OnInit {
 
     detalle() {
         this.router.navigate([
-            `${RUTAS_PAQUETERIA_DESPACHOS.ruta.init}/${this.selectItem.guiaOs}/${RUTAS_PAQUETERIA_DESPACHOS.ruta.detalle}`,
+            `${RUTAS_PAQUETERIA_CONSULTAS.tracking.init}/${this.selectItem.guiaOs}/${RUTAS_PAQUETERIA_CONSULTAS.tracking.detalle}`,
         ]);
     }
 

@@ -79,16 +79,24 @@ export class ManifiestoService {
         });
     }
 
-    postManifiesto(data) {
-        return this.http.post(`${API_URL}guias`, data);
-    }
+    // postManifiesto(data) {
+    //     return this.http.post(`${API_URL}guias`, data);
+    // }
 
     postCargo(data) {
         return this.http.post(`${API_URL}cargos/temporal`, data);
     }
 
-    getCargosByGuia(id, params) {
-        return this.http.get(`${API_URL}cargos/${id}`, { params }).pipe(
+    getCargosUserTemp() {
+        return this.http.get(`${API_URL}cargos/temporal/salida`).pipe(
+            map((response: any) => {
+                return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
+            })
+        );
+    }
+
+    getCargosByGuia(id) {
+        return this.http.get(`${API_URL}cargos/${id}`).pipe(
             map((response: any) => {
                 return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
             })
@@ -101,6 +109,10 @@ export class ManifiestoService {
 
     postCargoDefinitivo(data) {
         return this.http.post(`${API_URL}cargos`, data);
+    }
+
+    postDescargoManifiesto(data) {
+        return this.http.post(`${API_URL}cargos/descargos`, data);
     }
 
     generarPdfManifiesto(id) {

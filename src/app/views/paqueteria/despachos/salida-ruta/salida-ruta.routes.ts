@@ -6,9 +6,4 @@ export const routes: Routes = [
         path: '',
         component: SalidaRutaComponent,
     },
-
-    {
-        path: `:id/cargos`,
-        loadChildren: () => import('./cargos/cargos.module').then((m) => m.CargosModule),
-    },
 ];

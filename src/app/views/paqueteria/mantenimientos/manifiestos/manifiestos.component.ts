@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 import { PaginacionModel, Ruta, Manifiesto } from '@models/index';
 import { ManifiestoService } from '@services/modulos/operaciones/paqueteria/manifiestos/manifiestos.service';
-import { RUTAS_PAQUETERIA_DESPACHOS } from '@routes/rutas-paqueteria';
+import { RUTAS_PAQUETERIA_MANTENIMIENTOS } from '@routes/rutas-paqueteria';
 
 @Component({
     selector: 'app-ruta',
@@ -35,6 +34,7 @@ export class ManifiestosComponent implements OnInit {
         const params = {
             pagina: this.pagina,
             filas: this.filas,
+            idTipoGuia: 132,
         };
 
         this.manifiestoService.getManifiestos(params).subscribe(
@@ -63,7 +63,12 @@ export class ManifiestosComponent implements OnInit {
     }
 
     detalle() {
-        const route = RUTAS_PAQUETERIA_DESPACHOS;
-        this.router.navigate([`${route.salidaRuta.init}/${this.selectItem.idGuia}/${route.salidaRuta.cargos}`]);
+        const route = RUTAS_PAQUETERIA_MANTENIMIENTOS;
+        this.router.navigate([`${route.manifiestos.init}/${this.selectItem.idGuia}/${route.manifiestos.detalle}`]);
+    }
+
+    descargo() {
+        const route = RUTAS_PAQUETERIA_MANTENIMIENTOS;
+        this.router.navigate([`${route.manifiestos.init}/${this.selectItem.idGuia}/descargo`]);
     }
 }
