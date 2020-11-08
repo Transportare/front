@@ -26,8 +26,8 @@ export const routes: Routes = [
     {
         canActivate: [PerfilGuard],
         canActivateChild: [PerfilGuard],
-        path: 'descargo-masivo',
-        loadChildren: () => import('./descargo-masivo/descargo-masivo.module').then((m) => m.DescargoMasivoModule),
+        path: 'descargo-ruta',
+        loadChildren: () => import('./descargo-ruta/descargo-ruta.module').then((m) => m.DescargoRutaModule),
         data: { roleId: [59] },
     },
     {

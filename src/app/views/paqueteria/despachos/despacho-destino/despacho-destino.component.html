@@ -59,6 +59,20 @@
                             <span *ngIf="errorCodigo.error" class="d-block error-input text-danger">{{ errorCodigo.mensaje }}</span>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label style="margin-bottom: 1.5rem">Acción</label>
+                        <div class="d-flex">
+                            <label class="md-check mr-4">
+                                <input type="radio" [value]="true" name="accion" formControlName="accion" />
+                                Añadir
+                            </label>
+
+                            <label class="md-check">
+                                <input type="radio" [value]="false" name="accion" formControlName="accion" />
+                                Quitar
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-8">

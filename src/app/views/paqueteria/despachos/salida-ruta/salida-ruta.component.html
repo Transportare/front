@@ -1,49 +1,77 @@
 <app-body [header]="false" [titulo]="'Salida a Ruta'">
     <div body [ngClass]="{ loader: loading }">
         <loader *ngIf="loading"></loader>
-        <!-- <form *ngIf="!loading"> -->
-        <div class="px-4 pt-4 pb-2">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group group-normal">
-                        <label class="required">Mensajero</label>
-                        <select-default [data]="mensajeros" [selected]="mensajeroSelected"></select-default>
+        <form [formGroup]="form">
+            <div class="px-4 pt-4 pb-2">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group group-normal">
+                            <label class="required">Mensajero</label>
+                            <select-default
+                                [data]="mensajeros"
+                                [selected]="mensajeroSelected"
+                                (selectChange)="form.patchValue({ idPersonal: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group group-normal">
+                            <label for="fechaSalida" class="required">Fecha Salida</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                id="fechaSalida"
+                                formControlName="fechaSalida"
+                                (change)="changeFechaSalida($event.target.value)"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group group-normal">
+                            <label for="fechaCierre" class="required">Fecha Cierre</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                id="fechaCierre"
+                                formControlName="fechaCierre"
+                                (change)="changeFechaCierre($event.target.value)"
+                            />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group group-normal">
-                        <label for="fechaSalida" class="required">Fecha Salida</label>
-                        <input type="date" class="form-control" id="fechaSalida" />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group group-normal">
+                            <label class="required">Departamento</label>
+                            <select-default
+                                [data]="departamentos"
+                                [selected]="departamentoSelected"
+                                (selectChange)="changeDepartamento($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group group-normal">
+                            <label class="required">Provincia</label>
+                            <select-default
+                                [data]="provincias"
+                                [selected]="provinciaSelected"
+                                (selectChange)="changeProvincia($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group group-normal">
+                            <label class="required">Distrito</label>
+                            <select-default
+                                [data]="distritos"
+                                [selected]="distritoSelected"
+                                (selectChange)="form.patchValue({ idUbigeoDestino: $event.id })"
+                            ></select-default>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group group-normal">
-                        <label for="fechaCierre" class="required">Fecha Cierre</label>
-                        <input type="date" class="form-control" id="fechaCierre" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group group-normal">
-                        <label class="required">Departamento</label>
-                        <select-default [data]="departamentos" [selected]="departamentoSelected"></select-default>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group group-normal">
-                        <label class="required">Provincia</label>
-                        <select-default [data]="provincias" [selected]="provinciaSelected"></select-default>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group group-normal">
-                        <label class="required">Distrito</label>
-                        <select-default [data]="distritos" [selected]="distritoSelected"></select-default>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
+                <!-- <div class="row">
                 <div class="col-md-6">
                     <div class="form-group group-normal">
                         <label for="observaciones" class="required">Observaciones</label>
@@ -62,33 +90,33 @@
                         <input type="text" class="form-control" id="movilidad" />
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group group-normal">
-                        <label for="codigo">Código de Barra</label>
-                        <input #codigoBarra type="text" class="form-control" id="codigo" (keyup.enter)="agregar()" />
+            </div> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group group-normal">
+                            <label for="codigo">Código de Barra</label>
+                            <input #codigoBarra type="text" class="form-control" id="codigo" (keyup.enter)="agregar()" />
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group group-normal">
-                        <label>Acción</label>
-                        <div class="mt-2">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="radio" id="agregar" />
-                                <label class="form-check-label mb-0" for="agregar">Agregar</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="radio" id="descontar" />
-                                <label class="form-check-label mb-0" for="descontar">Descontar</label>
+                    <div class="col-md-6">
+                        <div class="form-group group-normal">
+                            <label>Acción</label>
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="radio" id="agregar" />
+                                    <label class="form-check-label mb-0" for="agregar">Agregar</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="radio" id="descontar" />
+                                    <label class="form-check-label mb-0" for="descontar">Descontar</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- <div class="table-responsive">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- <div class="table-responsive">
                         <table class="table table-striped table-hover box-shadow">
                             <thead>
                                 <tr>
@@ -125,42 +153,41 @@
                             </tbody>
                         </table>
                     </div> -->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover box-shadow">
-                            <thead>
-                                <tr>
-                                    <th>N°</th>
-                                    <th>Código</th>
-                                    <th>Estado</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    *ngFor="let item of data; let index = index"
-                                    (click)="selectItem = item"
-                                    [ngClass]="{ highlighted: selectItem.id === item.id }"
-                                >
-                                    <!-- <td>{{ (pagina - 1) * filas + index + 1 }}</td> -->
-                                    <td>{{ index + 1 }}</td>
-                                    <td>{{ item.codigo }}</td>
-                                    <td>{{ item.estado }}</td>
-                                    <td></td>
-                                </tr>
-                                <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                                    <td colspan="4">No hay información disponible</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover box-shadow">
+                                <thead>
+                                    <tr>
+                                        <th>N°</th>
+                                        <th>Código</th>
+                                        <th>Estado</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let item of data; let index = index"
+                                        (click)="selectItem = item"
+                                        [ngClass]="{ highlighted: selectItem.id === item.id }"
+                                    >
+                                        <!-- <td>{{ (pagina - 1) * filas + index + 1 }}</td> -->
+                                        <td>{{ index + 1 }}</td>
+                                        <td>{{ item.codigo }}</td>
+                                        <td>{{ item.estado }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                                        <td colspan="4">No hay información disponible</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="p-3 text-right">
-            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
-            <!-- <button class="btn btn-primary" type="submit"><span>Guardar</span></button> -->
-        </div>
-        <!-- </form> -->
+            <div class="p-3 text-right">
+                <button class="btn btn-primary" type="button"><span>Procesar</span></button>
+            </div>
+        </form>
+        {{ form.value | json }}
     </div>
 </app-body>

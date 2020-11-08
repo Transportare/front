@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
 export class DescargoService {
     constructor(private http: HttpClient) {}
 
-    getCargosByGuia() {
-        return this.http.get(`${API_URL}cargos/temporal/descargos`).pipe(
+    getCargosByGuia(idDescargo: number) {
+        return this.http.get(`${API_URL}cargos/temporal/${idDescargo}`).pipe(
             map((response: any) => {
                 return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
             })

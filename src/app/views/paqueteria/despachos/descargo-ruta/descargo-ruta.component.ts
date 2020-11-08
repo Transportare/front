@@ -9,13 +9,14 @@ import { DespachoService } from '@services/modulos/operaciones/despachos/despach
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { DescargoService } from '@services/modulos/operaciones/paqueteria/descargo/descargo.service';
 import * as moment from 'moment';
+import { TipoTemporal } from '@models/enum.interface';
 
 @Component({
-    selector: 'app-descargo-masivo',
-    templateUrl: './descargo-masivo.component.html',
+    selector: 'app-descargo-ruta',
+    templateUrl: './descargo-ruta.component.html',
     styles: [],
 })
-export class DescargoMasivoComponent implements OnInit {
+export class DescargoRutaComponent implements OnInit {
     loading: boolean;
     accion: boolean;
     data: any[];
@@ -98,7 +99,7 @@ export class DescargoMasivoComponent implements OnInit {
     }
 
     listarCargos() {
-        this.descargoService.getCargosByGuia().subscribe((response) => {
+        this.descargoService.getCargosByGuia(TipoTemporal.DESCARGO_RUTA_PAQUETERIA_TEMPORAL).subscribe((response) => {
             this.data = response;
         });
     }

@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { PdfMakeService } from '@services/utils/pdfmake.service';
 import { Router } from '@angular/router';
 import { RUTAS_PAQUETERIA_MANTENIMIENTOS } from '@routes/rutas-paqueteria';
+import { TipoTemporal } from '@models/enum.interface';
 
 @Component({
     selector: 'app-despacho-destino',
@@ -70,6 +71,7 @@ export class DespachoDestinoComponent implements OnInit, OnDestroy {
 
     initForm() {
         this.form = this.fb.group({
+            accion: [true],
             idChofer: ['', Validators.required],
             idVehiculo: [null],
             fechaSalida: [moment().format('yyyy-MM-DD'), Validators.required],
@@ -80,14 +82,15 @@ export class DespachoDestinoComponent implements OnInit, OnDestroy {
 
     getDetalle() {
         this.loading = true;
-        try {
-            this.manifiestoService.getCargosUserTemp().subscribe((response) => {
+        this.manifiestoService.getCargosUserTemp(TipoTemporal.SALIDA_DESTINO_PAQUETERIA_TEMPORAL).subscribe(
+            (response) => {
                 this.data = response;
                 this.loading = false;
-            });
-        } catch (error) {
-            this.loading = false;
-        }
+            },
+            (error) => {
+                this.loading = false;
+            }
+        );
     }
 
     agregar() {
@@ -95,32 +98,75 @@ export class DespachoDestinoComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (this.data.findIndex((element) => element.codigo === this.codigoBarra.nativeElement.value) !== -1) {
-            this.numero = this.codigoBarra.nativeElement.value;
-            this.repetido = true;
-            this.codigoBarra.nativeElement.blur();
-        } else {
-            this.repetido = false;
-            this.manifiestoService
-                .postCargo({
-                    // idGuia: this.id,
-                    codigoBarra: this.codigoBarra.nativeElement.value,
-                })
-                .subscribe(
-                    (response: any) => {
-                        if (!response.succes) {
-                            this.errorCodigo = { error: true, mensaje: response.message };
-                            this.codigoBarra.nativeElement.blur();
-                        } else {
-                            const data = response.data;
-                            this.errorCodigo = { error: false, mensaje: '' };
-                            this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
-                            this.codigoBarra.nativeElement.focus();
+        this.errorCodigo = { error: false, mensaje: '' };
+        this.repetido = false;
+
+        if (this.form.value.accion) {
+            if (this.data.findIndex((element) => element.codigo === this.codigoBarra.nativeElement.value) !== -1) {
+                this.numero = this.codigoBarra.nativeElement.value;
+                this.repetido = true;
+                this.codigoBarra.nativeElement.blur();
+            } else {
+                // this.repetido = false;
+                this.manifiestoService
+                    .postCargo({
+                        // idGuia: this.id,
+                        codigoBarra: this.codigoBarra.nativeElement.value,
+                    })
+                    .subscribe(
+                        (response: any) => {
+                            if (!response.succes) {
+                                this.errorCodigo = { error: true, mensaje: response.message };
+                                this.codigoBarra.nativeElement.blur();
+                            } else {
+                                const data = response.data;
+                                this.errorCodigo = { error: false, mensaje: '' };
+                                this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
+                                this.codigoBarra.nativeElement.focus();
+                            }
+                        },
+                        (error) => {
+                            this.msj$ = this.msj.danger().subscribe();
                         }
-                    },
-                    (error) => {}
-                );
+                    );
+            }
+        } else {
+            this.errorCodigo = { error: false, mensaje: '' };
+            this.manifiestoService.deleteByCodigo(this.codigoBarra.nativeElement.value).subscribe((response: any) => {
+                if (!response.succes) {
+                    this.errorCodigo = { error: true, mensaje: response.message };
+                } else {
+                    this.getDetalle();
+                }
+            });
         }
+
+        // if (this.data.findIndex((element) => element.codigo === this.codigoBarra.nativeElement.value) !== -1) {
+        //     this.numero = this.codigoBarra.nativeElement.value;
+        //     this.repetido = true;
+        //     this.codigoBarra.nativeElement.blur();
+        // } else {
+        //     this.repetido = false;
+        //     this.manifiestoService
+        //         .postCargo({
+        //             // idGuia: this.id,
+        //             codigoBarra: this.codigoBarra.nativeElement.value,
+        //         })
+        //         .subscribe(
+        //             (response: any) => {
+        //                 if (!response.succes) {
+        //                     this.errorCodigo = { error: true, mensaje: response.message };
+        //                     this.codigoBarra.nativeElement.blur();
+        //                 } else {
+        //                     const data = response.data;
+        //                     this.errorCodigo = { error: false, mensaje: '' };
+        //                     this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
+        //                     this.codigoBarra.nativeElement.focus();
+        //                 }
+        //             },
+        //             (error) => {}
+        //         );
+        // }
         this.codigoBarra.nativeElement.value = '';
     }
 

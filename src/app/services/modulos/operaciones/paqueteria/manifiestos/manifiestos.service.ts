@@ -87,8 +87,8 @@ export class ManifiestoService {
         return this.http.post(`${API_URL}cargos/temporal`, data);
     }
 
-    getCargosUserTemp() {
-        return this.http.get(`${API_URL}cargos/temporal/salida`).pipe(
+    getCargosUserTemp(idDescargo: number) {
+        return this.http.get(`${API_URL}cargos/temporal/${idDescargo}`).pipe(
             map((response: any) => {
                 return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
             })
@@ -104,7 +104,12 @@ export class ManifiestoService {
     }
 
     deleteCargo(id) {
-        return this.http.delete(`${API_URL}cargos/${id}`);
+        // return this.http.delete(`${API_URL}cargos/${id}`);
+        return this.http.delete(`${API_URL}cargos/temporal/descargos/${id}`);
+    }
+
+    deleteByCodigo(codigoBarra) {
+        return this.http.delete(`${API_URL}cargos/temporal/descargosByCodeBar/${codigoBarra}`);
     }
 
     postCargoDefinitivo(data) {
