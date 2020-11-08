@@ -6,10 +6,17 @@ import { Observable } from 'rxjs';
 import { Grupo } from '@models/index';
 
 @Injectable({ providedIn: 'root' })
-export class DescargoRutaService {
+export class SalidaRutaService {
     constructor(private http: HttpClient) {}
 
-    // getMensajero(): Observable<{ mensajeros: Grupo[] }> {
+    getCargosUserTemp(idDescargo: number) {
+        return this.http.get(`${API_URL}cargos/temporal/${idDescargo}`).pipe(
+            map((response: any) => {
+                return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
+            })
+        );
+    }
+
     getMensajero(): Observable<Grupo[]> {
         return this.http.get(`${API_URL}personales/byTipoPersonal/32`).pipe(
             map((response: any) => {
@@ -24,5 +31,21 @@ export class DescargoRutaService {
                 return mensajeros;
             })
         );
+    }
+
+    postSalidaRuta(data) {
+        return this.http.post(`${API_URL}cargos/salida-ruta`, data);
+    }
+
+    postSalidaRutaTemporal(codigo) {
+        return this.http.post(`${API_URL}cargos/temporal/salida-ruta`, codigo);
+    }
+
+    deleteCargo(id) {
+        return this.http.delete(`${API_URL}cargos/temporal/descargos/${id}`);
+    }
+
+    deleteByCodigo(codigoBarra) {
+        return this.http.delete(`${API_URL}cargos/temporal/descargosByCodeBar/${codigoBarra}`);
     }
 }

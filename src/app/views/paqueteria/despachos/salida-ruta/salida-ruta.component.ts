@@ -1,11 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import { DescargoRutaService } from '@services/modulos/paqueteria/despachos/descargo-ruta/descargo-ruta.service';
+import { SalidaRutaService } from '@services/modulos/paqueteria/despachos/salida-ruta/salida-ruta.service';
 import { UbigeoService } from '@services/utils/ubigeo.service';
 import { Grupo, Ubigeo } from '@models/index';
 import { Subscription } from 'rxjs';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { TipoTemporal } from '@models/enum.interface';
 
 @Component({
     selector: 'app-salida-ruta',
@@ -24,14 +25,16 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
     distritos: Ubigeo[];
     distritoSelected: Ubigeo;
     data: any[];
-    selectItem: any;
     msj$: Subscription;
     form: FormGroup;
+    errorCodigo: { error: boolean; mensaje: string };
+    repetido: boolean;
+    numero: string;
     @ViewChild('codigoBarra', { static: true }) codigoBarra: ElementRef;
 
     constructor(
         private msj: MensajeResponseService,
-        private descargoRutaService: DescargoRutaService,
+        private salidaRutaService: SalidaRutaService,
         private ubigeoService: UbigeoService,
         private formBuilder: FormBuilder
     ) {
@@ -46,7 +49,9 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
         this.distritos = [];
         this.distritoSelected = { id: '', text: 'Seleccione', padre: null };
         this.data = [];
-        this.selectItem = {};
+        this.numero = '';
+        this.repetido = false;
+        this.errorCodigo = { error: false, mensaje: '' };
     }
 
     ngOnInit(): void {
@@ -56,6 +61,7 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
             fechaSalida: ['', Validators.required],
             fechaCierre: ['', Validators.required],
             idUbigeoDestino: ['', Validators.required],
+            accion: [true],
         });
     }
 
@@ -68,17 +74,14 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
     async initData() {
         this.loading = true;
         try {
-            this.mensajeros = await this.descargoRutaService.getMensajero().toPromise();
+            this.mensajeros = await this.salidaRutaService.getMensajero().toPromise();
             this.departamentos = await this.ubigeoService.getDepartamentos().toPromise();
+            this.data = await this.salidaRutaService.getCargosUserTemp(TipoTemporal.SALIDA_RUTA_PAQUETERIA_TEMPORAL).toPromise();
             this.loading = false;
         } catch (error) {
             this.msj$ = this.msj.danger().subscribe();
             this.loading = false;
         }
-    }
-
-    changeAccion(event) {
-        this.accion = Number(event) === 1 ? true : false;
     }
 
     changeDepartamento(event: Ubigeo) {
@@ -94,8 +97,6 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
         this.ubigeoService.getHijos(Number(this.provinciaSelected.id)).subscribe((response) => (this.distritos = response));
     }
 
-    changeDistrito(event) {}
-
     changeFechaSalida(event) {
         this.form.patchValue({
             fechaSalida: moment(event).format('YYYY-MM-DD'),
@@ -108,14 +109,84 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
         });
     }
 
+    listar() {
+        this.salidaRutaService.getCargosUserTemp(TipoTemporal.SALIDA_RUTA_PAQUETERIA_TEMPORAL).subscribe((r) => (this.data = r));
+    }
+
     agregar() {
         if (this.codigoBarra.nativeElement.value.length <= 0) {
             return;
         }
-        this.data.push({ id: '', codigo: this.codigoBarra.nativeElement.value, estado: '' });
+
+        this.errorCodigo = { error: false, mensaje: '' };
+        this.repetido = false;
+
+        if (this.form.value.accion) {
+            if (this.data.findIndex((element) => element.codigo === this.codigoBarra.nativeElement.value) !== -1) {
+                this.numero = this.codigoBarra.nativeElement.value;
+                this.repetido = true;
+                this.codigoBarra.nativeElement.blur();
+            } else {
+                this.salidaRutaService
+                    .postSalidaRutaTemporal({
+                        codigoBarra: this.codigoBarra.nativeElement.value,
+                    })
+                    .subscribe(
+                        (response: any) => {
+                            if (!response.succes) {
+                                this.errorCodigo = { error: true, mensaje: response.message };
+                                this.codigoBarra.nativeElement.blur();
+                            } else {
+                                const data = response.data;
+                                this.errorCodigo = { error: false, mensaje: '' };
+                                this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
+                                this.codigoBarra.nativeElement.focus();
+                            }
+                        },
+                        (error) => {
+                            this.msj$ = this.msj.danger().subscribe();
+                        }
+                    );
+            }
+        } else {
+            this.errorCodigo = { error: false, mensaje: '' };
+            this.salidaRutaService.deleteByCodigo(this.codigoBarra.nativeElement.value).subscribe((response: any) => {
+                if (!response.succes) {
+                    this.errorCodigo = { error: true, mensaje: response.message };
+                } else {
+                    this.listar();
+                }
+            });
+        }
+
         this.codigoBarra.nativeElement.value = '';
-        this.codigoBarra.nativeElement.focus();
     }
 
-    atras() {}
+    deleteCargo(id, index) {
+        this.salidaRutaService.deleteCargo(id).subscribe(
+            async (response) => {
+                this.data.splice(index, 1);
+            },
+            (error) => {
+                this.msj$ = this.msj.danger().subscribe();
+            }
+        );
+    }
+
+    guardar() {
+        delete this.form.value.accion;
+
+        this.salidaRutaService.postSalidaRuta(this.form.value).subscribe(
+            (response: any) => {
+                this.msj$ = this.msj.succes('Salida a ruta correctamente').subscribe((action) => {
+                    if (action) {
+                        this.listar();
+                    }
+                });
+            },
+            (error) => {
+                this.msj$ = this.msj.danger().subscribe();
+            }
+        );
+    }
 }
