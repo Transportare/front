@@ -17,6 +17,13 @@ export const routes: Routes = [
         data: { roleId: [52] },
     },
     {
+        canActivate: [PerfilGuard],
+        canActivateChild: [PerfilGuard],
+        path: 'carga-datos',
+        loadChildren: () => import('./carga-datos/carga-datos.module').then((m) => m.CargaDatosModule),
+        data: { roleId: [53] },
+    },
+    {
         path: '',
         redirectTo: '/dashboard',
     },

@@ -6,6 +6,7 @@ import { FileItem } from '@models/index';
 })
 export class DropFilesDirective implements OnInit {
     @Input() archivo: FileItem[];
+    @Input() accept: string[];
     @Output() mouseSobre: EventEmitter<boolean> = new EventEmitter();
     @Output() errorDrop: EventEmitter<{ message: string; status: boolean }> = new EventEmitter();
     constructor() {}
@@ -41,7 +42,6 @@ export class DropFilesDirective implements OnInit {
     }
 
     private extrarArchivos(archivos: FileList) {
-        console.log(archivos);
         if (archivos.length > 1) {
             this.errorDrop.emit({ message: '*Solo se acepta un archivo', status: true });
             return;
@@ -65,11 +65,11 @@ export class DropFilesDirective implements OnInit {
             return false;
         }
 
-        if (archivo.name.toLocaleLowerCase().split('.').pop() === 'csv') {
+        if (this.accept.includes(archivo.name.toLocaleLowerCase().split('.').pop())) {
             this.errorDrop.emit({ message: 'Archivo cargado correctamente.', status: false });
             return true;
         } else {
-            this.errorDrop.emit({ message: 'Solo se aceptan archivos con formato csv.', status: true });
+            this.errorDrop.emit({ message: `Solo se aceptan archivos con formato ${this.accept.join(', ')}.`, status: true });
             return false;
         }
     }

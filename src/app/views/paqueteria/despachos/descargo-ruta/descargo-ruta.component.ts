@@ -69,7 +69,6 @@ export class DescargoRutaComponent implements OnInit {
             accion: [true],
             estadoId: ['', Validators.required],
             detalleId: [''],
-            manifiesto: [''],
             fecha: [moment().format('yyyy-MM-DD'), Validators.required],
         });
     }
@@ -121,9 +120,7 @@ export class DescargoRutaComponent implements OnInit {
                     this.numero = this.codigoBarra.nativeElement.value;
                     this.repetido = true;
                     this.codigoBarra.nativeElement.blur();
-                    // this.errorCodigo = { error: false, mensaje: '' };
                 } else {
-                    // this.repetido = false;
                     const cargo = {
                         codigoBarra: this.codigoBarra.nativeElement.value,
                         estado: this.form.value.estadoId,
@@ -138,7 +135,6 @@ export class DescargoRutaComponent implements OnInit {
                                 this.codigoBarra.nativeElement.blur();
                             } else {
                                 const data = response.data;
-                                // this.errorCodigo = { error: false, mensaje: '' };
                                 this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
                                 this.codigoBarra.nativeElement.focus();
                             }
@@ -180,7 +176,13 @@ export class DescargoRutaComponent implements OnInit {
             (response) => {
                 this.msj$ = this.msj.succes('Descargo realizado correctamente').subscribe((action) => {
                     if (action) {
-                        this.atras();
+                        this.form.reset();
+                        this.form.patchValue({
+                            accion: true,
+                            fecha: moment().format('yyyy-MM-DD'),
+                        });
+                        this.estadoSelected = { id: 0, text: 'Seleccione', grupo: '' };
+                        this.detalleSelected = { id: 0, text: 'Seleccione', grupo: '' };
                     }
                 });
             },
@@ -188,9 +190,5 @@ export class DescargoRutaComponent implements OnInit {
                 this.msj$ = this.msj.danger().subscribe();
             }
         );
-    }
-
-    atras() {
-        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.init}`]);
     }
 }

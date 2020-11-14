@@ -52,18 +52,6 @@
                         <textarea type="text" class="form-control" id="observacion" rows="3" formControlName="observacion"></textarea>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group align-items-start">
-                        <label class="required" for="sucursales">Sucursales</label>
-                        <app-check-multiple
-                            *ngIf="!loading && clienteSelected.id !== 0"
-                            [data]="sucursales"
-                            [activos]="activos"
-                            (changeData)="formServicio.controls.sucursales.setValue($event)"
-                        ></app-check-multiple>
-                        <span *ngIf="clienteSelected.id === 0" class="text-danger">Debe Seleccionar un cliente</span>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="p-3 text-right">

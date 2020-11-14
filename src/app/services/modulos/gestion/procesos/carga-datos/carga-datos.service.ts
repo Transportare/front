@@ -9,12 +9,8 @@ import { map } from 'rxjs/operators';
 export class CargaDatosService {
     constructor(private http: HttpClient) {}
 
-    postCargarDatos(data: File) {
-        const formData = new FormData();
-        formData.append('archivo', data);
-        formData.append('idOrdenServicio', '6648');
-
-        return this.http.post(`${API_URL}clienteConsignado/upload`, formData);
+    postCargarDatos(data) {
+        return this.http.post(`${API_URL}clienteConsignado/upload`, data);
     }
 
     getOrdenServicio(id) {

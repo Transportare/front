@@ -28,6 +28,6 @@ export class DescargoService {
     }
 
     postDescargoRegistrado() {
-        return this.http.post(`${API_URL}cargos/descargos`, {});
+        return this.http.post(`${API_URL}cargos/descargo`, {});
     }
 }

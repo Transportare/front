@@ -14,11 +14,11 @@
             </button>
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.idGuia"
+                [disabled]="!selectItem.idGuia || selectItem.estado === 'Cerrada'"
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
-                title="Descargo Masivo"
+                title="Descargo"
                 (click)="descargo()"
             >
                 <i class="mdi mdi-download"></i>
@@ -46,11 +46,11 @@
                         [ngClass]="{ highlighted: selectItem.idGuia === item.idGuia }"
                     >
                         <td>{{ (pagina - 1) * filas + index + 1 }}</td>
-                        <td>{{ item.personal }}</td>
-                        <td>{{ item.fechaSalida }}</td>
-                        <td>{{ item.fechaCierre }}</td>
-                        <td>{{ item.distrito }}</td>
-                        <td>{{ item.estado }}</td>
+                        <td>{{ item.personal || '-' }}</td>
+                        <td>{{ item.fechaSalida || '-' }}</td>
+                        <td>{{ item.fechaCierre || '-' }}</td>
+                        <td>{{ item.distrito || '-' }}</td>
+                        <td>{{ item.estado || '-' }}</td>
                     </tr>
                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
                         <td colspan="6">No hay información disponible</td>

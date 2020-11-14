@@ -117,7 +117,7 @@ export class ManifiestoService {
     }
 
     postDescargoManifiesto(data) {
-        return this.http.post(`${API_URL}cargos/descargos`, data);
+        return this.http.post(`${API_URL}cargos/descargoManifiesto`, data);
     }
 
     generarPdfManifiesto(id) {

@@ -1,7 +1,7 @@
-<app-body [header]="true" [titulo]="'Orden de Servicios'">
+<app-body [header]="true" [titulo]="'Carga de Datos'">
     <div header>
         <div class="py-3 text-right">
-            <button class="btn btn-primary" [disabled]="!habilitar" (click)="abrirCarga()">Generar Subida</button>
+            <button class="btn btn-primary" [disabled]="!clienteSelected.id" (click)="abrirCarga()">Generar Subida</button>
         </div>
     </div>
     <div body [ngClass]="{ loader: loading }">
@@ -10,24 +10,12 @@
             <div class="row mx-0">
                 <div class="col-md-12 col-lg-5 px-4 pb-4 pt-2">
                     <div class="form-group">
-                        <label for="telefono">Nro. Órden</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            EnteroPositivo
-                            (valueEntero)="codigo.setValue($event)"
-                            [maxLength]="10"
-                            [formControl]="codigo"
-                            (keyup.enter)="verificarCodigo()"
-                        />
-                    </div>
-                    <div class="form-group">
                         <label for="telefono">Cliente</label>
-                        <input type="text" class="form-control" [formControl]="cliente" />
-                    </div>
-                    <div class="form-group mb-0">
-                        <label for="telefono">Servicio</label>
-                        <input type="text" class="form-control" [formControl]="servicio" />
+                        <select-default
+                            [data]="clientes"
+                            [selected]="clienteSelected"
+                            (selectChange)="clienteSelected = $event"
+                        ></select-default>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-7 pt-2 pr-4">
@@ -68,7 +56,7 @@
                         [accept]="accepts"
                     >
                         Arrastra los archivos aquí para subirlos
-                        <input type="file" #file [multiple]="false" accept=".csv" (change)="onFileChange($event)" />
+                        <input type="file" #file [multiple]="false" accept=".xls,.xlsx" (change)="onFileChange($event)" />
                     </div>
                     <div class="archivo-dropeado-content" *ngIf="archivo.length">
                         <div class="archivo-dropeado">

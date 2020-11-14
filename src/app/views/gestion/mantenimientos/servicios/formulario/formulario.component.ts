@@ -23,7 +23,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
     loading: boolean;
     loadingSucursales: boolean;
     usuario: any;
-    activos: string[];
     sucursales: any[];
     msj$: Subscription;
 
@@ -42,7 +41,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.usuario = {};
         this.tipoServicios = [];
         this.sucursales = [];
-        this.activos = [];
         this.tipoSelected = { id: 0, text: 'Seleccione', grupo: '' };
         this.clientes = [];
         this.clienteSelected = { id: 0, text: 'Seleccione Cliente', grupo: '' };
@@ -71,7 +69,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
             nombre: ['', Validators.required],
             tiempo: ['', Validators.required],
             observacion: [''],
-            sucursales: ['', Validators.required],
         });
     }
 
@@ -99,7 +96,6 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 this.clientes = response.clientes;
                 this.clienteSelected = this.clientes.find((cliente) => cliente.id === servicio.idCliente);
                 this.sucursales = response.sucursales;
-                this.activos = servicio.sucursales;
                 this.formServicio.patchValue({
                     idCliente: servicio.idCliente,
                     idTipoServicio: servicio.idTipoServicio,
