@@ -2,7 +2,7 @@ export class Cargo {
     destinatario: Destinatario;
     paquete: Paquete;
     remitente: Remitente;
-
+    tracking: Tracking;
     constructor() {}
 }
 
@@ -41,5 +41,22 @@ class Remitente {
     sucursal: string;
     dni: string;
     sucursalRemite: string;
+    constructor() {}
+}
+
+class Tracking {
+    codigoBarra: string;
+    estadoCargo: string;
+    fechaArriboDestino: string;
+    fechaDescargo: string;
+    fechaDespachoDestino: string;
+    fechaSalida: string;
+    fechaVisita: string;
+    idCargo: number;
+    idCliente: number;
+    idEstadoCargo: number;
+    idOrdenServicio: number;
+    idServicio: number;
+
     constructor() {}
 }

@@ -58,7 +58,7 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
         this.initData();
         this.form = this.formBuilder.group({
             idPersonal: ['', Validators.required],
-            fechaSalida: ['', Validators.required],
+            fechaSalida: [moment().format('YYYY-MM-DD'), Validators.required],
             fechaCierre: ['', Validators.required],
             idUbigeoDestino: ['', Validators.required],
             accion: [true],

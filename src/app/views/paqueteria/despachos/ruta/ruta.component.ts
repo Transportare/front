@@ -67,8 +67,6 @@ export class RutaComponent implements OnInit {
         ]);
     }
 
-    tracking() {}
-
     nuevo() {
         this.router.navigate([`${RUTAS_PAQUETERIA_DESPACHOS.ruta.init}/${RUTAS_PAQUETERIA_DESPACHOS.ruta.nuevo}`]);
     }

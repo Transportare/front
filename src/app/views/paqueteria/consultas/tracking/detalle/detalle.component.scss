@@ -3,126 +3,12 @@
     color: #fff;
 }
 
-// // .timeline-item {
-// //     .item-title {
-// //         color: red;
-// //         // margin-left: 150px;
-// //         margin-bottom: 1em;
-// //         display: grid;
-// //         grid-template-columns: 100px 50px 1fr;
-// //     }
-// // }
+$primary-color-active: #ff6b6b;
+$primary-color-inactive: #ccd5db;
+$primary-color-hover: scale-color($primary-color-active, $lightness: 32%);
 
-// .item-details.title {
-//     color: red;
-//     margin-bottom: 1em;
-
-//     .indicator::before {
-//         background: transparent;
-//         content: '';
-//         width: 15px;
-//         height: auto;
-//         border: none;
-//         border-radius: 0;
-//         top: 0;
-//         bottom: 30px;
-//         position: absolute;
-//         border-top: 3px solid #ccd5db;
-//         border-bottom: 3px solid #ccd5db;
-//     }
-
-//     .indicator::after {
-//         content: '';
-//         height: 40px;
-//         top: 0px;
-//     }
-
-//     span {
-//         padding-left: 2em;
-//     }
-// }
-
-// .item-details {
-//     display: grid;
-//     // grid-template-columns: 100px 50px 1fr;
-//     display: flex;
-//     // margin-bottom: 1.5em;
-
-//     .hour {
-//         font-weight: bold;
-//         width: 100px;
-//         padding-right: 1em;
-//     }
-
-//     .indicator {
-//         width: 15px;
-//         position: relative;
-//         // height: 20px;
-//         // background: red;
-//         // border-radius: 50%;
-
-//         &:before {
-//             background: red;
-//             border: 3px solid transparent;
-//             border-radius: 100%;
-//             content: '';
-//             display: block;
-//             height: 15px;
-//             position: absolute;
-//             top: 4px;
-//             left: 0;
-//             width: 15px;
-//             transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
-//         }
-
-//         &:after {
-//             content: '';
-//             width: 3px;
-//             background: #ccd5db;
-//             display: block;
-//             position: absolute;
-//             top: 24px;
-//             bottom: 0;
-//             left: 6px;
-//         }
-//     }
-
-//     .details {
-//         padding-left: 2em;
-//         padding-bottom: 1.5em;
-
-//         .information {
-//             display: block;
-//             margin-bottom: 0.25em;
-
-//             &:last-child {
-//                 margin-bottom: 0em;
-//             }
-//         }
-//     }
-// }
-
-$primary-color: #ff6b6b;
-$primary-color-hover: scale-color($primary-color, $lightness: 32%);
-
-// body {
-//     color: #768390;
-//     background: #fff;
-//     font-family: 'Effra', Helvetica, sans-serif;
-//     padding: 0;
-//     -webkit-font-smoothing: antialiased;
-// }
-// h1,
-// h2,
-// h3,
-// h4,
-// h5,
-// h6 {
-//     color: #3d4351;
-//     margin-top: 0;
-// }
 a {
-    color: $primary-color;
+    color: $primary-color-active;
     &:hover {
         color: $primary-color-hover;
         text-decoration: none;
@@ -202,12 +88,13 @@ a {
 /*----- TIMELINE INFO -----*/
 
 .timeline-info {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 3px;
+    font-size: 15px;
+    font-weight: 800;
+    // letter-spacing: 3px;
     margin: 0 0 0.5em 0;
-    text-transform: uppercase;
-    white-space: nowrap;
+    // text-transform: uppercase;
+    // white-space: nowrap;
+    text-transform: capitalize;
 }
 /*----- TIMELINE MARKER -----*/
 
@@ -218,7 +105,7 @@ a {
     left: 0;
     width: 15px;
     &:before {
-        background: $primary-color;
+        background: $primary-color-active;
         border: 3px solid transparent;
         border-radius: 100%;
         content: '';
@@ -230,6 +117,17 @@ a {
         width: 15px;
         transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
     }
+
+    &.inactive:before {
+        background: $primary-color-inactive;
+    }
+
+    &.current:before {
+        width: 18px;
+        height: 18px;
+        left: -2.5px;
+    }
+
     &:after {
         content: '';
         width: 3px;
@@ -244,10 +142,10 @@ a {
         content: none;
     }
 }
-.timeline-item:not(.period):hover .timeline-marker:before {
-    background: transparent;
-    border: 3px solid $primary-color;
-}
+// .timeline-item:not(.period):hover .timeline-marker:before {
+//     background: transparent;
+//     border: 3px solid $primary-color-active;
+// }
 
 /*----- TIMELINE CONTENT -----*/
 
@@ -406,10 +304,10 @@ a {
     .timeline-marker {
         &:before {
             background: transparent;
-            border-color: $primary-color;
+            border-color: $primary-color-active;
         }
     }
     .timeline-item:hover .timeline-marker:before {
-        background: $primary-color;
+        background: $primary-color-active;
     }
 }

@@ -47,7 +47,22 @@ export class RutaService {
         return this.http.get(`${API_URL}rutas/${id}`).pipe(
             map(
                 (response: any): Cargo => {
-                    return response.data;
+                    const tracking = {
+                        codigoBarra: response.data.tracking.CodigoBarra,
+                        estadoCargo: response.data.tracking.EstadoCargo,
+                        fechaArriboDestino: response.data.tracking.FechaArriboDestino,
+                        fechaDescargo: response.data.tracking.FechaDescargo,
+                        fechaDespachoDestino: response.data.tracking.FechaDespachoDestino,
+                        fechaSalida: response.data.tracking.FechaSalida,
+                        fechaVisita: response.data.tracking.FechaVisita,
+                        idCargo: response.data.tracking.IdCargo,
+                        idCliente: response.data.tracking.IdCliente,
+                        idEstadoCargo: response.data.tracking.IdEstadoCargo,
+                        idOrdenServicio: response.data.tracking.IdOrdenServicio,
+                        idServicio: response.data.tracking.IdServicio,
+                    };
+
+                    return { ...response.data, tracking };
                 }
             )
         );

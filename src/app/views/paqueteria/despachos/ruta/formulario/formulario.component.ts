@@ -86,32 +86,32 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     initForm() {
         this.formRegistro = this.fb.group({
-            dni: ['', [Validators.required, Validators.minLength(8)]],
-            nombres: [{ value: '', disabled: true }, Validators.required],
-            apellidos: [{ value: '', disabled: true }, Validators.required],
-            // direccion: [{ value: '', disabled: true }],
+            dni: [null, [Validators.required, Validators.minLength(8)]],
+            nombres: [{ value: null, disabled: true }, Validators.required],
+            apellidos: [{ value: null, disabled: true }, Validators.required],
+            // direccion: [{ value: null, disabled: true }],
 
             idUbigeoRecojo: [null],
             direccionRecojo: [null],
             referenciaRecojo: [null],
 
-            razonSocial: [{ value: '', disabled: true }],
+            razonSocial: [{ value: null, disabled: true }],
 
-            dniDestinatario: [''],
-            idSucursalDestino: ['', Validators.required],
-            nombreDestinatario: ['', Validators.required],
-            apellidoDestinatario: ['', Validators.required],
-            telefonoDestinatario: [''],
-            claveDestinatario: ['', Validators.required],
+            dniDestinatario: [null],
+            idSucursalDestino: [null, Validators.required],
+            nombreDestinatario: [null, Validators.required],
+            apellidoDestinatario: [null, Validators.required],
+            telefonoDestinatario: [null],
+            claveDestinatario: [null, Validators.required],
             idUbigeoDestino: [null],
             direccionDestino: [null],
             referenciaDestino: [null],
 
-            cantidadPaquetes: ['', Validators.required],
-            pesoTotal: ['', Validators.required],
-            idTipoPaquete: ['', Validators.required],
-            precio: [{ value: '', disabled: true }, Validators.required],
-            descripcionPaquete: [''],
+            cantidadPaquetes: [null, Validators.required],
+            pesoTotal: [null, Validators.required],
+            idTipoPaquete: [null, Validators.required],
+            precio: [{ value: null, disabled: true }, Validators.required],
+            descripcionPaquete: [null],
             pagaDestino: [false],
         });
     }

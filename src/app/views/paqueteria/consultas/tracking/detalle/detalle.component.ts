@@ -4,6 +4,11 @@ import { RUTAS_PAQUETERIA_DESPACHOS } from '@routes/rutas-paqueteria';
 import { RutaService } from '@services/modulos/operaciones/paqueteria/ruta/ruta.service';
 import { Cargo } from '@models/index';
 import { PdfMakeService } from '@services/utils/pdfmake.service';
+import { Subscription } from 'rxjs';
+import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
+import * as moment from 'moment';
+import { EstadoTracking } from '@models/enum.interface';
+moment.locale('es');
 declare var $: any;
 
 @Component({
@@ -15,11 +20,14 @@ export class DetalleComponent implements OnInit, OnDestroy {
     data: Cargo;
     id: string;
     loading: boolean;
+    msj$: Subscription;
+    estadoTracking: any = EstadoTracking;
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private rutaService: RutaService,
-        private pdfMakeService: PdfMakeService
+        private pdfMakeService: PdfMakeService,
+        private mensajeResponseService: MensajeResponseService
     ) {
         this.loading = false;
         this.activatedRoute.params.subscribe((params) => {
@@ -33,9 +41,9 @@ export class DetalleComponent implements OnInit, OnDestroy {
     ngOnInit() {}
 
     ngOnDestroy(): void {
-        // if (this.msj$) {
-        //     this.msj$.unsubscribe();
-        // }
+        if (this.msj$) {
+            this.msj$.unsubscribe();
+        }
     }
 
     getDetalle() {
@@ -46,9 +54,14 @@ export class DetalleComponent implements OnInit, OnDestroy {
                 this.loading = false;
             },
             (error) => {
+                this.mensajeResponseService.danger().subscribe();
                 this.loading = false;
             }
         );
+    }
+
+    changeDate(date) {
+        return date ? moment(date).format('dddd D, MMMM - h:mm A') : '-';
     }
 
     open() {

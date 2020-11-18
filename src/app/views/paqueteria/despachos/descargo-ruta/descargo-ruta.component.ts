@@ -97,6 +97,11 @@ export class DescargoRutaComponent implements OnInit {
         this.form.get('detalleId').updateValueAndValidity();
     }
 
+    changeDetalle(event) {
+        this.detalleSelected = event;
+        this.form.patchValue({ detalleId: event.id });
+    }
+
     listarCargos() {
         this.descargoService.getCargosByGuia(TipoTemporal.DESCARGO_RUTA_PAQUETERIA_TEMPORAL).subscribe((response) => {
             this.data = response;
@@ -126,6 +131,7 @@ export class DescargoRutaComponent implements OnInit {
                         estado: this.form.value.estadoId,
                         detalleEstado: this.form.value.detalleId,
                         fecha: this.form.value.fecha,
+                        detalleEstadoTexto: this.estadoSelected.text,
                     };
 
                     this.descargoService.postCargo(cargo).subscribe(

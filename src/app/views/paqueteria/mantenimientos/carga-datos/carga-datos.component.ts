@@ -66,14 +66,20 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
                 if (response.succes) {
                     Swal.close();
                     this.msj$ = this.mensajeResponse.succes(response.message).subscribe((action) => {
-                        if (action) this.cerrarCarga();
+                        if (action) {
+                            this.cerrarCarga();
+                            this.clienteSelected = { id: null, text: 'Seleccione', grupo: '' };
+                        }
                     });
                 }
             },
             (error: any) => {
                 Swal.close();
                 this.msj$ = this.mensajeResponse.danger().subscribe((action) => {
-                    if (action) this.cerrarCarga();
+                    if (action) {
+                        this.cerrarCarga();
+                        this.clienteSelected = { id: null, text: 'Seleccione', grupo: '' };
+                    }
                 });
             }
         );

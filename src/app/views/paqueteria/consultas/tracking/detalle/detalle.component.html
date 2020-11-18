@@ -3,7 +3,10 @@
         <loader *ngIf="loading"></loader>
         <div class="card mb-4">
             <div class="card-body">
-                <div class="text-right">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div *ngIf="data">
+                        <b>{{ data.paquete.codigo + ' - ' + data.tracking.estadoCargo }}</b>
+                    </div>
                     <button class="btn btn-primary" type="button" (click)="open()"><i class="mdi mdi-file"></i> Generar PDF</button>
                 </div>
             </div>
@@ -15,181 +18,77 @@
                         <b>Historial</b>
                     </h5>
                     <div class="card-body">
-                        <!-- <ul class="timeline timeline-split">
-                            <li class="timeline-item">
-                                <div class="timeline-info">
-                                    <span>March 12, 2016</span>
-                                </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h3 class="timeline-title">Event Title</h3>
-                                    <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="timeline-item">
-                                <div class="timeline-info">
-                                    <span>March 23, 2016</span>
-                                </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h3 class="timeline-title">Event Title</h3>
-                                    <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="timeline-item period">
-                                <div class="timeline-info"></div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h2 class="timeline-title">April 2016</h2>
-                                </div>
-                            </li>
-                            <li class="timeline-item">
-                                <div class="timeline-info">
-                                    <span>April 02, 2016</span>
-                                </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h3 class="timeline-title">Event Title</h3>
-                                    <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="timeline-item">
-                                <div class="timeline-info">
-                                    <span>April 28, 2016</span>
-                                </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h3 class="timeline-title">Event Title</h3>
-                                    <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="timeline-item">
-                                <div class="timeline-info">
-                                    <span>April 02, 2016</span>
-                                </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h3 class="timeline-title">Event Title</h3>
-                                    <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="timeline-item">
-                                <div class="timeline-info">
-                                    <span>April 28, 2016</span>
-                                </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h3 class="timeline-title">Event Title</h3>
-                                    <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="timeline-item period">
-                                <div class="timeline-info"></div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h2 class="timeline-title">April 2017</h2>
-                                </div>
-                            </li>
-                            <li class="timeline-item">
-                                <div class="timeline-info">
-                                    <span>April 02, 2016</span>
-                                </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <h3 class="timeline-title">Event Title</h3>
-                                    <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p>
-                                </div>
-                            </li>
-                        </ul> -->
                         <ul class="timeline">
                             <li class="timeline-item">
                                 <div class="timeline-info">
-                                    <span>March 23, 2016</span>
+                                    <span>{{ changeDate(data.tracking.fechaVisita) || '-' }}</span>
                                 </div>
-                                <div class="timeline-marker"></div>
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaVisita,
+                                        current: estadoTracking.ENTREGA_VISITA === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
                                 <div class="timeline-content">
-                                    <!-- <h3 class="timeline-title">Recolectado</h3> -->
-                                    <p>Salida a Ruta</p>
-                                    <!-- <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p> -->
+                                    <p>Entrega - Visita</p>
                                 </div>
                             </li>
                             <li class="timeline-item">
                                 <div class="timeline-info">
-                                    <span>March 12, 2016</span>
+                                    <span>{{ changeDate(data.tracking.fechaSalida) }}</span>
                                 </div>
-                                <div class="timeline-marker"></div>
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaSalida,
+                                        current: estadoTracking.EN_RUTA_DOMICILIO === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
                                 <div class="timeline-content">
-                                    <!-- <h3 class="timeline-title">Arribo Destino</h3> -->
+                                    <p>En Ruta a Domicilio</p>
+                                </div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-info">
+                                    <span>{{ changeDate(data.tracking.fechaArriboDestino) }}</span>
+                                </div>
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaArriboDestino,
+                                        current: estadoTracking.ARRIBO_DESTINO === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
+                                <div class="timeline-content">
                                     <p>Arribo Destino</p>
-                                    <!-- <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p> -->
                                 </div>
                             </li>
                             <li class="timeline-item">
                                 <div class="timeline-info">
-                                    <span>March 23, 2016</span>
+                                    <span>{{ changeDate(data.tracking.fechaDespachoDestino) }}</span>
                                 </div>
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <!-- <h3 class="timeline-title">Despacho Destino</h3> -->
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaDespachoDestino,
+                                        current: estadoTracking.DESPACHO_DESTINO === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
+                                <div class="timeline-content pb-0">
                                     <p>Despacho Destino</p>
-                                    <!-- <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p> -->
                                 </div>
                             </li>
-                            <li class="timeline-item">
+                            <!-- <li class="timeline-item">
                                 <div class="timeline-info">
                                     <span>March 23, 2016</span>
                                 </div>
-                                <div class="timeline-marker"></div>
+                                <div class="timeline-marker" [ngClass]="{'inactive': !data.tracking.fechaVisita,
+                                        current: estadoTracking.RECOLECTADO === data.tracking.idEstadoCargo}"></div>
                                 <div class="timeline-content">
-                                    <!-- <h3 class="timeline-title">Recolectado</h3> -->
                                     <p>Recolectado</p>
-                                    <!-- <p>
-                                        Nullam vel sem. Nullam vel sem. Integer ante arcu, accumsan a, consectetuer eget, posuere ut,
-                                        mauris. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Donec vitae sapien ut libero
-                                        venenatis faucibus. ullam dictum felis eu pede mollis pretium. Pellentesque ut neque.
-                                    </p> -->
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>
