@@ -40,7 +40,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.loadingSucursales = false;
         this.usuario = {};
         this.tipoServicios = [];
-        this.sucursales = [];
+        // this.sucursales = [];
         this.tipoSelected = { id: 0, text: 'Seleccione', grupo: '' };
         this.clientes = [];
         this.clienteSelected = { id: 0, text: 'Seleccione Cliente', grupo: '' };
@@ -95,7 +95,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
                 this.tipoSelected = this.tipoServicios.find((tipo) => tipo.id === servicio.idTipoServicio);
                 this.clientes = response.clientes;
                 this.clienteSelected = this.clientes.find((cliente) => cliente.id === servicio.idCliente);
-                this.sucursales = response.sucursales;
+                // this.sucursales = response.sucursales;
                 this.formServicio.patchValue({
                     idCliente: servicio.idCliente,
                     idTipoServicio: servicio.idTipoServicio,
@@ -120,7 +120,7 @@ export class FormularioComponent implements OnInit, OnDestroy {
         this.serviciosService.getSucursalesByCliente({ idCliente: event.id, dni: this.usuario.DNI }).subscribe(
             (response) => {
                 this.loading = true;
-                this.sucursales = response;
+                // this.sucursales = response;
                 this.loading = false;
             },
             (error) => {
@@ -135,13 +135,13 @@ export class FormularioComponent implements OnInit, OnDestroy {
 
     guardarServicio() {
         if (this.id) {
-            const noSeleccionadas: any[] = this.sucursales
-                .map((item) => {
-                    return item.id.toString();
-                })
-                .filter((s) => !this.formServicio.value.sucursales.includes(s));
+            // const noSeleccionadas: any[] = this.sucursales
+            //     .map((item) => {
+            //         return item.id.toString();
+            //     })
+            //     .filter((s) => !this.formServicio.value.sucursales.includes(s));
 
-            this.serviciosService.putServicio(this.id, { ...this.formServicio.value, noSeleccionadas }).subscribe(
+            this.serviciosService.putServicio(this.id, { ...this.formServicio.value }).subscribe(
                 (response) => {
                     this.msj$ = this.mensajeResponse.succes('Servicio actualizado correctamente').subscribe((action) => {
                         if (action) {

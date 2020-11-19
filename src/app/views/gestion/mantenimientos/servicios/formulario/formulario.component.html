@@ -1,4 +1,4 @@
-<app-body [header]="false" [titulo]="'Nuevo Servicio'">
+<app-body [header]="false" [titulo]="!id ? 'Nuevo Servicio' : 'Editar Servicio'">
     <div body [formGroup]="formServicio" [ngClass]="{ loader: loading }">
         <loader *ngIf="loading"></loader>
         <div class="p-4">

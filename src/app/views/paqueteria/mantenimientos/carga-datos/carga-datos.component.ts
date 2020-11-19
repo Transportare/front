@@ -58,6 +58,7 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
 
     guardarCarga() {
         if (!this.archivo[0]) return;
+        this.infoResponse('', 'Espere por favor', 'info');
         const formData = new FormData();
         formData.append('archivo', this.archivo[0].archivo);
         formData.append('idCliente', this.clienteSelected.id.toString());
@@ -83,6 +84,19 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
                 });
             }
         );
+    }
+
+    private infoResponse(texto: string, titulo: string, action: SweetAlertIcon) {
+        Swal.fire({
+            icon: action,
+            title: titulo,
+            text: texto,
+            onBeforeOpen: () => {
+                Swal.showLoading();
+            },
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+        });
     }
 
     onFileChange(event) {
