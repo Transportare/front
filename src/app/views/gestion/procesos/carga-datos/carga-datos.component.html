@@ -67,7 +67,8 @@
                         [archivo]="archivo"
                         [accept]="accepts"
                     >
-                        Arrastra los archivos aquí para subirlos
+                        <span>Arrastra los archivos aquí para subirlos</span>
+                        <span class="accepts-types">({{ tipo.value ? 'csv' : 'xls, xlsx' }})</span>
                         <input type="file" #file [multiple]="false" accept=".csv" (change)="onFileChange($event)" />
                     </div>
                     <div class="archivo-dropeado-content" *ngIf="archivo.length">
@@ -81,8 +82,15 @@
                         </div>
                         <i class="mdi mdi-close" (click)="deleteFile()"></i>
                     </div>
-                    <span class="response success" *ngIf="!error.status && error.message.length > 0">{{ error.message }}</span>
-                    <span class="response danger" *ngIf="error.status && error.message.length > 0">{{ error.message }}</span>
+                    <span class="response success w-100" *ngIf="!error.status && error.message.length > 0">{{ error.message }}</span>
+                    <span class="response danger w-100" *ngIf="error.status && error.message.length > 0">{{ error.message }}</span>
+                    <!-- <div class="form-group group-normal">
+                        <label for="tipo"><input type="checkbox" class="form-control" id="tipo" /> Carga masiva avanzada</label>
+                    </div> -->
+                    <div id="tipo" class="form-group form-check mt-3">
+                        <input type="checkbox" class="form-check-input" id="tipoCarga" [formControl]="tipo" (change)="changeTipoCarga()" />
+                        <label class="form-check-label" for="tipoCarga">Carga avanzada</label>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer text-right">

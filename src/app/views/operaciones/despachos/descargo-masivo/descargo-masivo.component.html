@@ -24,11 +24,11 @@
                     </div>
                     <div class="col-md-6" *ngIf="[93, 94].includes(form.value.estadoId)">
                         <div class="form-group group-normal">
-                            <label class="required">Detalle de Entrega</label>
+                            <label class="required">Detalle</label>
                             <select-default
                                 [data]="detalles"
                                 [selected]="detalleSelected"
-                                (selectChange)="form.patchValue({ detalleId: $event.id })"
+                                (selectChange)="changeDetalle($event)"
                             ></select-default>
                         </div>
                     </div>
@@ -37,7 +37,15 @@
                     <div class="col-md-6">
                         <div class="form-group group-normal">
                             <label for="codigo">Código de Barra</label>
-                            <input #codigoBarra type="text" class="form-control" id="codigo" maxlength="13" (keyup.enter)="agregar()" />
+                            <input
+                                #codigoBarra
+                                type="text"
+                                class="form-control"
+                                id="codigo"
+                                maxlength="13"
+                                (keyup.enter)="agregar()"
+                                autocomplete="off"
+                            />
                             <span *ngIf="repetido" class="d-block error-input text-danger"
                                 >Este código de barra: {{ numero }} esta repetido</span
                             >
@@ -60,7 +68,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-10">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover box-shadow">
                                 <thead>
@@ -68,15 +76,19 @@
                                         <th>N°</th>
                                         <th>Código</th>
                                         <th>Estado</th>
+                                        <th>Detalle</th>
+                                        <th>Fecha Visita</th>
                                         <th class="text-center">Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of data; let index = index" (click)="selectItem = item">
+                                    <tr *ngFor="let item of data; let index = index">
                                         <!-- <td>{{ (pagina - 1) * filas + index + 1 }}</td> -->
                                         <td style="vertical-align: middle">{{ index + 1 }}</td>
                                         <td style="vertical-align: middle">{{ item.codigo }}</td>
                                         <td style="vertical-align: middle">{{ item.estado }}</td>
+                                        <td style="vertical-align: middle">{{ item.detalleTexto }}</td>
+                                        <td style="vertical-align: middle">{{ item.fechaVisita }}</td>
                                         <td class="text-center" style="vertical-align: middle">
                                             <button
                                                 class="btn btn-primary rounded-circle"
@@ -88,7 +100,7 @@
                                         </td>
                                     </tr>
                                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                                        <td colspan="4">No hay información disponible</td>
+                                        <td colspan="6">No hay información disponible</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -97,7 +109,7 @@
                 </div>
             </div>
             <div class="p-3 text-right">
-                <button class="btn btn-primary" type="button" [disabled]="data.length === 0" (click)="guardar()">Guardar</button>
+                <button class="btn btn-primary" type="button" [disabled]="data.length === 0" (click)="guardar()">Procesar</button>
             </div>
         </form>
     </div>

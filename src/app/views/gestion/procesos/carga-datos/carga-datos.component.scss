@@ -6,9 +6,15 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    flex-direction: column;
     width: 100%;
     min-height: 170px;
     cursor: pointer;
+
+    .accepts-types {
+        color: #2faf2f;
+        font-weight: 800;
+    }
 }
 
 .file-over.card-body_imagen {
@@ -96,5 +102,13 @@ input[type='file'] {
     list-style: disc;
     li {
         margin-bottom: 0.5em;
+    }
+}
+
+#tipo {
+    margin-bottom: 0 !important;
+
+    label {
+        margin-bottom: 0;
     }
 }

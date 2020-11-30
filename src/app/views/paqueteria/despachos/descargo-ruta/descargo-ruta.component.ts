@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Manifiesto, Grupo } from '@models/index';
-import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DespachoService } from '@services/modulos/operaciones/despachos/despachos.service';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
 import { DescargoService } from '@services/modulos/operaciones/paqueteria/descargo/descargo.service';
 import * as moment from 'moment';
@@ -37,8 +34,6 @@ export class DescargoRutaComponent implements OnInit {
     constructor(
         private msj: MensajeResponseService,
         private descargoService: DescargoService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
         private fb: FormBuilder,
         private tablaGeneralService: TablaGeneralService
     ) {

@@ -24,6 +24,8 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
     servicio: FormControl;
     habilitar: boolean;
     accepts: string[];
+    tipo: FormControl;
+    data: any;
     @ViewChild('modalCarga', { static: false }) modalCarga: ElementRef;
 
     constructor(private router: Router, private mensajeResponse: MensajeResponseService, private cargarDatosService: CargaDatosService) {
@@ -35,7 +37,9 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
         this.cliente = new FormControl({ value: '', disabled: true });
         this.servicio = new FormControl({ value: '', disabled: true });
         this.error = { status: false, message: '' };
-        this.accepts = ['csv'];
+        this.accepts = ['xls', 'xlsx'];
+        this.tipo = new FormControl(false);
+        this.data = {};
     }
 
     ngOnInit(): void {}
@@ -55,16 +59,18 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
 
         this.cargarDatosService.getOrdenServicio(value).subscribe(
             (response) => {
-                if (response.succes) {
+                this.data = response;
+                if (this.data.succes) {
                     this.habilitar = true;
-                    this.cliente.setValue(response.data);
+                    this.cliente.setValue(this.data.cliente);
+                    this.servicio.setValue(this.data.servicio);
                 } else {
                     this.habilitar = false;
-                    this.msj$ = this.mensajeResponse.danger(response.mensaje).subscribe();
+                    this.msj$ = this.mensajeResponse.danger(this.data.mensaje).subscribe();
                     this.cliente.setValue('');
+                    this.servicio.setValue('');
                 }
-
-                this.codigo.setValue('');
+                // this.codigo.setValue('');
             },
             (error) => {
                 this.msj$ = this.mensajeResponse.danger('Ocurrio un error.').subscribe();
@@ -86,6 +92,11 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
         this.error = { message: '', status: false };
     }
 
+    changeTipoCarga() {
+        this.accepts = this.tipo.value ? ['csv'] : ['xls', 'xlsx'];
+        this.deleteFile();
+    }
+
     guardarCarga() {
         if (!this.archivo[0]) return;
         $(this.modalCarga.nativeElement).modal('hide');
@@ -94,23 +105,43 @@ export class CargaDatosComponent implements OnInit, OnDestroy {
         const formData = new FormData();
         formData.append('archivo', this.archivo[0].archivo);
         formData.append('idOrdenServicio', this.codigo.value);
-
-        this.cargarDatosService.postCargarDatos(formData).subscribe(
-            (response: any) => {
-                if (response.succes) {
+        if (this.tipo.value) {
+            this.cargarDatosService.postCargarDatos(formData).subscribe(
+                (response: any) => {
+                    if (response.succes) {
+                        Swal.close();
+                        this.msj$ = this.mensajeResponse.succes(response.message).subscribe((action) => {
+                            if (action) this.cerrarCarga();
+                        });
+                    }
+                },
+                (error: any) => {
                     Swal.close();
-                    this.msj$ = this.mensajeResponse.succes(response.message).subscribe((action) => {
+                    this.msj$ = this.mensajeResponse.danger(error.error.message).subscribe((action) => {
                         if (action) this.cerrarCarga();
                     });
                 }
-            },
-            (error: any) => {
-                Swal.close();
-                this.msj$ = this.mensajeResponse.danger(error.error.message).subscribe((action) => {
-                    if (action) this.cerrarCarga();
-                });
-            }
-        );
+            );
+        } else {
+            formData.append('idServicio', this.data.idServicio);
+            formData.append('idCliente', this.data.idCliente);
+            this.cargarDatosService.postCargarDatosSimple(formData).subscribe(
+                (response: any) => {
+                    if (response.succes) {
+                        Swal.close();
+                        this.msj$ = this.mensajeResponse.succes(response.message).subscribe((action) => {
+                            if (action) this.cerrarCarga();
+                        });
+                    }
+                },
+                (error: any) => {
+                    Swal.close();
+                    this.msj$ = this.mensajeResponse.danger(error.error.message).subscribe((action) => {
+                        if (action) this.cerrarCarga();
+                    });
+                }
+            );
+        }
     }
 
     private infoResponse(texto: string, titulo: string, action: SweetAlertIcon) {

@@ -4,19 +4,25 @@ import { API_URL } from 'config/api.route';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class DespachoService {
+export class DescargoMasivoService {
     constructor(private http: HttpClient) {}
 
-    getCargosByGuia() {
-        return this.http.get(`${API_URL}cargos/temporal/descargos`).pipe(
+    getCargosByGuia(id) {
+        return this.http.get(`${API_URL}cargos/temporal/${id}`).pipe(
             map((response: any) => {
-                return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
+                return response.data.map((item) => ({
+                    id: item.IdCargo,
+                    codigo: item.CodigoBarra,
+                    estado: item.EstadoCargo,
+                    detalleTexto: item.EstadoDetalle,
+                    fechaVisita: item.FechaVisita,
+                }));
             })
         );
     }
 
     postCargo(data) {
-        return this.http.post(`${API_URL}cargos/temporal/descargos`, data);
+        return this.http.post(`${API_URL}cargos/temporal/descargo-masivo`, data);
     }
 
     deleteCargo(id) {
@@ -28,6 +34,6 @@ export class DespachoService {
     }
 
     postDescargoRegistrado() {
-        return this.http.post(`${API_URL}cargos/descargos`, {});
+        return this.http.post(`${API_URL}cargos/descargo-masivo`, {});
     }
 }

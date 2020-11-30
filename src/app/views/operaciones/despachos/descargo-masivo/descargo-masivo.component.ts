@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Manifiesto, Grupo } from '@models/index';
 import { RUTAS_OPERACIONES_PAQUETERIA } from '@routes/rutas-operaciones';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DespachoService } from '@services/modulos/operaciones/despachos/despachos.service';
+import { DescargoMasivoService } from '@services/modulos/operaciones/despachos/descargo-masivo.service';
 import { TablaGeneralService } from '@services/utils/tablageneral.service';
+import * as moment from 'moment';
+import { TipoTemporal } from '@models/enum.interface';
 
 @Component({
     selector: 'app-descargo-masivo',
@@ -17,7 +19,6 @@ export class DescargoMasivoComponent implements OnInit {
     loading: boolean;
     accion: boolean;
     data: any[];
-    selectItem: any;
     msj$: Subscription;
     repetido: boolean;
     numero: string;
@@ -33,8 +34,7 @@ export class DescargoMasivoComponent implements OnInit {
 
     constructor(
         private msj: MensajeResponseService,
-        private despachoService: DespachoService,
-        private activatedRoute: ActivatedRoute,
+        private descargoMasivoService: DescargoMasivoService,
         private router: Router,
         private fb: FormBuilder,
         private tablaGeneralService: TablaGeneralService
@@ -44,7 +44,6 @@ export class DescargoMasivoComponent implements OnInit {
         this.accion = false;
         this.repetido = false;
         this.data = [];
-        this.selectItem = {};
         this.errorCodigo = { error: false, mensaje: '' };
         this.estados = [];
         this.detalles = [];
@@ -52,6 +51,7 @@ export class DescargoMasivoComponent implements OnInit {
         this.detalleSelected = { id: 0, text: 'Seleccione', grupo: '' };
         this.tablaGeneralService.getSelectPorGrupo(9).subscribe((response) => {
             this.estados = response;
+            this.estados = this.estados.filter((estado) => estado.id !== 91 && estado.id !== 92);
         });
         this.initForm();
     }
@@ -65,7 +65,7 @@ export class DescargoMasivoComponent implements OnInit {
             accion: [true],
             estadoId: ['', Validators.required],
             detalleId: [''],
-            fecha: ['', Validators.required],
+            fecha: [moment().format('yyyy-MM-DD'), Validators.required],
         });
     }
 
@@ -93,8 +93,13 @@ export class DescargoMasivoComponent implements OnInit {
         this.form.get('detalleId').updateValueAndValidity();
     }
 
+    changeDetalle(event) {
+        this.detalleSelected = event;
+        this.form.patchValue({ detalleId: event.id });
+    }
+
     listarCargos() {
-        this.despachoService.getCargosByGuia().subscribe((response) => {
+        this.descargoMasivoService.getCargosByGuia(TipoTemporal.DESCARGO_MASIVA_MENSAJERIA_TEMPORAL).subscribe((response) => {
             this.data = response;
         });
     }
@@ -116,29 +121,35 @@ export class DescargoMasivoComponent implements OnInit {
                     this.numero = this.codigoBarra.nativeElement.value;
                     this.repetido = true;
                     this.codigoBarra.nativeElement.blur();
-                    // this.errorCodigo = { error: false, mensaje: '' };
                 } else {
-                    // this.repetido = false;
                     const cargo = {
                         codigoBarra: this.codigoBarra.nativeElement.value,
+                        fechaVisita: this.form.value.fecha,
                         estado: this.form.value.estadoId,
-                        detalleEstado: this.form.value.detalleId,
-                        fecha: this.form.value.fecha,
+                        estadoTexto: this.estadoSelected.text,
+                        detalleId: this.form.value.detalleId,
+                        detalleTexto: this.detalleSelected.text,
                     };
 
-                    this.despachoService.postCargo(cargo).subscribe(
+                    this.descargoMasivoService.postCargo(cargo).subscribe(
                         (response: any) => {
                             if (!response.succes) {
                                 this.errorCodigo = { error: true, mensaje: response.message };
                                 this.codigoBarra.nativeElement.blur();
                             } else {
                                 const data = response.data;
-                                // this.errorCodigo = { error: false, mensaje: '' };
-                                this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
+                                this.data.push({
+                                    id: data.idCargo,
+                                    codigo: data.codigoBarra,
+                                    estado: data.estadoCargo,
+                                    detalleTexto: data.detalleTexto,
+                                    fechaVisita: data.fechaVisita,
+                                });
                                 this.codigoBarra.nativeElement.focus();
                             }
                         },
                         (error) => {
+                            console.log(error);
                             this.msj$ = this.msj.danger().subscribe();
                         }
                     );
@@ -147,7 +158,7 @@ export class DescargoMasivoComponent implements OnInit {
         } else {
             // this.repetido = false;
             this.errorCodigo = { error: false, mensaje: '' };
-            this.despachoService.deleteByCodigo(this.codigoBarra.nativeElement.value).subscribe((response: any) => {
+            this.descargoMasivoService.deleteByCodigo(this.codigoBarra.nativeElement.value).subscribe((response: any) => {
                 if (!response.succes) {
                     this.errorCodigo = { error: true, mensaje: response.message };
                 } else {
@@ -160,7 +171,7 @@ export class DescargoMasivoComponent implements OnInit {
     }
 
     deleteCargo(id, index) {
-        this.despachoService.deleteCargo(id).subscribe(
+        this.descargoMasivoService.deleteCargo(id).subscribe(
             (response) => {
                 this.data.splice(index, 1);
             },
@@ -171,11 +182,17 @@ export class DescargoMasivoComponent implements OnInit {
     }
 
     guardar() {
-        this.despachoService.postDescargoRegistrado().subscribe(
+        this.descargoMasivoService.postDescargoRegistrado().subscribe(
             (response) => {
-                this.msj$ = this.msj.succes('Descargo realizado correctamente').subscribe((action) => {
+                this.msj$ = this.msj.succes('Descargo masivo realizado correctamente').subscribe((action) => {
                     if (action) {
-                        this.atras();
+                        this.form.reset();
+                        this.form.patchValue({
+                            accion: true,
+                            fecha: moment().format('yyyy-MM-DD'),
+                        });
+                        this.estadoSelected = { id: 0, text: 'Seleccione', grupo: '' };
+                        this.detalleSelected = { id: 0, text: 'Seleccione', grupo: '' };
                     }
                 });
             },
@@ -183,9 +200,5 @@ export class DescargoMasivoComponent implements OnInit {
                 this.msj$ = this.msj.danger().subscribe();
             }
         );
-    }
-
-    atras() {
-        this.router.navigate([`${RUTAS_OPERACIONES_PAQUETERIA.manifiestos.init}`]);
     }
 }

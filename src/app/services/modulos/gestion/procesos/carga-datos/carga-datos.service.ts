@@ -13,14 +13,19 @@ export class CargaDatosService {
         return this.http.post(`${API_URL}clienteConsignado/upload`, data);
     }
 
+    postCargarDatosSimple(data) {
+        return this.http.post(`${API_URL}clienteConsignado/importarExcel`, data);
+    }
+
     getOrdenServicio(id) {
         return this.http.get(`${API_URL}clienteConsignado/byOrden/${id}`).pipe(
             map((response: any) => {
-                const data = response.data;
+                const nombres = response.data.nombres.split(' - ');
+
                 return {
-                    data: data.Data,
-                    mensaje: data.Mensaje,
-                    succes: data.Succes === 'True' ? true : false,
+                    ...response.data,
+                    cliente: nombres[0],
+                    servicio: nombres[1],
                 };
             })
         );
