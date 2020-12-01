@@ -1,31 +1,3 @@
-.leyenda ul {
-    margin: 0;
-    margin-top: 1em;
-
-    li {
-        margin-left: 30px;
-        position: relative;
-
-        &:before {
-            content: '';
-            width: 16px;
-            height: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            left: -30px;
-            position: absolute;
-        }
-
-        &.mensajeria:before {
-            background: red;
-        }
-
-        &.paqueteria:before {
-            background: blue;
-        }
-
-        &.masivos:before {
-            background: green;
-        }
-    }
+.table td {
+    font-size: 13px;
 }

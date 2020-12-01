@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PaginacionModel, Seguimiento } from '@models/index';
+import { PaginacionModel } from '@models/index';
 import { FormControl } from '@angular/forms';
 import { SeguimientoService } from '@services/modulos/operaciones/consultas/seguimiento/seguimiento.service';
 import { RUTAS_OPERACIONES_CONSULTAS } from '@routes/rutas-operaciones';
+import { TipoServicio } from '@models/enum.interface';
 
 @Component({
     selector: 'app-seguimiento',
@@ -12,8 +13,8 @@ import { RUTAS_OPERACIONES_CONSULTAS } from '@routes/rutas-operaciones';
 })
 export class ManifiestosComponent implements OnInit {
     loading: boolean;
-    selectItem: Seguimiento;
-    data: Seguimiento[];
+    selectItem: any;
+    data: any[];
     pagina: number;
     filas: number;
     dataPaginacion: PaginacionModel;
@@ -21,7 +22,7 @@ export class ManifiestosComponent implements OnInit {
     codigo: FormControl;
     constructor(private router: Router, private seguimientoService: SeguimientoService) {
         this.loading = false;
-        this.selectItem = new Seguimiento();
+        this.selectItem = {};
         this.data = [];
         this.pagina = 1;
         this.filas = 10;
@@ -38,20 +39,17 @@ export class ManifiestosComponent implements OnInit {
             }
         });
         this.loading = true;
-        this.seguimientoService.postConsultasCargo({ codigoBarra: this.codigos }).subscribe(
-            (response) => {
-                this.data = response.seguimientos;
-                this.codigos = [];
-                this.loading = false;
-            },
-            (error) => {
-                this.loading = false;
-            }
-        );
-    }
-
-    detalle() {
-        const route = RUTAS_OPERACIONES_CONSULTAS;
-        this.router.navigate([`${route.seguimiento.init}/${this.selectItem.idOrdenServicio}/${route.seguimiento.detalle}`]);
+        this.seguimientoService
+            .postConsultasCargoMensajeria({ codigoBarra: this.codigos, tipoServicio: TipoServicio.MENSAJERIA })
+            .subscribe(
+                (response) => {
+                    this.data = response;
+                    this.codigos = [];
+                    this.loading = false;
+                },
+                (error) => {
+                    this.loading = false;
+                }
+            );
     }
 }

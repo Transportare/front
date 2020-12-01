@@ -4,6 +4,7 @@ import { PaginacionModel, Seguimiento } from '@models/index';
 import { FormControl } from '@angular/forms';
 import { SeguimientoService } from '@services/modulos/operaciones/consultas/seguimiento/seguimiento.service';
 import { RUTAS_PAQUETERIA_CONSULTAS } from '@routes/rutas-paqueteria';
+import { TipoServicio } from '@models/enum.interface';
 
 @Component({
     selector: 'app-tracking',
@@ -37,7 +38,7 @@ export class TrackingComponent implements OnInit {
             }
         });
         this.loading = true;
-        this.seguimientoService.postConsultasCargo({ codigoBarra: this.codigos }).subscribe(
+        this.seguimientoService.postConsultasCargo({ codigoBarra: this.codigos, tipoServicio: TipoServicio.PAQUETERIA }).subscribe(
             (response) => {
                 this.data = response.seguimientos;
                 this.codigos = [];

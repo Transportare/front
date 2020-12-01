@@ -12,7 +12,7 @@ import * as moment from 'moment';
 export class SeguimientoService {
     constructor(private http: HttpClient) {}
 
-    postConsultasCargo(data: { codigoBarra: string[] }): Observable<{ seguimientos: Seguimiento[] }> {
+    postConsultasCargo(data: { codigoBarra: string[]; tipoServicio: number }): Observable<{ seguimientos: Seguimiento[] }> {
         return this.http.post(`${API_URL}cargos/consulta`, data).pipe(
             map((response: any) => {
                 const seguimientos: Seguimiento[] = response.data.map(
@@ -33,6 +33,28 @@ export class SeguimientoService {
                 );
 
                 return { seguimientos };
+            })
+        );
+    }
+
+    postConsultasCargoMensajeria(data: { codigoBarra: string[]; tipoServicio: number }) {
+        return this.http.post(`${API_URL}cargos/consulta`, data).pipe(
+            map((response: any) => {
+                const seguimientos = response.data.map((item) => ({
+                    cliente: item.Cliente,
+                    destinatario: item.Destinatario,
+                    distrito: item.Distrito,
+                    estado: item.Estado,
+                    estadoDetalle: item.EstadoDetalle,
+                    fechaDescargo: item.FechaDescargo ? moment(item.FechaDescargo).format('DD/MM/YYYY') : '-',
+                    fechaSalida: item.FechaSalida ? moment(item.FechaSalida).format('DD/MM/YYYY') : '-',
+                    fechaVisita: item.FechaVisita ? moment(item.FechaVisita).format('DD/MM/YYYY') : '-',
+                    guiaOs: item.GuiaOs,
+                    idOrdenServicio: item.IdOrdenServicio,
+                    servicio: item.Servicio,
+                }));
+
+                return seguimientos;
             })
         );
     }

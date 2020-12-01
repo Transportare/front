@@ -12,17 +12,6 @@
                             <div class="col-lg-8 mt-4 mt-lg-0">
                                 <div>
                                     <button class="btn btn-primary mr-4" (click)="consultar()">Consultar</button>
-                                    <button
-                                        class="btn btn-circle btn-primary mr-2"
-                                        [disabled]="!selectItem.idOrdenServicio"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        [DirectiveTooltip]
-                                        title="Detalle"
-                                        (click)="detalle()"
-                                    >
-                                        <i class="mdi mdi-format-list-bulleted"></i>
-                                    </button>
                                 </div>
                                 <!-- <div class="leyenda mt-4">
                                     <span>Leyenda</span>
@@ -50,15 +39,16 @@
                                         <tr>
                                             <th>N°</th>
                                             <th>Código</th>
+                                            <th style="min-width: 100px">Orden S</th>
+                                            <th>Cliente</th>
                                             <th>Destinatario</th>
-                                            <th style="min-width: 170px">Dirección Destino</th>
-                                            <th style="min-width: 170px">Sucursal Destino</th>
-                                            <th style="min-width: 170px">Sucursal Remite</th>
-                                            <th style="min-width: 150px">Fecha Salida</th>
-                                            <th style="min-width: 150px">Fecha Descargo</th>
-                                            <th style="min-width: 150px">Fecha Visita</th>
+                                            <th>Distrito</th>
                                             <th style="min-width: 170px">Estado</th>
                                             <th style="min-width: 170px">Estado Detalle</th>
+                                            <th style="min-width: 150px">Fecha Descargo</th>
+                                            <th style="min-width: 150px">Fecha Salida</th>
+                                            <th style="min-width: 150px">Fecha Visita</th>
+                                            <th style="min-width: 150px">Servicio</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,19 +58,20 @@
                                             [ngClass]="{ highlighted: selectItem.idOrdenServicio === item.idOrdenServicio }"
                                         >
                                             <td>{{ (pagina - 1) * filas + index + 1 }}</td>
-                                            <td>{{ item.codigoBarra || '-' }}</td>
+                                            <td>{{ item.guiaOs || '-' }}</td>
+                                            <td>{{ item.idOrdenServicio || '-' }}</td>
+                                            <td>{{ item.cliente || '-' }}</td>
                                             <td>{{ item.destinatario || '-' }}</td>
-                                            <td>{{ item.direccionDestino || '-' }}</td>
-                                            <td>{{ item.sucursalDestino || '-' }}</td>
-                                            <td>{{ item.sucursalRemite || '-' }}</td>
-                                            <td>{{ item.fechaSalida || '-' }}</td>
-                                            <td>{{ item.fechaDescargo || '-' }}</td>
-                                            <td>{{ item.fechaVisita || '-' }}</td>
+                                            <td>{{ item.distrito || '-' }}</td>
                                             <td>{{ item.estado || '-' }}</td>
                                             <td>{{ item.estadoDetalle || '-' }}</td>
+                                            <td>{{ item.fechaDescargo || '-' }}</td>
+                                            <td>{{ item.fechaSalida || '-' }}</td>
+                                            <td>{{ item.fechaVisita || '-' }}</td>
+                                            <td>{{ item.servicio || '-' }}</td>
                                         </tr>
                                         <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                                            <td colspan="11">No hay información disponible</td>
+                                            <td colspan="12">No hay información disponible</td>
                                         </tr>
                                     </tbody>
                                 </table>
