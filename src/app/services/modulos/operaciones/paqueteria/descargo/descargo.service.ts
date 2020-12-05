@@ -10,7 +10,13 @@ export class DescargoService {
     getCargosByGuia(idDescargo: number) {
         return this.http.get(`${API_URL}cargos/temporal/${idDescargo}`).pipe(
             map((response: any) => {
-                return response.data.map((item) => ({ id: item.IdCargo, codigo: item.CodigoBarra, estado: item.EstadoCargo }));
+                return response.data.map((item) => ({
+                    id: item.IdCargo,
+                    codigo: item.CodigoBarra,
+                    estado: item.EstadoCargo,
+                    detalleTexto: item.EstadoDetalle,
+                    fechaVisita: item.FechaVisita,
+                }));
             })
         );
     }

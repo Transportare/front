@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group group-normal">
-                            <label class="required">Fecha de Arribo</label>
+                            <label class="required">Fecha de Visita</label>
                             <input type="date" class="form-control" formControlName="fecha" />
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-10">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover box-shadow">
                                 <thead>
@@ -68,6 +68,8 @@
                                         <th>N°</th>
                                         <th>Código</th>
                                         <th>Estado</th>
+                                        <th>Detalle</th>
+                                        <th>Fecha Visita</th>
                                         <th class="text-center">Acción</th>
                                     </tr>
                                 </thead>
@@ -77,6 +79,8 @@
                                         <td style="vertical-align: middle">{{ index + 1 }}</td>
                                         <td style="vertical-align: middle">{{ item.codigo }}</td>
                                         <td style="vertical-align: middle">{{ item.estado }}</td>
+                                        <td style="vertical-align: middle">{{ item.detalleTexto }}</td>
+                                        <td style="vertical-align: middle">{{ item.fechaVisita }}</td>
                                         <td class="text-center" style="vertical-align: middle">
                                             <button
                                                 class="btn btn-primary rounded-circle"
@@ -88,7 +92,7 @@
                                         </td>
                                     </tr>
                                     <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
-                                        <td colspan="4">No hay información disponible</td>
+                                        <td colspan="6">No hay información disponible</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -123,10 +123,11 @@ export class DescargoRutaComponent implements OnInit {
                 } else {
                     const cargo = {
                         codigoBarra: this.codigoBarra.nativeElement.value,
+                        fechaVisita: this.form.value.fecha,
                         estado: this.form.value.estadoId,
-                        detalleEstado: this.form.value.detalleId,
-                        fecha: this.form.value.fecha,
-                        detalleEstadoTexto: this.estadoSelected.text,
+                        estadoTexto: this.estadoSelected.text,
+                        detalleId: this.form.value.detalleId,
+                        detalleTexto: this.detalleSelected.text,
                     };
 
                     this.descargoService.postCargo(cargo).subscribe(
@@ -136,7 +137,13 @@ export class DescargoRutaComponent implements OnInit {
                                 this.codigoBarra.nativeElement.blur();
                             } else {
                                 const data = response.data;
-                                this.data.push({ id: data.idCargo, codigo: data.codigoBarra, estado: data.estadoCargo });
+                                this.data.push({
+                                    id: data.idCargo,
+                                    codigo: data.codigoBarra,
+                                    estado: data.estadoCargo,
+                                    detalleTexto: data.detalleTexto,
+                                    fechaVisita: data.fechaVisita,
+                                });
                                 this.codigoBarra.nativeElement.focus();
                             }
                         },
@@ -184,6 +191,7 @@ export class DescargoRutaComponent implements OnInit {
                         });
                         this.estadoSelected = { id: 0, text: 'Seleccione', grupo: '' };
                         this.detalleSelected = { id: 0, text: 'Seleccione', grupo: '' };
+                        this.listarCargos();
                     }
                 });
             },

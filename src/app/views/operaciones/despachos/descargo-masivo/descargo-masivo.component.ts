@@ -193,6 +193,7 @@ export class DescargoMasivoComponent implements OnInit {
                         });
                         this.estadoSelected = { id: 0, text: 'Seleccione', grupo: '' };
                         this.detalleSelected = { id: 0, text: 'Seleccione', grupo: '' };
+                        this.listarCargos();
                     }
                 });
             },

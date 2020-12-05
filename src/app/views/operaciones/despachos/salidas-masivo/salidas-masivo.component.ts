@@ -61,7 +61,7 @@ export class SalidasMasivoComponent implements OnInit, OnDestroy {
             fechaSalida: [moment().format('YYYY-MM-DD'), Validators.required],
             fechaCierre: ['', Validators.required],
             idUbigeoDestino: ['', Validators.required],
-            movilidad: [null],
+            movilidad: [''],
             observacion: [null],
             accion: [true],
         });
@@ -176,10 +176,11 @@ export class SalidasMasivoComponent implements OnInit, OnDestroy {
     }
 
     guardar() {
-        delete this.form.value.accion;
+        const formValues = { ...this.form.value };
+        delete formValues.accion;
         const data = {
-            ...this.form.value,
-            movilidad: Number(this.form.value.movilidad.split(',').join('')),
+            ...formValues,
+            movilidad: Number(this.form.value.movilidad.split(',').join('')) || 0,
         };
 
         this.salidaMasivaService.postSalidaMasiva(data).subscribe(
