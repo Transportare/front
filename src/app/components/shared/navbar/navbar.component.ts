@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '@services/login/login.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { SucursalesService } from '@services/utils/sucursales.service';
-import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-navbar',
@@ -13,19 +12,17 @@ export class NavbarComponent implements OnInit {
     sucursales: any[];
     sucursalSelected: any;
     loading: boolean;
+    user: string;
 
-    constructor(
-        private loginService: LoginService,
-        private sucursalesService: SucursalesService,
-        private router: Router,
-        private location: Location
-    ) {
+    constructor(private loginService: LoginService, private sucursalesService: SucursalesService, private router: Router) {
         this.loading = false;
         this.sucursales = [];
         this.sucursalSelected = { id: '', text: 'Seleccione Sucursal' };
+        this.user = '';
     }
 
     ngOnInit() {
+        this.user = this.loginService.getUserLogeado().Usuario;
         this.listarSucursales();
         this.sucursalesService.changeSucursal().subscribe((response) => {
             this.sucursalSelected = this.sucursales.find((sucursal) => sucursal.id === response);

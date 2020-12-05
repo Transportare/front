@@ -174,9 +174,10 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
     }
 
     guardar() {
-        delete this.form.value.accion;
+        const formValues = { ...this.form.value };
+        delete formValues.accion;
 
-        this.salidaRutaService.postSalidaRuta(this.form.value).subscribe(
+        this.salidaRutaService.postSalidaRuta(formValues).subscribe(
             (response: any) => {
                 this.msj$ = this.msj.succes('Salida a ruta correctamente').subscribe((action) => {
                     if (action) {
