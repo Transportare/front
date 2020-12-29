@@ -1,12 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { SalidaRutaService } from '@services/modulos/paqueteria/despachos/salida-ruta/salida-ruta.service';
 import { UbigeoService } from '@services/utils/ubigeo.service';
-import { Grupo, Ubigeo } from '@models/index';
+import { Grupo, Ubigeo, Manifiesto } from '@models/index';
 import { Subscription } from 'rxjs';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { TipoTemporal } from '@models/enum.interface';
+import { PdfMakeService } from '@services/utils/pdfmake.service';
 
 @Component({
     selector: 'app-salida-ruta',
@@ -36,7 +37,8 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
         private msj: MensajeResponseService,
         private salidaRutaService: SalidaRutaService,
         private ubigeoService: UbigeoService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private pdfMakeService: PdfMakeService
     ) {
         this.loading = false;
         this.accion = false;
@@ -181,6 +183,7 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
             (response: any) => {
                 this.msj$ = this.msj.succes('Salida a ruta correctamente').subscribe((action) => {
                     if (action) {
+                        this.imprimirCargos(response.data);
                         this.listar();
                     }
                 });
@@ -189,5 +192,32 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
                 this.msj$ = this.msj.danger().subscribe();
             }
         );
+    }
+
+    imprimirCargos(data) {
+        const cabecera: Manifiesto = {
+            ...new Manifiesto(),
+            idGuia: data.cabecera.IdGuia,
+            personal: data.cabecera.Personal,
+            fechaSalida: data.cabecera.FechaSalida,
+            sucursalDestino: data.cabecera.SucursalDestino,
+            sucursalRemitente: data.cabecera.SucursalRemite,
+            idEstado: data.cabecera.IdEstadoGuia,
+            estado: data.cabecera.Estado,
+        };
+
+        const cargos = data.detalle.map((item) => ({
+            nombres: item.Nombre,
+            apellidos: item.Apellidos,
+            cantidadPaquetes: item.CantidadPaquetes,
+            guiaOs: item.GuiaOs,
+            idCliente: item.IdCliente,
+            idOrdenServicio: item.IdOrdenServicio,
+            idServicio: item.IdServicio,
+            pagaDestino: item.PagaDestino,
+            pesoTotal: item.PesoTotal,
+        }));
+
+        this.pdfMakeService.generarPdfCargos({ cabecera, cargos }, false);
     }
 }

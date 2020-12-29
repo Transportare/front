@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { Grupo, Ubigeo } from '@models/index';
+import { Grupo, Ubigeo, Manifiesto } from '@models/index';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
@@ -7,6 +7,7 @@ import { UbigeoService } from '@services/utils/ubigeo.service';
 import * as moment from 'moment';
 import { TipoTemporal } from '@models/enum.interface';
 import { SalidaMasivaService } from '@services/modulos/operaciones/despachos/salida-masiva.service';
+import { PdfMakeService } from '@services/utils/pdfmake.service';
 
 @Component({
     selector: 'app-salidas-masivo',
@@ -36,7 +37,8 @@ export class SalidasMasivoComponent implements OnInit, OnDestroy {
         private msj: MensajeResponseService,
         private salidaMasivaService: SalidaMasivaService,
         private ubigeoService: UbigeoService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private pdfMakeService: PdfMakeService
     ) {
         this.loading = false;
         this.accion = false;
@@ -195,5 +197,32 @@ export class SalidasMasivoComponent implements OnInit, OnDestroy {
                 this.msj$ = this.msj.danger().subscribe();
             }
         );
+    }
+
+    imprimirCargos(data) {
+        const cabecera: Manifiesto = {
+            ...new Manifiesto(),
+            idGuia: data.cabecera.IdGuia,
+            personal: data.cabecera.Personal,
+            fechaSalida: data.cabecera.FechaSalida,
+            sucursalDestino: data.cabecera.SucursalDestino,
+            sucursalRemitente: data.cabecera.SucursalRemite,
+            idEstado: data.cabecera.IdEstadoGuia,
+            estado: data.cabecera.Estado,
+        };
+
+        const cargos = data.detalle.map((item) => ({
+            nombres: item.Nombre,
+            apellidos: item.Apellidos,
+            cantidadPaquetes: item.CantidadPaquetes,
+            guiaOs: item.GuiaOs,
+            idCliente: item.IdCliente,
+            idOrdenServicio: item.IdOrdenServicio,
+            idServicio: item.IdServicio,
+            pagaDestino: item.PagaDestino,
+            pesoTotal: item.PesoTotal,
+        }));
+
+        this.pdfMakeService.generarPdfCargos({ cabecera, cargos }, false);
     }
 }

@@ -185,7 +185,7 @@ export class PdfMakeService {
         pdfMake.createPdf(documentDefinition).open();
     }
 
-    generarPdfCargos({ cabecera, cargos }: Data) {
+    generarPdfCargos({ cabecera, cargos }: Data, chofer: boolean = true) {
         const documentDefinition = {
             content: [
                 {
@@ -215,14 +215,14 @@ export class PdfMakeService {
                                 text: 'SUCURSAL DESTINO',
                                 bold: true,
                             },
-                            { text: `${cabecera.sucursalDestino}` },
+                            { text: `${cabecera.sucursalDestino || '-'}` },
                         ],
                         [
                             {
                                 text: 'FECHA SALIDA',
                                 bold: true,
                             },
-                            { text: `${cabecera.fechaSalida}` },
+                            { text: `${cabecera.fechaSalida || '-'}` },
                         ],
                     ],
                 },
@@ -231,10 +231,10 @@ export class PdfMakeService {
                     columns: [
                         [
                             {
-                                text: 'CHOFER',
+                                text: `${chofer ? 'CHOFER' : 'MENSAJERO'}`,
                                 bold: true,
                             },
-                            { text: `${cabecera.personal}` },
+                            { text: `${cabecera.personal || '-'}` },
                         ],
                     ],
                 },
@@ -252,7 +252,7 @@ export class PdfMakeService {
                             ],
                             ...cargos.map((c) => [
                                 c.guiaOs,
-                                `${c.nombres} ${c.apellidos}`,
+                                `${c.nombres} ${c.apellidos || ''}`,
                                 c.cantidadPaquetes,
                                 `${c.pesoTotal} kg`,
                                 c.pagaDestino === 1 ? 'Contraentrega' : '',
