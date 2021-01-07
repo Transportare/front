@@ -185,7 +185,7 @@ export class PdfMakeService {
         pdfMake.createPdf(documentDefinition).open();
     }
 
-    generarPdfCargos({ cabecera, cargos }: Data, chofer: boolean = true) {
+    generarPdfCargos({ cabecera, cargos }: Data, chofer: boolean = true, rows?: boolean) {
         const documentDefinition = {
             content: [
                 {
@@ -227,7 +227,7 @@ export class PdfMakeService {
                     ],
                 },
                 {
-                    margin: [0, 0, 0, 30],
+                    margin: [0, 0, 0, 10],
                     columns: [
                         [
                             {
@@ -236,30 +236,39 @@ export class PdfMakeService {
                             },
                             { text: `${cabecera.personal || '-'}` },
                         ],
+                        [
+                            {
+                                text: 'TOTAL',
+                                bold: true,
+                            },
+                            { text: `${cargos.length}` },
+                        ],
                     ],
                 },
-                {
-                    table: {
-                        headerRows: 1,
-                        widths: ['auto', '*', 'auto', 'auto', 'auto'],
-                        body: [
-                            [
-                                { text: 'Código Barra', bold: true },
-                                { text: 'Nombre Cliente', bold: true },
-                                { text: 'Cant Paquetes', bold: true },
-                                { text: 'Peso', bold: true },
-                                { text: 'Pago', bold: true },
-                            ],
-                            ...cargos.map((c) => [
-                                c.guiaOs,
-                                `${c.nombres} ${c.apellidos || ''}`,
-                                c.cantidadPaquetes,
-                                `${c.pesoTotal} kg`,
-                                c.pagaDestino === 1 ? 'Contraentrega' : '',
-                            ]),
-                        ],
-                    },
-                },
+                rows
+                    ? {
+                          table: {
+                              headerRows: 1,
+                              widths: ['auto', '*', 'auto', 'auto', 'auto'],
+                              body: [
+                                  [
+                                      { text: 'Código Barra', bold: true },
+                                      { text: 'Nombre Cliente', bold: true },
+                                      { text: 'Cant Paquetes', bold: true },
+                                      { text: 'Peso', bold: true },
+                                      { text: 'Pago', bold: true },
+                                  ],
+                                  ...cargos.map((c) => [
+                                      c.guiaOs,
+                                      `${c.nombres} ${c.apellidos || ''}`,
+                                      c.cantidadPaquetes,
+                                      `${c.pesoTotal} kg`,
+                                      c.pagaDestino === 1 ? 'Contraentrega' : '',
+                                  ]),
+                              ],
+                          },
+                      }
+                    : null,
             ],
         };
         pdfMake.createPdf(documentDefinition).open();

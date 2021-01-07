@@ -189,6 +189,7 @@ export class SalidasMasivoComponent implements OnInit, OnDestroy {
             (response: any) => {
                 this.msj$ = this.msj.succes('Salida masiva correctamente').subscribe((action) => {
                     if (action) {
+                        this.imprimirCargos(response.data);
                         this.listar();
                     }
                 });

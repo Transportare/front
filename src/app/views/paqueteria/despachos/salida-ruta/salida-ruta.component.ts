@@ -218,6 +218,6 @@ export class SalidaRutaComponent implements OnInit, OnDestroy {
             pesoTotal: item.PesoTotal,
         }));
 
-        this.pdfMakeService.generarPdfCargos({ cabecera, cargos }, false);
+        this.pdfMakeService.generarPdfCargos({ cabecera, cargos }, true, true);
     }
 }
