@@ -20,7 +20,7 @@ export class CargaDatosService {
     getOrdenServicio(id) {
         return this.http.get(`${API_URL}clienteConsignado/byOrden/${id}`).pipe(
             map((response: any) => {
-                const nombres = response.data.nombres.split(' - ');
+                const nombres = response.data.nombres?.split(' - ') || '';
 
                 return {
                     ...response.data,
