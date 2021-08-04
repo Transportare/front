@@ -125,7 +125,7 @@ export class OrdenServicioComponent implements OnInit, OnDestroy {
                 this.cerrarModal();
                 this.msj$ = this.mensajeResponse.succes(`Orden de Servicio N° ${response.id} creado correctamente`).subscribe((action) => {
                     if (action) {
-                        this.router.navigate(['/gestion/procesos/orden-servicios/carga-datos']);
+                        this.router.navigate(['/gestion/procesos/carga-datos']);
                     }
                 });
             },
