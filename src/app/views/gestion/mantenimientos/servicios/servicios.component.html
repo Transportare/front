@@ -1,7 +1,7 @@
 <app-body [header]="true" [titulo]="'Servicios'">
-    <div header>
-        <div class="py-3 text-right">
-            <!-- <button
+  <div header>
+    <div class="py-3 text-right">
+      <!-- <button
                 class="btn btn-circle btn-primary mr-2"
                 [disabled]="!selectItem.idServicio"
                 data-toggle="tooltip"
@@ -12,57 +12,53 @@
             >
                 <i class="mdi mdi-format-list-bulleted"></i>
             </button> -->
-            <button
-                class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.idServicio"
-                data-placement="top"
-                data-toggle="tooltip"
-                [DirectiveTooltip]
-                title="Editar"
-                (click)="editar()"
-            >
-                <i class="mdi mdi-pencil"></i>
-            </button>
-            <button class="btn btn-outline-primary ml-3" (click)="nuevo()">
-                Nuevo
-            </button>
-        </div>
+      <button
+        class="btn btn-circle btn-primary mr-2"
+        [disabled]="!selectItem.idServicio"
+        data-placement="top"
+        data-toggle="tooltip"
+        [DirectiveTooltip]
+        title="Editar"
+        (click)="editar()"
+      >
+        <i class="mdi mdi-pencil"></i>
+      </button>
+      <button class="btn btn-outline-primary ml-3" (click)="nuevo()">Nuevo</button>
     </div>
-    <div body [ngClass]="{ loader: loading }">
-        <loader *ngIf="loading"></loader>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover box-shadow">
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        <th>Cliente</th>
-                        <th>Tipo De Servicio</th>
-                        <th>Nombre</th>
-                        <th>Tiempo</th>
-                        <th>Observación</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        *ngFor="let item of servicios; let index = index"
-                        (click)="selectItem = item"
-                        [ngClass]="{ highlighted: selectItem.idServicio === item.idServicio }"
-                    >
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ item.cliente }}</td>
-                        <td>{{ item.tipoServicio }}</td>
-                        <td>{{ item.nombre }}</td>
-                        <td>{{ item.tiempo }}</td>
-                        <td>{{ item.observacion }}</td>
-                    </tr>
-                    <tr class="text-center" *ngIf="!servicios || (servicios && servicios.length === 0)">
-                        <td colspan="6">
-                            No hay información disponible
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- <app-paginacion [data]="dataPaginacion" (changePage)="listar($event)"></app-paginacion> -->
+  </div>
+  <div body [ngClass]="{ loader: loading }">
+    <loader *ngIf="loading"></loader>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover box-shadow">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Cliente</th>
+            <th>Tipo De Servicio</th>
+            <th>Nombre</th>
+            <th>Tiempo</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let item of servicios; let index = index"
+            (click)="selectItem = item"
+            [ngClass]="{ highlighted: selectItem.idServicio === item.idServicio }"
+          >
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.cliente }}</td>
+            <td>{{ item.tipoServicio }}</td>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.tiempo }}</td>
+            <td>{{ item.observacion }}</td>
+          </tr>
+          <tr class="text-center" *ngIf="!servicios || (servicios && servicios.length === 0)">
+            <td colspan="6">No hay información disponible</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <app-paginacion [data]="dataPaginacion" (changePage)="listar($event)"></app-paginacion>
+  </div>
 </app-body>
