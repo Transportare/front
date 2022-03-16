@@ -1,102 +1,102 @@
 <app-body [header]="true" [titulo]="'Orden de Servicios'">
-    <div header>
-        <div class="py-3 text-right">
-            <button type="button" class="btn btn-primary" [disabled]="!habilitar" (click)="abrirCarga()">Generar Subida</button>
-        </div>
+  <div header>
+    <div class="py-3 text-right">
+      <button type="button" class="btn btn-primary" [disabled]="!habilitar" (click)="abrirCarga()">Generar Subida</button>
     </div>
-    <div body [ngClass]="{ loader: loading }">
-        <loader *ngIf="loading"></loader>
-        <div>
-            <div class="row mx-0">
-                <div class="col-md-12 col-lg-5 px-4 pb-4 pt-2">
-                    <div class="form-group">
-                        <label for="telefono">Nro. Órden</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            EnteroPositivo
-                            (valueEntero)="codigo.setValue($event)"
-                            [maxLength]="10"
-                            [formControl]="codigo"
-                            (keyup.enter)="verificarCodigo()"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">Cliente</label>
-                        <input type="text" class="form-control" [formControl]="cliente" />
-                    </div>
-                    <div class="form-group mb-0">
-                        <label for="telefono">Servicio</label>
-                        <input type="text" class="form-control" [formControl]="servicio" />
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-7 pt-2 pr-4">
-                    <div class="alert alert-info">
-                        <ul>
-                            <li>El usuario que cargará deberá de pertenecer a una sucursal o sede.</li>
-                            <li>
-                                Los nombres de las columnas del archivo Excel, no deberá tener tildes, ni espacios en blanco, ni puntos, ni
-                                caracteres extraños ($|#"/%.').
-                            </li>
-                            <li>El archivo csv deberá de tener una columna con el nombre >> ORDENAR y DISTRITO.</li>
-                            <li>Los datos del campo DISTRITO no deberá contener caracteres extraños ($|#"/%.')</li>
-                            <li>LAS COLUMNAS DEL ARCHIVO CSV DEBERÁN SER DE TIPO TEXTO.</li>
-                            <li>LIMPIAR EL FORMATO Y QUITAR LOS FILTROS DEL ARCHIVO CSV.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+  </div>
+  <div body [ngClass]="{ loader: loading }">
+    <loader *ngIf="loading"></loader>
+    <div>
+      <div class="row mx-0">
+        <div class="col-md-12 col-lg-5 px-4 pb-4 pt-2">
+          <div class="form-group">
+            <label for="telefono">Nro. Órden</label>
+            <input
+              type="text"
+              class="form-control"
+              EnteroPositivo
+              (valueEntero)="codigo.setValue($event)"
+              [maxLength]="10"
+              [formControl]="codigo"
+              (keyup.enter)="verificarCodigo()"
+            />
+          </div>
+          <div class="form-group">
+            <label for="telefono">Cliente</label>
+            <input type="text" class="form-control" [formControl]="cliente" />
+          </div>
+          <div class="form-group mb-0">
+            <label for="telefono">Servicio</label>
+            <input type="text" class="form-control" [formControl]="servicio" />
+          </div>
         </div>
+        <div class="col-md-12 col-lg-7 pt-2 pr-4">
+          <div class="alert alert-info">
+            <ul>
+              <li>El usuario que cargará deberá de pertenecer a una sucursal o sede.</li>
+              <li>
+                Los nombres de las columnas del archivo Excel, no deberá tener tildes, ni espacios en blanco, ni puntos, ni caracteres
+                extraños ($|#"/%.').
+              </li>
+              <li>El archivo csv deberá de tener una columna con el nombre >> ORDENAR y DISTRITO.</li>
+              <li>Los datos del campo DISTRITO no deberá contener caracteres extraños ($|#"/%.')</li>
+              <li>LAS COLUMNAS DEL ARCHIVO CSV DEBERÁN SER DE TIPO TEXTO.</li>
+              <li>LIMPIAR EL FORMATO Y QUITAR LOS FILTROS DEL ARCHIVO CSV.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </app-body>
 
 <div class="modal fade" #modalCarga tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header justify-content-center">
-                <h5 class="modal-title">Carga Masiva</h5>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h5 class="modal-title">Carga Masiva</h5>
+      </div>
+      <div class="modal-body">
+        <div class="row mx-0 p-3">
+          <div
+            appDropFiles
+            class="card-body_imagen"
+            (mouseSobre)="estaSobre = $event"
+            (errorDrop)="validacionArchivos($event)"
+            [ngClass]="{ 'file-over': estaSobre }"
+            [archivo]="archivo"
+            [accept]="accepts"
+          >
+            <span>Arrastra los archivos aquí para subirlos</span>
+            <span class="accepts-types">({{ tipo.value ? 'csv' : 'xls, xlsx' }})</span>
+            <input type="file" #file [multiple]="false" [accept]="tipo.value ? '.csv' : '.xls, .xlsx'" (change)="onFileChange($event)" />
+          </div>
+          <div class="archivo-dropeado-content" *ngIf="archivo.length">
+            <div class="archivo-dropeado">
+              <div class="archivo-icono mr-3">
+                <i class="mdi mdi-file"></i>
+              </div>
+              <div class="archivo-descripcion">
+                <p class="mb-0">{{ archivo[0].name }}</p>
+              </div>
             </div>
-            <div class="modal-body">
-                <div class="row mx-0 p-3">
-                    <div
-                        appDropFiles
-                        class="card-body_imagen"
-                        (mouseSobre)="estaSobre = $event"
-                        (errorDrop)="validacionArchivos($event)"
-                        [ngClass]="{ 'file-over': estaSobre }"
-                        [archivo]="archivo"
-                        [accept]="accepts"
-                    >
-                        <span>Arrastra los archivos aquí para subirlos</span>
-                        <span class="accepts-types">({{ tipo.value ? 'csv' : 'xls, xlsx' }})</span>
-                        <input type="file" #file [multiple]="false" accept=".csv" (change)="onFileChange($event)" />
-                    </div>
-                    <div class="archivo-dropeado-content" *ngIf="archivo.length">
-                        <div class="archivo-dropeado">
-                            <div class="archivo-icono mr-3">
-                                <i class="mdi mdi-file"></i>
-                            </div>
-                            <div class="archivo-descripcion">
-                                <p class="mb-0">{{ archivo[0].name }}</p>
-                            </div>
-                        </div>
-                        <i class="mdi mdi-close" (click)="deleteFile()"></i>
-                    </div>
-                    <span class="response success w-100" *ngIf="!error.status && error.message.length > 0">{{ error.message }}</span>
-                    <span class="response danger w-100" *ngIf="error.status && error.message.length > 0">{{ error.message }}</span>
-                    <!-- <div class="form-group group-normal">
+            <i class="mdi mdi-close" (click)="deleteFile()"></i>
+          </div>
+          <span class="response success w-100" *ngIf="!error.status && error.message.length > 0">{{ error.message }}</span>
+          <span class="response danger w-100" *ngIf="error.status && error.message.length > 0">{{ error.message }}</span>
+          <!-- <div class="form-group group-normal">
                         <label for="tipo"><input type="checkbox" class="form-control" id="tipo" /> Carga masiva avanzada</label>
                     </div> -->
-                    <div id="tipo" class="form-group form-check mt-3">
-                        <input type="checkbox" class="form-check-input" id="tipoCarga" [formControl]="tipo" (change)="changeTipoCarga()" />
-                        <label class="form-check-label" for="tipoCarga">Carga avanzada</label>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer text-right">
-                <button type="button" class="btn btn-secondary mr-2" (click)="cerrarCarga()">Cancelar</button>
-                <button type="submit" class="btn btn-primary" (click)="guardarCarga()">Aceptar</button>
-            </div>
+          <div id="tipo" class="form-group form-check mt-3">
+            <input type="checkbox" class="form-check-input" id="tipoCarga" [formControl]="tipo" (change)="changeTipoCarga()" />
+            <label class="form-check-label" for="tipoCarga">Carga avanzada</label>
+          </div>
         </div>
+      </div>
+      <div class="modal-footer text-right">
+        <button type="button" class="btn btn-secondary mr-2" (click)="cerrarCarga()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" (click)="guardarCarga()">Aceptar</button>
+      </div>
     </div>
+  </div>
 </div>
