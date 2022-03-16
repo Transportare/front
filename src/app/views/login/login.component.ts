@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   get ussernameValid() {
-    console.log('holi');
     return this.formLogin.get('username').invalid && this.formLogin.get('username').touched;
   }
 
@@ -44,7 +43,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   get errorControl() {
-    console.log('errpr');
     return this.formLogin.get('error');
   }
 

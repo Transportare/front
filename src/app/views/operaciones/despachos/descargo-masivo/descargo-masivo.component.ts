@@ -149,7 +149,6 @@ export class DescargoMasivoComponent implements OnInit {
                             }
                         },
                         (error) => {
-                            console.log(error);
                             this.msj$ = this.msj.danger().subscribe();
                         }
                     );
