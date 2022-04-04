@@ -10,8 +10,11 @@ export const routes: Routes = [
         data: { roleId: [41] },
     },
     {
-        path: '',
-        redirectTo: '/dashboard',
+      canActivate: [PerfilGuard],
+      canActivateChild: [PerfilGuard],
+        path: 'guia-salidas',
+        loadChildren: () => import('./guias-de-salida/guias-de-salida.module').then((m) => m.GuiasDeSalidaModule),
+        data: { roleId: [42] },
     },
     {
         path: '**',

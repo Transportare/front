@@ -95,7 +95,7 @@ export class SelectDefaultComponent implements OnInit, AfterViewInit {
 
     searchData(text) {
         this.dataFinal = [];
-        this.data.forEach((value) => {
+        this.data?.forEach((value) => {
             if (String(value.text).toUpperCase().indexOf(text.toUpperCase()) > -1) {
                 this.dataFinal.push(value);
             }
