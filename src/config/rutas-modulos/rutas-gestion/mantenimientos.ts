@@ -20,4 +20,13 @@ export const RUTAS_GESTION_MANTENIMIENTOS = {
         editar: 'editar',
         nuevo: 'nuevo',
     },
+    usuarios: {
+        init: `${item}/usuarios`,
+    },
+    perfiles: {
+        init: `${item}/perfiles`,
+        detalle: 'detalle',
+        editar: 'editar',
+        nuevo: 'nuevo',
+    },
 };

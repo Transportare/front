@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginGuard } from '@guards/login.guard';
+import { ViewComponent } from './views/views.component';
 
 const routes: Routes = [
     {
         path: 'login',
+        canActivate: [LoginGuard],
         loadChildren: () => import('./views/login/login.module').then((m) => m.LoginModule),
     },
     {
-        path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule),
-    },
-    {
-        path: 'gestion',
-        loadChildren: () => import('./views/gestion/gestion.module').then((m) => m.GestionModule),
+        path: '',
+        component: ViewComponent,
+        loadChildren: () => import('./views/views.module').then((m) => m.ViewModule),
     },
     {
         path: '**',

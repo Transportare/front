@@ -1,102 +1,146 @@
-<app-body [header]="false" [titulo]="'Nuevo Cliente'">
-    <div body>
-        <div class="p-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="nombres">Nombres</label>
-                        <input type="text" class="form-control" id="nombres" />
+<app-body [header]="false" [titulo]="nuevo ? 'Nuevo Cliente' : 'Editar Cliente'">
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
+        <form (ngSubmit)="guardarCliente()" *ngIf="!loading" [formGroup]="formularioCliente">
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombre" class="required">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" formControlName="nombre" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ruc" class="required">RUC</label>
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="11"
+                                (valueEntero)="formularioCliente.patchValue({ ruc: $event })"
+                                type="text"
+                                class="form-control"
+                                id="ruc"
+                                formControlName="ruc"
+                            />
+                            <span *ngIf="clienteRuc" class="d-block error-input text-danger">El RUC debe ser de 11 números.</span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="direccion" class="required">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" formControlName="direccion" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="9"
+                                (valueEntero)="formularioCliente.patchValue({ telefono: $event })"
+                                type="text"
+                                class="form-control"
+                                id="telefono"
+                                formControlName="telefono"
+                            />
+                            <span *ngIf="clienteTelefono" class="d-block error-input text-danger">Mínimo 7 números</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="correo">Correo</label>
+                            <input type="email" class="form-control" id="correo" formControlName="correo" />
+                            <span *ngIf="clienteCorreo" class="d-block error-input text-danger">El patró del correo debe ser válido</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contacto">Contacto</label>
+                            <input type="text" class="form-control" id="contacto" formControlName="contacto" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="departamento" class="required">Departamento</label>
+                            <select-default
+                                *ngIf="departamentos"
+                                [data]="departamentos"
+                                [selected]="selectedDepartamento"
+                                (selectChange)="changeDepartamento($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="provincia" class="required">Provincia</label>
+                            <select-default
+                                *ngIf="provincias"
+                                [data]="provincias"
+                                [selected]="selectedProvincia"
+                                (selectChange)="changeProvincia($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="distrito" class="required">Distrito</label>
+                            <select-default
+                                *ngIf="distritos"
+                                [data]="distritos"
+                                [selected]="selectedDistrito"
+                                (selectChange)="changeDistrito($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="rubro">Rubro</label>
+                            <input type="text" class="form-control" id="rubro" formControlName="rubro" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipoPago" class="required">Tipo de Pago</label>
+                            <select-default
+                                *ngIf="tipoPagos"
+                                [data]="tipoPagos"
+                                [selected]="selectedPago"
+                                (selectChange)="changeTipoPago($event)"
+                            ></select-default>
+                        </div>
+                        <div class="form-group align-items-start">
+                            <label for="observacion">Observación</label>
+                            <textarea id="observacion" rows="4" class="form-control" formControlName="observacion"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group align-items-start">
+                            <label class="required" for="tipoPago">Sucursales</label>
+                            <app-check-multiple
+                                *ngIf="!loading"
+                                [data]="sucursales"
+                                [activos]="activos"
+                                (changeData)="changeData($event)"
+                            ></app-check-multiple>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="ruc">RUC</label>
-                        <input type="text" class="form-control" id="ruc" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="direccion">Dirección</label>
-                        <input type="text" class="form-control" id="direccion" />
-                    </div>
-                </div>
+            <div class="p-3 text-right">
+                <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+                <button class="btn btn-primary" type="submit" [disabled]="formularioCliente.invalid"><span>Guardar</span></button>
+                <!-- <button class="btn btn-primary" type="submit"><span>Guardar</span></button> -->
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="telefono">Telefono</label>
-                        <input type="text" class="form-control" id="telefono" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="correo">Correo</label>
-                        <input type="text" class="form-control" id="correo" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="contacto">Contacto</label>
-                        <input type="text" class="form-control" id="contacto" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="ubigeo">Ubigeo</label>
-                        <select id="ubigeo" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Ubigeo 1</option>
-                            <option>Ubigeo 2</option>
-                            <option>Ubigeo 3</option>
-                            <option>Ubigeo 4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="rubro">Rubro</label>
-                        <input type="text" class="form-control" id="rubro" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tipoPago">Tipo de Pago</label>
-                        <select id="tipoPago" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Pago 1</option>
-                            <option>Pago 2</option>
-                            <option>Pago 3</option>
-                            <option>Pago 4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="observacion">Observación</label>
-                        <textarea id="observacion" rows="4" class="form-control"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div footer>
-        <div class="p-3 text-right">
-            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
-        </div>
+        </form>
     </div>
 </app-body>

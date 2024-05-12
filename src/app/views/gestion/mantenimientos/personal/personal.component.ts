@@ -1,106 +1,78 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { PersonalService } from '@services/modulos/gestion/mantenimientos/personal/personal.service';
+import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
+import { Subscription } from 'rxjs';
+import * as moment from 'moment';
+import { Personal } from '@models/index';
 
 @Component({
     selector: 'app-personal',
     templateUrl: './personal.component.html',
 })
-export class PersonalComponent implements OnInit {
-    selectItem: any;
-    data: any[];
+export class PersonalComponent implements OnInit, OnDestroy {
+    selectItem: Personal;
+    data: Personal[];
+    loading: boolean;
+    pagina: number;
+    filas: number;
+    msj$: Subscription;
 
-    constructor(private router: Router) {
-        this.selectItem = {};
+    constructor(private router: Router, private personalService: PersonalService, private mensajeResponse: MensajeResponseService) {
+        this.selectItem = new Personal();
+        this.loading = false;
+        this.data = [];
+        this.pagina = 1;
+        this.filas = 10;
     }
 
     ngOnInit() {
         this.listar();
     }
 
-    listar() {
-        this.data = [
-            {
-                id: 1,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
+    ngOnDestroy(): void {
+        if (this.msj$) {
+            this.msj$.unsubscribe();
+        }
+    }
+
+    listar(pagina: number = 1) {
+        this.loading = true;
+        this.pagina = pagina;
+        const params = {
+            pagina: this.pagina,
+            filas: this.filas,
+        };
+
+        this.personalService.getPersonales(params).subscribe(
+            (response: any) => {
+                this.data = response;
+                this.loading = false;
             },
-            {
-                id: 2,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-            {
-                id: 3,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-            {
-                id: 4,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-            {
-                id: 5,
-                ubigeo: 'Surco',
-                codigo: '224as1d2',
-                nombres: 'Miguel Angel',
-                apellidos: 'Morales Larriega',
-                dni: '72491744',
-                fecha_nacimiento: '20/05/98',
-                direccion: 'Calle Las Cerezas 235 - Surco',
-                genero: 'Masculino',
-                estado_civil: 'Soltero',
-                telefono: '895724554',
-                fecha_ingreso: '20/05/98',
-                tipo: 'Destajo',
-                estado: true,
-            },
-        ];
+            (error) => {
+                this.loading = false;
+            }
+        );
+    }
+
+    delete() {
+        this.msj$ = this.mensajeResponse.action('Se eliminara el personal permanentemente', true).subscribe((action) => {
+            if (action) {
+                this.personalService.deletePersonal(this.selectItem.idPersonal).subscribe(
+                    (response) => {
+                        this.msj$ = this.mensajeResponse.succes('Personal eliminado correctamente').subscribe((a) => {
+                            if (a) {
+                                this.listar();
+                            }
+                        });
+                    },
+                    (error) => {
+                        this.msj$ = this.mensajeResponse.danger().subscribe();
+                    }
+                );
+            }
+        });
     }
 
     nuevo() {
@@ -109,11 +81,11 @@ export class PersonalComponent implements OnInit {
 
     detalle() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.personal.init}/${this.selectItem.id}/${route.personal.detalle}`]);
+        this.router.navigate([`${route.personal.init}/${this.selectItem.idPersonal}/${route.personal.detalle}`]);
     }
 
     editar() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.personal.init}/${this.selectItem.id}/${route.personal.editar}`]);
+        this.router.navigate([`${route.personal.init}/${this.selectItem.idPersonal}/${route.personal.editar}`]);
     }
 }

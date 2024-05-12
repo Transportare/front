@@ -19,7 +19,9 @@
             "@pipes/*": ["app/pipes/*"],
             "@directives/*": ["app/directives/*"],
             "@services/*": ["app/services/*"],
-            "@routes/*": ["config/rutas-modulos/*"]
+            "@routes/*": ["config/rutas-modulos/*"],
+            "@utils/*": ["app/utils/*"],
+            "@guards/*": ["app/guards/*"]
         }
     },
     "angularCompilerOptions": {

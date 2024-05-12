@@ -1,0 +1,134 @@
+<app-body [header]="false" titulo="Despacho Destino">
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
+        <form [formGroup]="form">
+            <div class="px-4 pt-4 pb-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required">Chofer</label>
+                            <select-default
+                                [data]="choferes"
+                                [selected]="choferSelected"
+                                (selectChange)="form.patchValue({ idChofer: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required">Vehículo</label>
+                            <select-default [data]="vehiculos" [selected]="vehiculoSelected"></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fechaSalida" class="required">Fecha Salida</label>
+                            <input type="date" class="form-control" id="fechaSalida" formControlName="fechaSalida" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required">Sucursal Destino</label>
+                            <select-default
+                                [data]="sucursales"
+                                [selected]="sucursalSelected"
+                                (selectChange)="form.patchValue({ idSucursal: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group group-normal">
+                            <label for="observaciones">Observaciones</label>
+                            <textarea id="observaciones" class="form-control" rows="3" formControlName="observacion"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row" *ngIf="manifiesto && manifiesto.idEstado === 151"> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group group-normal">
+                            <label for="codigo">Código de Barra</label>
+                            <input #codigoBarra type="text" class="form-control" id="codigo" maxlength="13" (keyup.enter)="agregar()" />
+                            <span *ngIf="repetido" class="d-block error-input text-danger"
+                                >Este código de barra: {{ numero }} esta repetido</span
+                            >
+                            <span *ngIf="errorCodigo.error" class="d-block error-input text-danger">{{ errorCodigo.mensaje }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label style="margin-bottom: 1.5rem">Acción</label>
+                        <div class="d-flex">
+                            <label class="md-check mr-4">
+                                <input type="radio" [value]="true" name="accion" formControlName="accion" />
+                                Añadir
+                            </label>
+
+                            <label class="md-check">
+                                <input type="radio" [value]="false" name="accion" formControlName="accion" />
+                                Quitar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover box-shadow">
+                                <thead>
+                                    <tr>
+                                        <th>N°</th>
+                                        <th>Código</th>
+                                        <th>Estado</th>
+                                        <!-- <th class="text-center" *ngIf="manifiesto && manifiesto.idEstado === 151">Acción</th> -->
+                                        <th class="text-center">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of data; let index = index" (click)="selectItem = item">
+                                        <td style="vertical-align: middle">{{ index + 1 }}</td>
+                                        <td style="vertical-align: middle">{{ item.codigo }}</td>
+                                        <td style="vertical-align: middle">{{ item.estado }}</td>
+                                        <!-- <td
+                                            class="text-center"
+                                            style="vertical-align: middle"
+                                            *ngIf="manifiesto && manifiesto.idEstado === 151"
+                                        >
+                                            <button
+                                                class="btn btn-primary rounded-circle"
+                                                type="button"
+                                                (click)="deleteCargo(item.id, index)"
+                                            >
+                                                <i class="mdi mdi-close"></i>
+                                            </button>
+                                        </td> -->
+                                        <td class="text-center" style="vertical-align: middle">
+                                            <button
+                                                class="btn btn-primary rounded-circle"
+                                                type="button"
+                                                (click)="deleteCargo(item.id, index)"
+                                            >
+                                                <i class="mdi mdi-close"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                                        <td colspan="4">No hay información disponible</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 text-right">
+                <button class="btn btn-primary" type="button" [disabled]="form.invalid || data.length === 0" (click)="guardar()">
+                    Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</app-body>

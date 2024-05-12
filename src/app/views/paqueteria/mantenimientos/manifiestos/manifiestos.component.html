@@ -1,0 +1,63 @@
+<app-body [header]="true" [titulo]="'Manifiestos'">
+    <div header>
+        <div class="py-3 text-right">
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idGuia"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Detalle"
+                (click)="detalle()"
+            >
+                <i class="mdi mdi-format-list-bulleted"></i>
+            </button>
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idGuia || selectItem.estado === 'Cerrada'"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Descargo"
+                (click)="descargo()"
+            >
+                <i class="mdi mdi-download"></i>
+            </button>
+        </div>
+    </div>
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover box-shadow">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Nombre Chofer</th>
+                        <th>Fecha Salida</th>
+                        <th>Fecha Cierre</th>
+                        <th>Distrito</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let item of data; let index = index"
+                        (click)="selectItem = item"
+                        [ngClass]="{ highlighted: selectItem.idGuia === item.idGuia }"
+                    >
+                        <td>{{ (pagina - 1) * filas + index + 1 }}</td>
+                        <td>{{ item.personal || '-' }}</td>
+                        <td>{{ item.fechaSalida || '-' }}</td>
+                        <td>{{ item.fechaCierre || '-' }}</td>
+                        <td>{{ item.distrito || '-' }}</td>
+                        <td>{{ item.estado || '-' }}</td>
+                    </tr>
+                    <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                        <td colspan="6">No hay información disponible</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-paginacion [data]="dataPaginacion" (changePage)="listar($event)"></app-paginacion>
+    </div>
+</app-body>

@@ -1,0 +1,328 @@
+<app-body [header]="true" [titulo]="'Nuevo Registro'" [body]="false" [bodyCard]="true">
+    <div body-card>
+        <div class="row" [formGroup]="formRegistro">
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <b>Remitente - {{ nombreSucursal }}</b>
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dni" class="required">{{ persona ? 'RUC' : 'DNI' }}</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="dni"
+                                        EnteroPositivo
+                                        [maxNumerolength]="persona ? 11 : 8"
+                                        (valueEntero)="formRegistro.patchValue({ dni: $event })"
+                                        formControlName="dni"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="d-lg-none" style="margin-bottom: 1em">Acciones</label>
+                                <div class="d-flex align-items-center" style="margin-bottom: 1rem">
+                                    <button
+                                        class="btn btn-primary mr-4"
+                                        type="button"
+                                        [disabled]="formRegistro.controls.dni.invalid"
+                                        (click)="verificarDni()"
+                                    >
+                                        <span>Validar</span>
+                                    </button>
+                                    <label class="mb-0">
+                                        <input type="checkbox" (change)="changeTipoPersona($event)" />
+                                        Persona Jurídica
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="!persona">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombres" class="required">Nombres</label>
+                                    <input type="text" class="form-control" id="nombres" formControlName="nombres" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="apellidos" class="required">Apellidos</label>
+                                    <input type="text" class="form-control" id="apellidos" formControlName="apellidos" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row" *ngIf="!persona">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion" formControlName="direccion" />
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="row" *ngIf="persona">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="tipoPaquete" class="required">Razón <br class="none" />Social </label>
+                                    <input type="text" class="form-control" id="razon" formControlName="razonSocial" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    <label>
+                                        <input id="recojo" type="checkbox" (change)="changeRecojo($event)" />
+                                        Recojo a Domicilio
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="recojo">
+                                <div class="form-group">
+                                    <label for="distrito" class="required">Distrito</label>
+                                    <select-default
+                                        [data]="distritosRemitente"
+                                        [selected]="distritoSelectedRemitente"
+                                        (selectChange)="formRegistro.patchValue({ idUbigeoRecojo: $event.id })"
+                                    ></select-default>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="recojo">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="direccionRecojo" class="required">Dirección</label>
+                                    <input type="text" class="form-control" id="direccionRecojo" formControlName="direccionRecojo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="recojo">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="referenciaRecojo" class="required">Referencia</label>
+                                    <input type="text" class="form-control" id="referenciaRecojo" formControlName="referenciaRecojo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Destinatario</b></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dniDestinatario">DNI</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="dniDestinatario"
+                                        formControlName="dniDestinatario"
+                                        EnteroPositivo
+                                        [maxNumerolength]="8"
+                                        (valueEntero)="formRegistro.patchValue({ dniDestinatario: $event })"
+                                    />
+                                    <!-- <span *ngIf="destintarioDni && dni" class="d-block error-input text-danger"
+                                        >El DNI debe ser de 8 dígitos.</span
+                                    > -->
+                                    <span *ngIf="destintarioDni" class="d-block error-input text-danger"
+                                        >El DNI debe ser de 8 dígitos.</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="sucursal" class="required">Sucursal</label>
+                                    <select-default
+                                        [data]="sucursales"
+                                        [selected]="sucursalSelected"
+                                        (selectChange)="changeSucursal($event)"
+                                    ></select-default>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombreDestinatario" class="required">Nombres</label>
+                                    <input type="text" class="form-control" id="nombreDestinatario" formControlName="nombreDestinatario" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="apellidoDestinatario" class="required">Apellidos</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="apellidoDestinatario"
+                                        formControlName="apellidoDestinatario"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="telefonoDestinatario">Teléfono</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="telefonoDestinatario"
+                                        EnteroPositivo
+                                        [maxNumerolength]="9"
+                                        (valueEntero)="formRegistro.patchValue({ telefonoDestinatario: $event })"
+                                        formControlName="telefonoDestinatario"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="claveDestinatario">Palabra <span class="d-lg-block">Clave</span></label>
+                                    <input type="text" class="form-control" id="claveDestinatario" formControlName="claveDestinatario" />
+                                    <span class="d-block error-input text-info">En caso de no ingresar DNI, este campo es requerido.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    <label>
+                                        <input type="checkbox" (change)="changeTipoEntrega($event)" />
+                                        Despacho a Domicilio
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="domicilio">
+                                <div class="form-group">
+                                    <label for="distrito" class="required">Distrito</label>
+                                    <select-default
+                                        [data]="distritos"
+                                        [selected]="distritoSelected"
+                                        (selectChange)="changeDistrito($event)"
+                                    ></select-default>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="domicilio">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="direccionDestino" class="required">Dirección</label>
+                                    <input type="text" class="form-control" id="direccionDestino" formControlName="direccionDestino" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="domicilio">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="referenciaDestino" class="required">Referencia</label>
+                                    <input type="text" class="form-control" id="referenciaDestino" formControlName="referenciaDestino" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Paquete</b></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cantidadPaquetes" class="required">Cantidad de Piezas</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="cantidadPaquetes"
+                                        EnteroPositivo
+                                        [maxNumerolength]="5"
+                                        (valueEntero)="formRegistro.patchValue({ cantidadPaquetes: $event })"
+                                        formControlName="cantidadPaquetes"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pesoTotal" class="required">Peso Total (Kg)</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="pesoTotal"
+                                        NumeroDecimal
+                                        [separador]="true"
+                                        (valueEntero)="formRegistro.patchValue({ pesoTotal: $event })"
+                                        formControlName="pesoTotal"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tipoPaquete" class="required">Tipo de Paquete</label>
+                                    <select-default
+                                        [data]="tipoPaquetes"
+                                        [selected]="tipoPaqueteSelected"
+                                        (selectChange)="formRegistro.patchValue({ idTipoPaquete: $event.id })"
+                                    ></select-default>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pesoTotal" class="required">Precio</label>
+                                    <input type="text" class="form-control" id="precio" formControlName="precio" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group align-items-start">
+                                    <label for="descripcionPaquete">Detalle</label>
+                                    <textarea
+                                        class="form-control"
+                                        id="descripcionPaquete"
+                                        rows="4"
+                                        formControlName="descripcionPaquete"
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pagaDestino">Pago</label>
+                                    <!-- <label> <input type="checkbox" formControlName="pagaDestino" /> Contraentrega </label> -->
+                                    <div class="d-flex">
+                                        <label class="md-check mr-4">
+                                            <input type="radio" [value]="false" name="pagaDestino" formControlName="pagaDestino" />
+                                            Pago en efectivo
+                                        </label>
+
+                                        <label class="md-check">
+                                            <input type="radio" [value]="true" name="pagaDestino" formControlName="pagaDestino" />
+                                            Contraentrega
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-right">
+                            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="formRegistro.invalid" (click)="guardar()">
+                                <span>Guardar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-body>

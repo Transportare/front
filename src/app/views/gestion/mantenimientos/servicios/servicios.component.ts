@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { Servicio } from '@models/servicio';
+import { ServiciosService } from '@services/modulos/gestion/mantenimientos/servicios/servicios.service';
+import { PaginacionModel } from '@models/index';
 
 @Component({
     selector: 'app-servicios',
@@ -8,70 +11,57 @@ import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
     styleUrls: ['./servicios.component.scss'],
 })
 export class ServiciosComponent implements OnInit {
-    selectItem: any;
-    data: any[];
+    selectItem: Servicio;
+    servicios: Servicio[];
+    loading: boolean;
+    pagina: number;
+    filas: number;
+    dataPaginacion: PaginacionModel;
 
-    constructor(private router: Router) {
-        this.selectItem = {};
+    constructor(private router: Router, private servicioService: ServiciosService) {
+        this.selectItem = new Servicio();
+        this.loading = false;
+        this.pagina = 1;
+        this.filas = 10;
+        this.servicios = [];
+        this.dataPaginacion = new PaginacionModel(0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     ngOnInit() {
         this.listar();
     }
 
-    listar() {
-        this.data = [
-            {
-                id: 1,
-                sucursal: 'Sucursal 1',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
+    listar(pagina: number = 1) {
+        this.loading = true;
+        this.pagina = pagina;
+        const params = {
+            pagina: this.pagina,
+            filas: this.filas,
+        };
+
+        this.servicioService.getServicios(params).subscribe(
+            (response) => {
+                this.servicios = response.servicios;
+
+                if (response.paginacion) {
+                    this.dataPaginacion = new PaginacionModel(
+                        response.paginacion.item_desde,
+                        response.paginacion.item_hasta,
+                        response.paginacion.item_pagina,
+                        response.paginacion.item_total,
+                        response.paginacion.pag_actual,
+                        response.paginacion.pag_anterior,
+                        response.paginacion.pag_siguiente,
+                        response.paginacion.pag_total
+                    );
+                }
+
+                this.loading = false;
             },
-            {
-                id: 2,
-                sucursal: 'Sucursal 2',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-            {
-                id: 3,
-                sucursal: 'Sucursal 3',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-            {
-                id: 4,
-                sucursal: 'Sucursal 4',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-            {
-                id: 5,
-                sucursal: 'Sucursal 5',
-                cliente: 'Cliente 1',
-                tipo_servicio: 'Normal',
-                nombre: 'BBVA',
-                tiempo: '04 Días',
-                observacion: 'AVL',
-                estado: true,
-            },
-        ];
+            (error) => {
+                this.loading = false;
+            }
+        );
     }
 
     nuevo() {
@@ -80,11 +70,11 @@ export class ServiciosComponent implements OnInit {
 
     detalle() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.servicios.init}/${this.selectItem.id}/${route.servicios.detalle}`]);
+        this.router.navigate([`${route.servicios.init}/${this.selectItem.idServicio}/${route.servicios.detalle}`]);
     }
 
     editar() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.servicios.init}/${this.selectItem.id}/${route.servicios.editar}`]);
+        this.router.navigate([`${route.servicios.init}/${this.selectItem.idServicio}/${route.servicios.editar}`]);
     }
 }

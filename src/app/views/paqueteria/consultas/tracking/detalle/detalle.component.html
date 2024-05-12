@@ -1,0 +1,457 @@
+<app-body [header]="true" [titulo]="'Detalle de Ruta'" [body]="false" [bodyCard]="true">
+    <div body-card [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div *ngIf="data">
+                        <b>{{ data.paquete.codigo + ' - ' + data.tracking.estadoCargo }}</b>
+                    </div>
+                    <button class="btn btn-primary" type="button" (click)="open()"><i class="mdi mdi-file"></i> Generar PDF</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="!loading">
+            <div class="col-lg-5 mb-4">
+                <div class="card">
+                    <h5 class="card-header" style="background: #29b6ff">
+                        <b>Historial</b>
+                    </h5>
+                    <div class="card-body">
+                        <ul class="timeline">
+                            <li class="timeline-item">
+                                <div class="timeline-info">
+                                    <span>{{ changeDate(data.tracking.fechaVisita) || '-' }}</span>
+                                </div>
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaVisita,
+                                        current: estadoTracking.ENTREGA_VISITA === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
+                                <div class="timeline-content">
+                                    <p>Entrega - Visita</p>
+                                </div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-info">
+                                    <span>{{ changeDate(data.tracking.fechaSalida) }}</span>
+                                </div>
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaSalida,
+                                        current: estadoTracking.EN_RUTA_DOMICILIO === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
+                                <div class="timeline-content">
+                                    <p>En Ruta a Domicilio</p>
+                                </div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-info">
+                                    <span>{{ changeDate(data.tracking.fechaArriboDestino) }}</span>
+                                </div>
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaArriboDestino,
+                                        current: estadoTracking.ARRIBO_DESTINO === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
+                                <div class="timeline-content">
+                                    <p>Arribo Destino</p>
+                                </div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-info">
+                                    <span>{{ changeDate(data.tracking.fechaDespachoDestino) }}</span>
+                                </div>
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        inactive: !data.tracking.fechaDespachoDestino,
+                                        current: estadoTracking.DESPACHO_DESTINO === data.tracking.idEstadoCargo
+                                    }"
+                                ></div>
+                                <div class="timeline-content pb-0">
+                                    <p>Despacho Destino</p>
+                                </div>
+                            </li>
+                            <!-- <li class="timeline-item">
+                                <div class="timeline-info">
+                                    <span>March 23, 2016</span>
+                                </div>
+                                <div class="timeline-marker" [ngClass]="{'inactive': !data.tracking.fechaVisita,
+                                        current: estadoTracking.RECOLECTADO === data.tracking.idEstadoCargo}"></div>
+                                <div class="timeline-content">
+                                    <p>Recolectado</p>
+                                </div>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 mb-4">
+                <div class="card mb-4">
+                    <h5 class="card-header">
+                        <b>Remitente</b>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Nombres</b></label>
+                                    <span>{{ data.remitente.nombres || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Apellidos</b></label>
+                                    <span>{{ data.remitente.apellidos || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>DNI</b></label>
+                                    <span>{{ data.remitente.dni || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Oficina</b></label>
+                                    <span>{{ data.remitente.sucursalRemite || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Sucursal</b></label>
+                                    <span>{{ data.remitente.sucursal || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Localidad</b></label>
+                                    <span>{{ data.remitente.localidad || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Dirección</b></label>
+                                    <span>{{ data.remitente.direccion || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <h5 class="card-header">
+                        <b>Paquete</b>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Código</b></label>
+                                    <span>{{ data.paquete.codigo || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Cantidad</b></label>
+                                    <span>{{ data.paquete.cantidad || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Peso</b></label>
+                                    <span>{{ data.paquete.peso || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Precio</b></label>
+                                    <span>{{ data.paquete.precio || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Fecha</b></label>
+                                    <span>{{ data.paquete.fecha || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Detalle</b></label>
+                                    <span>{{ data.paquete.detalles || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h5 class="card-header"><b>Destinatario</b></h5>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Nombres</b></label>
+                                    <span>{{ data.destinatario.nombres || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Apellidos</b></label>
+                                    <span>{{ data.destinatario.apellidos || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>DNI</b></label>
+                                    <span>{{ data.destinatario.dni || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Sucursal</b></label>
+                                    <span>{{ data.destinatario.sucursal || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Telefono</b></label>
+                                    <span>{{ data.destinatario.telefono || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Palabra Clave</b></label>
+                                    <span>{{ data.destinatario.palabraClave || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Referencia</b></label>
+                                    <span>{{ data.destinatario.referencia || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Localidad</b></label>
+                                    <span>{{ data.destinatario.localidad || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Dirección</b></label>
+                                    <span>{{ data.destinatario.direccion || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-lg-7 mb-4">
+                <div class="card">
+                    <h5 class="card-header">
+                        <b>Remitente</b>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Nombres</b></label>
+                                    <span>{{ data.remitente.nombres || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Apellidos</b></label>
+                                    <span>{{ data.remitente.apellidos || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>DNI</b></label>
+                                    <span>{{ data.remitente.dni || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Oficina</b></label>
+                                    <span>{{ data.remitente.sucursalRemite || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Sucursal</b></label>
+                                    <span>{{ data.remitente.sucursal || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Localidad</b></label>
+                                    <span>{{ data.remitente.localidad || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Dirección</b></label>
+                                    <span>{{ data.remitente.direccion || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 mb-4">
+                <div class="card">
+                    <h5 class="card-header">
+                        <b>Paquete</b>
+                    </h5>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Código</b></label>
+                                    <span>{{ data.paquete.codigo || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Cantidad</b></label>
+                                    <span>{{ data.paquete.cantidad || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Peso</b></label>
+                                    <span>{{ data.paquete.peso || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Precio</b></label>
+                                    <span>{{ data.paquete.precio || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Fecha</b></label>
+                                    <span>{{ data.paquete.fecha || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Detalle</b></label>
+                                    <span>{{ data.paquete.detalles || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 mb-4">
+                <h5 class="card-header"><b>Destinatario</b></h5>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Nombres</b></label>
+                                    <span>{{ data.destinatario.nombres || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Apellidos</b></label>
+                                    <span>{{ data.destinatario.apellidos || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>DNI</b></label>
+                                    <span>{{ data.destinatario.dni || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Sucursal</b></label>
+                                    <span>{{ data.destinatario.sucursal || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Telefono</b></label>
+                                    <span>{{ data.destinatario.telefono || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Palabra Clave</b></label>
+                                    <span>{{ data.destinatario.palabraClave || '-' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Referencia</b></label>
+                                    <span>{{ data.destinatario.referencia || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Localidad</b></label>
+                                    <span>{{ data.destinatario.localidad || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-column">
+                                    <label class="mb-0"><b>Dirección</b></label>
+                                    <span>{{ data.destinatario.direccion || '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-right">
+                            <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Atras</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-body>

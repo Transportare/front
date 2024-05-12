@@ -3,7 +3,18 @@
         <div class="py-3 text-right">
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.id"
+                [disabled]="!selectItem.idPersonal"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Eliminar"
+                (click)="delete()"
+            >
+                <i class="mdi mdi-delete"></i>
+            </button>
+            <!-- <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idPersonal"
                 data-toggle="tooltip"
                 data-placement="top"
                 [DirectiveTooltip]
@@ -11,10 +22,10 @@
                 (click)="detalle()"
             >
                 <i class="mdi mdi-format-list-bulleted"></i>
-            </button>
+            </button> -->
             <button
                 class="btn btn-circle btn-primary mr-2"
-                [disabled]="!selectItem.id"
+                [disabled]="!selectItem.idPersonal"
                 data-placement="top"
                 data-toggle="tooltip"
                 [DirectiveTooltip]
@@ -28,47 +39,43 @@
             </button>
         </div>
     </div>
-    <div body>
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
         <div class="table-responsive">
             <table class="table table-striped table-hover box-shadow">
                 <thead>
                     <tr>
                         <th>N°</th>
-                        <th>Ubigeo</th>
                         <th>Código</th>
                         <th>Nombres</th>
                         <th>Apellidos</th>
                         <th>DNI</th>
-                        <th>Fecha De Nacimiento</th>
-                        <th>Dirección</th>
-                        <th>Género</th>
-                        <th>Estado Civil</th>
+                        <th style="min-width: 100px;">Estado Civil</th>
                         <th>Teléfono</th>
-                        <th>Fecha De Ingreso</th>
+                        <th style="min-width: 150px;">Fecha De Ingreso</th>
                         <th>Tipo</th>
-                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         *ngFor="let item of data; let index = index"
                         (click)="selectItem = item"
-                        [ngClass]="{ highlighted: selectItem.id === item.id }"
+                        [ngClass]="{ highlighted: selectItem.idPersonal === item.idPersonal }"
                     >
                         <td>{{ index + 1 }}</td>
-                        <td>{{ item.ubigeo }}</td>
                         <td>{{ item.codigo }}</td>
                         <td>{{ item.nombres }}</td>
                         <td>{{ item.apellidos }}</td>
                         <td>{{ item.dni }}</td>
-                        <td>{{ item.fecha_nacimiento }}</td>
-                        <td>{{ item.direccion }}</td>
-                        <td>{{ item.genero }}</td>
-                        <td>{{ item.estado_civil }}</td>
+                        <td>{{ item.estadoCivil }}</td>
                         <td>{{ item.telefono }}</td>
-                        <td>{{ item.fecha_ingreso }}</td>
-                        <td>{{ item.tipo }}</td>
-                        <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+                        <td>{{ item.fecIngreso }}</td>
+                        <td>{{ item.tipoPersonal }}</td>
+                    </tr>
+                    <tr class="text-center" *ngIf="!data || (data && data.length === 0)">
+                        <td colspan="19">
+                            No hay información disponible
+                        </td>
                     </tr>
                 </tbody>
             </table>

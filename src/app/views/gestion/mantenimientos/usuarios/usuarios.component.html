@@ -1,0 +1,199 @@
+<app-body [header]="true" [titulo]="'Usuarios'">
+    <div header>
+        <div class="py-3 text-right">
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idUsuario"
+                data-toggle="tooltip"
+                data-placement="top"
+                [DirectiveTooltip]
+                title="Cambiar Contraseña"
+                (click)="cambiarPass()"
+            >
+                <i class="mdi mdi-key"></i>
+            </button>
+            <button
+                class="btn btn-circle btn-primary mr-2"
+                [disabled]="!selectItem.idUsuario"
+                data-placement="top"
+                data-toggle="tooltip"
+                [DirectiveTooltip]
+                title="Editar"
+                (click)="editar()"
+            >
+                <i class="mdi mdi-pencil"></i>
+            </button>
+            <button class="btn btn-outline-primary ml-3" (click)="nuevo()">
+                Nuevo
+            </button>
+        </div>
+    </div>
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
+        <div class="row mx-0">
+            <div class="col-md-12 col-lg-7">
+                <div class="table-responsive pb-3">
+                    <table class="table table-striped table-hover box-shadow">
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Usuario</th>
+                                <th>DNI</th>
+                                <th style="min-width: 150px;">Nombre de Perfil</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let item of usuarios; let index = index"
+                                (click)="getPrivilegios(item)"
+                                [ngClass]="{ highlighted: selectItem.idUsuario === item.idUsuario }"
+                            >
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ item.usuario }}</td>
+                                <td>{{ item.dni }}</td>
+                                <td>{{ item.nombrePerfil }}</td>
+                                <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+                            </tr>
+                            <tr class="text-center" *ngIf="!usuarios || (usuarios && usuarios.length === 0)">
+                                <td colspan="4">
+                                    No hay información disponible
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-5 pb-3 privilegios-usuarios">
+                <h6 *ngIf="privilegios.length > 0 && !loading">Privilegios</h6>
+                <ngx-treeview *ngIf="privilegios.length > 0 && !loading" [config]="config" [items]="privilegios"> </ngx-treeview>
+            </div>
+        </div>
+    </div>
+</app-body>
+
+<div class="modal fade" #modalUsuario tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form [formGroup]="formUsuario" autocomplete="off">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title">
+                        {{ selectItem.idUsuario ? 'Editar Usuario' : 'Nuevo Usuario' }}
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario">
+                        <div class="col-md-12">
+                            <label>Usuario</label>
+                            <input class="form-control" formControlName="usuario" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>DNI</label>
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="8"
+                                (valueEntero)="formUsuario.patchValue({ dni: $event })"
+                                type="text"
+                                class="form-control"
+                                id="dni"
+                                formControlName="dni"
+                            />
+                        </div>
+                    </div>
+                    <!-- <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario"> -->
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>Perfil</label>
+                            <select-default
+                                *ngIf="perfiles"
+                                [data]="perfiles"
+                                [selected]="perfilSelected"
+                                (selectChange)="formUsuario.patchValue({ perfil: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="row mb-3 mx-0" *ngIf="!selectItem.idUsuario">
+                        <div class="col-md-12">
+                            <label>Contraseña</label>
+                            <input type="password" class="form-control" formControlName="password" autocomplete="new-password" />
+                        </div>
+                    </div>
+                    <div class="row mb-2 mx-0" *ngIf="selectItem.idUsuario">
+                        <div class="col-md-12">
+                            <label for="distrito">Estado</label>
+                            <select-default
+                                *ngIf="estados"
+                                [data]="estados"
+                                [selected]="estadoSelected"
+                                (selectChange)="estadoSelected = $event"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="formUsuario.invalid" (click)="generarUsuario()">
+                        Aceptar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" #modalPass tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form [formGroup]="formPass" autocomplete="off">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title">Cambiar Contraseña - {{ selectItem.usuario }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>Contraseña</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                formControlName="password1"
+                                [class.is-invalid]="pass1NoValido"
+                                autocomplete="new-password"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3 mx-0">
+                        <div class="col-md-12">
+                            <label>Repetir Contraseña</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                formControlName="password2"
+                                [class.is-invalid]="pass2NoValido"
+                                autocomplete="new-password"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mx-0" *ngIf="formPass.controls.password2.errors && formPass.controls.password2.errors.noIguales">
+                        <div class="col-md-12">
+                            <span class="text-danger">
+                                Las contraseñas deben ser iguales
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button type="button" class="btn btn-secondary mr-2" (click)="cerrarModalPass()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="formPass.invalid" (click)="generarPass()">
+                        Aceptar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

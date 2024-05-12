@@ -1,6 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { RUTAS_GESTION_MANTENIMIENTOS } from '@routes/rutas-gestion';
+import { ClienteService } from '@services/modulos/gestion/mantenimientos/clientes/clientes.service';
+import { PaginacionModel } from '@models/paginacion.model';
+import { Cliente } from '@models/index';
+import { Subscription } from 'rxjs';
+import { MensajeResponseService } from '@services/utils/mensajeresponse.service';
 declare var $: any;
 
 @Component({
@@ -10,62 +15,83 @@ declare var $: any;
 })
 export class ClientesComponent implements OnInit, OnDestroy {
     @ViewChild('detalleCliente', { static: false }) detalleCliente: ElementRef;
-    data: any[];
-    selectItem: any;
+    data: Cliente[];
+    selectItem: Cliente;
+    loading: boolean;
+    pagina: number;
+    filas: number;
+    dataPaginacion: PaginacionModel;
+    msj$: Subscription;
 
-    constructor(private router: Router) {
-        this.selectItem = {};
+    constructor(private clienteService: ClienteService, private router: Router, private mensajeResponse: MensajeResponseService) {
+        this.selectItem = new Cliente();
     }
 
     ngOnInit() {
-        this.data = [
-            {
-                id: 1,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-            {
-                id: 2,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-            {
-                id: 3,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-            {
-                id: 4,
-                razon_social: 'Enotria S.A.',
-                direccion: 'Av. Nicolas Ayllon 2890',
-                oficina: 'OFICINA PRINCIPAL',
-                distrito: 'CALLAO',
-                ruc: '20519014280',
-                tipo: 'Transferencia',
-                estado: true,
-            },
-        ];
+        this.loading = false;
+        this.pagina = 1;
+        this.filas = 10;
+        this.data = [];
+        this.dataPaginacion = new PaginacionModel(0, 0, 0, 0, 0, 0, 0, 0);
+        this.listar();
     }
 
     ngOnDestroy(): void {
-        // if (this.msj$) {
-        //     this.msj$.unsubscribe();
-        // }
+        if (this.msj$) {
+            this.msj$.unsubscribe();
+        }
+    }
+
+    listar(pagina: number = 1) {
+        this.loading = true;
+        this.pagina = pagina;
+        const params = {
+            pagina: this.pagina,
+            filas: this.filas,
+        };
+
+        this.clienteService.getClientes(params).subscribe(
+            (response) => {
+                this.data = response.clientes;
+
+                if (response.paginacion) {
+                    this.dataPaginacion = new PaginacionModel(
+                        response.paginacion.item_desde,
+                        response.paginacion.item_hasta,
+                        response.paginacion.item_pagina,
+                        response.paginacion.item_total,
+                        response.paginacion.pag_actual,
+                        response.paginacion.pag_anterior,
+                        response.paginacion.pag_siguiente,
+                        response.paginacion.pag_total
+                    );
+                }
+
+                this.loading = false;
+            },
+            (error) => {
+                this.loading = false;
+            }
+        );
+    }
+
+    delete() {
+        this.msj$ = this.mensajeResponse.action('Se eliminara el cliente permanentemente', true).subscribe((action) => {
+            if (action) {
+                this.clienteService.deleteCliente(this.selectItem.idCliente).subscribe(
+                    (response) => {
+                        this.msj$ = this.mensajeResponse.succes('Cliente eliminado correctamente').subscribe((a) => {
+                            if (a) {
+                                this.listar();
+                            }
+                        });
+                    },
+                    (error) => {
+                        this.msj$ = this.mensajeResponse.danger().subscribe();
+                    }
+                );
+            }
+        });
     }
 
     nuevoProveedor() {
@@ -77,6 +103,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
         // const route = RUTAS_GESTION_MANTENIMIENTOS;
         // this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.detalle}`]);
         $(this.detalleCliente.nativeElement).modal('show');
+        // this.obtenerCliente();
     }
 
     cerrarModal() {
@@ -85,6 +112,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
 
     editar() {
         const route = RUTAS_GESTION_MANTENIMIENTOS;
-        this.router.navigate([`${route.clientes.init}/${this.selectItem.id}/${route.clientes.editar}`]);
+        this.router.navigate([`${route.clientes.init}/${this.selectItem.idCliente}/${route.clientes.editar}`]);
     }
 }

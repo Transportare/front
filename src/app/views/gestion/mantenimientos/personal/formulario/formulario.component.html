@@ -1,150 +1,172 @@
-<app-body [header]="false" [titulo]="'Nuevo Servicio'">
-    <div body>
-        <div class="p-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="nombres">Nombres</label>
-                        <input type="text" class="form-control" id="nombres" />
+<app-body [header]="false" [titulo]="idPersonal ? 'Editar Personal - ' + codigoPersonal : 'Nuevo Personal'">
+    <div body [ngClass]="{ loader: loading }">
+        <loader *ngIf="loading"></loader>
+        <form [formGroup]="formPersonal">
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombres" class="required">Nombres</label>
+                            <input type="text" class="form-control" id="nombres" formControlName="nombres" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="apellidos" class="required">Apellidos</label>
+                            <input type="text" class="form-control" id="apellidos" formControlName="apellidos" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="dni" class="required">DNI</label>
+                            <input
+                                EnteroPositivo
+                                [maxNumerolength]="8"
+                                (valueEntero)="formPersonal.patchValue({ dni: $event })"
+                                type="text"
+                                class="form-control"
+                                id="dni"
+                                formControlName="dni"
+                            />
+                            <span *ngIf="personalDni" class="d-block error-input text-danger">El DNI debe ser de 8 dígitos.</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fecha_nacimiento" class="required">Fecha de Nacimiento</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                formControlName="fecNacimiento"
+                                (change)="changeFechaNacimiento($event.target.value)"
+                                id="fecha_nacimiento"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="departamento" class="required">Departamento</label>
+                            <select-default
+                                [data]="departamentos"
+                                [selected]="departamentoSelected"
+                                (selectChange)="changeDepartamento($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="provincia" class="required">Provincia</label>
+                            <select-default
+                                [data]="provincias"
+                                [selected]="selectedProvincia"
+                                (selectChange)="changeProvincia($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="distrito" class="required">Distrito</label>
+                            <select-default
+                                [data]="distritos"
+                                [selected]="selectedDistrito"
+                                (selectChange)="changeDistrito($event)"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="direccion">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" formControlName="direccion" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="genero" class="required">Género</label>
+                            <select-default
+                                [data]="generos"
+                                [selected]="generoSelected"
+                                (selectChange)="formPersonal.patchValue({ idGenero: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="estado_civil" class="required">Estado Civil</label>
+                            <select-default
+                                [data]="estadosCiviles"
+                                [selected]="estadoSelected"
+                                (selectChange)="formPersonal.patchValue({ idEstadoCivil: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="telefono"
+                                EnteroPositivo
+                                [maxNumerolength]="9"
+                                (valueEntero)="formPersonal.patchValue({ telefono: $event })"
+                                formControlName="telefono"
+                            />
+                            <span *ngIf="personalTelefono" class="d-block error-input text-danger">Mínimo 7 números</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fecha_ingreso" class="required">Fecha de Ingreso</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                formControlName="fecIngreso"
+                                (change)="formPersonal.controls.fecIngreso.setValue($event.target.value)"
+                                id="fecha_ingreso"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipo" class="required">Cargo</label>
+                            <select-default
+                                [data]="tipoPerfiles"
+                                [selected]="tipoSelected"
+                                (selectChange)="formPersonal.patchValue({ idTipoPersonal: $event.id })"
+                            ></select-default>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group align-items-start">
+                            <label for="codigo" class="required">Sucursales</label>
+                            <app-check-multiple
+                                *ngIf="!loading"
+                                [data]="sucursales"
+                                [activos]="activos"
+                                (changeData)="changeData($event)"
+                            ></app-check-multiple>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="dni">DNI</label>
-                        <input type="text" class="form-control" id="dni" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-                        <input type="text" class="form-control" id="fecha_nacimiento" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="departamento">Departamento</label>
-                        <select id="departamento" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Departamento 1</option>
-                            <option>Departamento 2</option>
-                            <option>Departamento 3</option>
-                            <option>Departamento 4</option>
-                            <option>Departamento 5</option>
-                            <option>Departamento 6</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="provincia">Provincia</label>
-                        <select id="provincia" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Provincia 1</option>
-                            <option>Provincia 2</option>
-                            <option>Provincia 3</option>
-                            <option>Provincia 4</option>
-                            <option>Provincia 5</option>
-                            <option>Provincia 6</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="distrito">Distrito</label>
-                        <select id="distrito" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Distrito 1</option>
-                            <option>Distrito 2</option>
-                            <option>Distrito 3</option>
-                            <option>Distrito 4</option>
-                            <option>Distrito 5</option>
-                            <option>Distrito 6</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="direccion">Dirección</label>
-                        <input type="text" class="form-control" id="direccion" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="genero">Género</label>
-                        <select id="genero" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Masculino</option>
-                            <option>Femenino</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="estado_civil">Estado Civil</label>
-                        <select id="estado_civil" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Soltero</option>
-                            <option>Casado</option>
-                            <option>Divorciado</option>
-                            <option>Viudo</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="telefono">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="fecha_ingreso">Fecha de Ingreso</label>
-                        <input type="text" class="form-control" id="fecha_ingreso" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tipo">Tipo</label>
-                        <select id="tipo" class="form-control">
-                            <option selected>Seleccione</option>
-                            <option>Tipo 1</option>
-                            <option>Tipo 2</option>
-                            <option>Tipo 3</option>
-                            <option>Tipo 4</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="codigo">Código</label>
-                        <input type="text" class="form-control" id="codigo" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div footer>
+        </form>
         <div class="p-3 text-right">
             <button class="btn btn-secondary mr-3" type="button" (click)="atras()">Cancelar</button>
-            <button class="btn btn-primary" type="submit"><span>Guardar</span></button>
+            <button class="btn btn-primary" type="submit" (click)="guardarPersonal()" [disabled]="formPersonal.invalid">
+                <span>Guardar</span>
+            </button>
         </div>
     </div>
 </app-body>

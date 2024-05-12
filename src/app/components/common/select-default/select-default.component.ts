@@ -10,11 +10,11 @@ export class SelectDefaultComponent implements OnInit, AfterViewInit {
     @ViewChild('inputSelect', { static: true }) inputSelect: ElementRef;
     @ViewChild('inputSelectDiv', { static: true }) inputSelectDiv: ElementRef;
     @Input() data: any[];
+    @Input() selected: Item;
     @Input() search: boolean;
     @Input() placeholder: string;
     @Output() selectChange = new EventEmitter<Item>();
     dataFinal: Item[];
-    selected: Item;
     showOption: boolean;
     readonly: boolean;
     constructor() {
@@ -95,7 +95,7 @@ export class SelectDefaultComponent implements OnInit, AfterViewInit {
 
     searchData(text) {
         this.dataFinal = [];
-        this.data.forEach((value) => {
+        this.data?.forEach((value) => {
             if (String(value.text).toUpperCase().indexOf(text.toUpperCase()) > -1) {
                 this.dataFinal.push(value);
             }

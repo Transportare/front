@@ -1,0 +1,32 @@
+.paginacion {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+    > li {
+        display: flex;
+        align-items: center;
+        padding: 0.8em 1.5em;
+    }
+
+    ul {
+        // .info-paginacion {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        // }
+
+        li a {
+            cursor: pointer;
+            span {
+                font-size: 25px;
+            }
+        }
+    }
+}
+
+.not-allowed {
+    cursor: not-allowed !important;
+}

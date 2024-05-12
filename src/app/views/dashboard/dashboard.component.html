@@ -5,3 +5,24 @@
         </div>
     </div>
 </app-body>
+
+<div class="modal fade" #elegirSucursal tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" [ngClass]="{ loader: loading }">
+            <loader *ngIf="loading"></loader>
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">Sucursales</h5>
+            </div>
+            <div class="modal-body">
+                <div id="sucursales">
+                    <div class="sucursal" *ngFor="let sucursal of sucursales" (click)="seleccionarSucursal(sucursal.id)">
+                        <button class="btn btn-primary btn-circle mb-2">
+                            <i class="mdi mdi-home"></i>
+                        </button>
+                        <span>{{ sucursal.text }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

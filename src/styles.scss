@@ -3,10 +3,20 @@
     top: 0;
 }
 
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
 tr.highlighted td {
     background: #e5e5e5;
     cursor: pointer;
     font-weight: 600;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .form-group {
@@ -19,6 +29,18 @@ tr.highlighted td {
     margin-bottom: 1em;
 }
 
+.form-group.group-normal {
+    display: block;
+}
+
+.form-group.group-normal label {
+    margin-bottom: 1em;
+}
+
+.none {
+    display: none;
+}
+
 @media screen and (min-width: 991px) {
     .form-group {
         grid-template-columns: 100px 1fr;
@@ -29,8 +51,106 @@ tr.highlighted td {
     .form-group label {
         margin-bottom: 0em;
     }
+
+    .error-input {
+        grid-column: 2/3;
+        margin-top: 1em;
+    }
+
+    .none {
+        display: block;
+    }
+}
+
+.error-input {
+    margin-top: 1em;
 }
 
 .border-bottom-1 {
     border-bottom: 1px solid #ccc;
 }
+
+.loader {
+    position: relative;
+    min-height: 300px;
+}
+
+.loader::before {
+    content: '';
+    background: rgba(255, 255, 255, 0.7);
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 5;
+}
+
+.required::after {
+    content: ' *';
+    color: #af0f16;
+}
+
+// treeview
+
+.fa.fa-caret-right::after {
+    content: '\F142' !important;
+    display: inline-block;
+    font: normal normal normal 24px/1 'Material Design Icons';
+    font-size: inherit;
+    text-rendering: auto;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+
+.fa.fa-caret-down::after {
+    display: inline-block;
+    content: '\f140' !important;
+    font: normal normal normal 24px/1 'Material Design Icons';
+    font-size: inherit;
+    text-rendering: auto;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+
+// .row.row-all .col-12 {
+//     display: flex;
+//     justify-content: space-between;
+// }
+
+.privilegios-usuarios .treeview-item input[type='checkbox'] {
+    display: none !important;
+}
+
+.row.row-all .col-12 .pull-right {
+    float: right;
+}
+
+.fa.fa-compress::after {
+    content: '\F615';
+    display: inline-block;
+    font: normal normal normal 24px/1 'Material Design Icons';
+    font-size: inherit;
+    text-rendering: auto;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+}
+
+.fa.fa-expand::after {
+    content: '\F616';
+    display: inline-block;
+    font: normal normal normal 24px/1 'Material Design Icons';
+    font-size: inherit;
+    text-rendering: auto;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+//
