@@ -1,1 +1,1 @@
-export const API_URL = 'https://transportare-api-express.azurewebsites.net/api/';
+export const API_URL = 'http://104.131.76.79:3000/api/';
